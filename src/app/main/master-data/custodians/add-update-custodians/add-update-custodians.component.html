@@ -1,0 +1,223 @@
+<ng-container *ngIf="!fetchingData; else loader">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h5 translate>{{ isEditMode ? "Update" : "Create New" }} Custodian</h5>
+    </div>
+  </div>
+  <form [formGroup]="custodianForm">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Code' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianCode"
+          />
+          <kendo-formerror
+            *ngIf="!custodianForm.controls['custodianCode'].valid && custodianForm.controls['custodianCode'].touched && custodianForm.controls['custodianCode'].errors?.['required']"
+          >
+            {{ "Custodian Code is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Name' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianName"
+          />
+          <kendo-formerror
+            *ngIf="!custodianForm.controls['custodianName'].valid && custodianForm.controls['custodianName'].touched && custodianForm.controls['custodianName'].errors?.['required']"
+          >
+            {{ "Custodian Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Phone' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="number"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianPhone"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Fax' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianFax"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Cell' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="number"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianCell"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Email' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianEmail"
+          />
+          <kendo-formerror
+            *ngIf="!custodianForm.controls['custodianEmail'].valid && custodianForm.controls['custodianEmail'].touched && custodianForm.controls['custodianEmail'].errors?.['pattern']"
+          >
+            {{ "Invalid email pattern" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Address' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianAddress"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Hierarchy' | translate }}"
+          showErrors="initial"
+        >
+          <kendo-dropdowntree
+            size="large"
+            rounded="large"
+            kendoDropDownTreeExpandable
+            [kendoDropDownTreeHierarchyBinding]="dropDownData"
+            textField="name"
+            valueField="value"
+            childrenField="children"
+            formControlName="orgHierID"
+            [filterable]="true"
+            [expandOnFilter]="filterExpandSettings"
+          >
+          </kendo-dropdowntree>
+
+          <!-- <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="data"
+            textField="orgHierName"
+            valueField="orgHierID"
+            formControlName="orgHierID"
+            [valuePrimitive]="true"
+            [filterable]="true"
+            (filterChange)="handleFilter($event)"
+          ></kendo-dropdownlist> -->
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-4">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Designation' | translate }}"
+          showErrors="initial"
+        >
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="dataForDesign"
+            textField="description"
+            valueField="designationID"
+            formControlName="designationID"
+            [valuePrimitive]="true"
+            [filterable]="true"
+            (filterChange)="handleFilterDesig($event)"
+          ></kendo-dropdownlist>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-12 text-end">
+        <button
+          kendoButton
+          size="large"
+          rounded="large"
+          fillMode="outline"
+          themeColor="primary"
+          [routerLink]="isEditMode ? '../../' : '../'"
+          [queryParams]="
+            isEditMode
+              ? {
+                  currentPage: pagination.currentPage,
+                  pageSize: pagination.pageSize
+                }
+              : null
+          "
+          class="me-2"
+          [disabled]="sendingRequest"
+        >
+          {{ "Back" | translate }}
+        </button>
+        <button
+          [disabled]="sendingRequest"
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          (click)="onSubmit()"
+        >
+          {{ (isEditMode ? "Update" : "Create") | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

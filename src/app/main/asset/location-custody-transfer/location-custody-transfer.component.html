@@ -1,0 +1,255 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>Location / Custody Transfer</h5>
+  </div>
+</div>
+<!-- <form [formGroup]="custodyTransferForm"> -->
+  <div class="row">
+    <div class="col-md-12">
+      <div
+        class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2"
+      >
+        <h5 class="mb-0">Asset List</h5>
+        <div class="d-flex align-items-center justify-content-center gap-2">
+          <button
+            kendoButton
+            size="large"
+            rounded="large"
+            themeColor="primary"
+            class="me-1"
+            data-bs-toggle="modal"
+            data-bs-target="#astListModal"
+          >
+            Select Asset
+          </button>
+        </div>
+      </div>
+      <ag-grid-angular
+        [rowData]="selectedAssetsList"
+        [columnDefs]="locationCustodyTransferGridCols"
+        [rowSelection]="'single'"
+        [defaultColDef]="defaultColDefs"
+        (gridReady)="onGridReady($event)"
+        class="ag-theme-alpine w-100"
+        style="height: 60vh"
+      >
+      </ag-grid-angular>
+      <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+        <ngb-pagination
+          [collectionSize]="selectedAssetsList.length"
+          [(page)]="pagination.assetCurrentPage"
+          [pageSize]="pagination.assetPageSize"
+          [maxSize]="10"
+          [rotate]="true"
+          [boundaryLinks]="true"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <input
+        type="checkbox"
+        #dis
+        [checked]="true"
+        [(ngModel)]="locationCheckbox"
+        kendoCheckBox
+      />
+      <kendo-label
+        class="k-checkbox-label"
+        [for]="dis"
+        text="Transfer Asset By Location"
+      ></kendo-label>
+    </div>
+    <div class="col-md-4">
+      <input
+        type="checkbox"
+        #dis
+        [checked]="true"
+        [(ngModel)]="custodianCheckbox"
+        kendoCheckBox
+      />
+      <kendo-label
+        class="k-checkbox-label"
+        [for]="dis"
+        text="Transfer Asset By Custodian"
+      ></kendo-label>
+    </div>
+    <div class="col-md-4">
+      <input
+        type="checkbox"
+        #dis
+        [checked]="true"
+        [(ngModel)]="assetStatusCheckbox"
+        kendoCheckBox
+      />
+      <kendo-label
+        class="k-checkbox-label"
+        [for]="dis"
+        text="Change Status To"
+      ></kendo-label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Location" showErrors="initial">
+        <!-- <kendo-dropdownlist
+        size="large"
+        rounded="large"
+        [data]="allLocation"
+        textField="dispDesc"
+        valueField="dispCode"
+        [(ngModel)]="Location"
+        [valuePrimitive]="true"
+        [filterable]="true"
+        (filterChange)="handleLocation($event)"
+      ></kendo-dropdownlist> -->
+        <kendo-dropdowntree
+          size="large"
+          rounded="large"
+          kendoDropDownTreeExpandable
+          [kendoDropDownTreeHierarchyBinding]="allLocation"
+          textField="locDesc"
+          valueField="locID"
+          childrenField="children"
+          [valuePrimitive]="true"
+          [filterable]="true"
+          [expandOnFilter]="filterExpandSettings"
+          [(ngModel)]="Location"
+          [disabled]="!locationCheckbox"
+        >
+        </kendo-dropdowntree>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Custodian" showErrors="initial">
+        <kendo-dropdownlist
+          size="large"
+          rounded="large"
+          [data]="allCustodian"
+          textField="custodianName"
+          valueField="custodianID"
+          [(ngModel)]="Custodian"
+          [valuePrimitive]="true"
+          [filterable]="true"
+          [disabled]="!custodianCheckbox"
+          (filterChange)="handleCustodian($event)"
+        ></kendo-dropdownlist>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Status" showErrors="initial">
+        <kendo-dropdownlist
+          size="large"
+          rounded="large"
+          [data]="allStatus"
+          textField="status"
+          valueField="id"
+          [(ngModel)]="Status"
+          [valuePrimitive]="true"
+          [filterable]="true"
+          (filterChange)="handleStatus($event)"
+          [disabled]="!assetStatusCheckbox"
+        ></kendo-dropdownlist>
+      </kendo-floatinglabel>
+    </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-end">
+    <button
+    *ngIf="GeneralService.permissions['Location/Custody Transfer'].add"
+      rounded="large"
+      class="me-2"
+      kendoButton
+      themeColor="primary"
+      (click)="submit()"
+    >
+      Transfer Asset
+    </button>
+  </div>
+<!-- </form> -->
+
+<!-- Modal -->
+<div
+  class="modal fade modal-xl"
+  id="astListModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Select Asset(s)</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div
+              class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2"
+            >
+              <h5 class="mb-0">Asset List</h5>
+              <div
+                class="d-flex align-items-center justify-content-center gap-2"
+              >
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search"
+                  [(ngModel)]="searchText"
+                  (ngModelChange)="onFilterTextBoxChanged()"
+                />
+              </div>
+            </div>
+            <ag-grid-angular
+              [rowData]="gridView"
+              [columnDefs]="assetListModalGridCols"
+              [rowSelection]="'multiple'"
+              [defaultColDef]="defaultColDefs"
+              (rowSelected)="onSelectionChange($event)"
+              class="ag-theme-alpine w-100"
+              style="height: 60vh"
+            >
+            </ag-grid-angular>
+            <div
+              class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1"
+            >
+              <ngb-pagination
+                [collectionSize]="pagination.totalItems"
+                [(page)]="pagination.currentPage"
+                (pageChange)="pageChange($event)"
+                [pageSize]="pagination.pageSize"
+                [maxSize]="10"
+                [rotate]="true"
+                [boundaryLinks]="true"
+              />
+              <div class="me-3 d-flex flex-row">
+                <select
+                  class="form-select form-select-sm"
+                  name=""
+                  id=""
+                  [ngModel]="pagination.pageSize"
+                  (ngModelChange)="pageSizeChange($event)"
+                >
+                  <option
+                    *ngFor="let value of pagination.pageSizes"
+                    [value]="value"
+                    [selected]="pagination.pageSize == value"
+                  >
+                    {{ value }}
+                  </option>
+                </select>
+              </div>
+              <label for="pageSize" class="text-muted">Page Size</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

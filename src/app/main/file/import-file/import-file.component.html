@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+        <h5 class="">Import Data</h5>
+
+        <div class="d-flex align-items-center justify-content-center gap-2">
+
+
+          <input type="search" id="filter-text-box" class="form-control" placeholder="Search"
+            (ngModelChange)="onFilterTextBoxChanged()">
+            <button class="btn btn-primary " (click)="downloadTemplate()" style="width: 280px;">  Download Template
+            </button>
+            <input type="file" style="width: 150px;" id="file"
+            name="file"
+            #file
+          (change)="onFileChange($event)" [hidden]="true"
+          accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          />
+          <button class="btn btn-primary" style="width: 175px;" (click)="file.click()">  Upload File
+          </button>
+        </div>
+      </div>
+      <ag-grid-angular
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDefs"
+      [pagination]="true"
+      [paginationPageSize]="15"
+      [paginationPageSizeSelector]="[15, 30, 50, 100, 200, 500]"
+        class="ag-theme-alpine w-100" style="height:70vh">
+      </ag-grid-angular>
+    </div>
+     <div class="col-12 text-end mt-4">
+
+          <button
+            kendoButton
+            size="large"
+            rounded="large"
+            themeColor="primary"
+            (click)="onImport()"
+          >
+            Import Data
+          </button>
+        </div>
+  </div>
+
+

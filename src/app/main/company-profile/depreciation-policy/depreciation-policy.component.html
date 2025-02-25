@@ -1,0 +1,128 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>Depreciation Policy</h5>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-4 col-auto">
+    <ng-container *ngIf="!fetchingData; else loader">
+      <form class="mt-0 tree-wrapper">
+        <div class="row">
+          <div class="col-md-12">
+            <app-assets-categories [categoriesupdate]="categoriesupdate"
+            (AssestDetails)="showEditor($event)"></app-assets-categories>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+  <div class="col-xl-8 col">
+    <form class="mt-0" [formGroup]="depreciationPolicyForm">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <h6 class="mb-0 fw-bold">Depreciation Details</h6>
+        </div>
+        <div class="col-md-12 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Category"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="category"
+              [(ngModel)]="category"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-6 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Salvage Year"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="salvageYear"
+              [(ngModel)]="salvageYear"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-6 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Salvage Month"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="salvageMonth"
+              [(ngModel)]="salvageMonth"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-6 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Salvage Year (%)"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="salvagePercent"
+              [(ngModel)]="salvageYearInPer"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-6 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Salvage Value"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="salvageValue"
+              [(ngModel)]="salvageValue"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-12 text-end">
+          <button
+
+          *ngIf="GeneralService.permissions['Depreciation Policy']?.add || ( isEditMode && GeneralService.permissions['Depreciation Policy'].edit)"
+            kendoButton
+            size="large"
+            rounded="large"
+            themeColor="primary"
+            type="button"
+            (click)="onSubmit()"
+          >
+            {{ isEditMode == true ? "Edit Policy" : "Add Policy" }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

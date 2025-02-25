@@ -1,0 +1,82 @@
+<ng-container *ngIf="!fetchingData; else loader">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h5>{{ isEditMode ? "Update" : "Create New" }} Company</h5>
+    </div>
+  </div>
+  <form [formGroup]="companyForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Company Code"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="companyCode"
+          />
+          <kendo-formerror
+            *ngIf="!companyForm.controls['companyCode'].valid && companyForm.controls['companyCode'].touched && companyForm.controls['companyCode'].errors?.['required']"
+          >
+            Company code is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Company Name"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="companyName"
+          />
+          <kendo-formerror
+            *ngIf="!companyForm.controls['companyName'].valid && companyForm.controls['companyName'].touched && companyForm.controls['companyName'].errors?.['required']"
+          >
+            Company Name is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-12 text-end">
+        <button
+          kendoButton
+          size="large"
+          rounded="large"
+          fillMode="outline"
+          themeColor="primary"
+          [routerLink]="isEditMode ? '../../' : '../'"
+          [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+          class="me-2"
+          [disabled]="sendingRequest"
+        >
+          Back
+        </button>
+        <button
+          [disabled]="sendingRequest"
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          (click)="onSubmit()"
+        >
+          {{ isEditMode ? "Update" : "Create" }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

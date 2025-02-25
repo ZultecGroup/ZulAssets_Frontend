@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Asset Warranty Alarm</h5>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <button type="button" class="btn btn-primary" (click)="getWarrantyAlaram()" style="width: 130px;">
+          Refresh
+        </button>
+        <button type="button" class="btn btn-primary" (click)="openAsset()" style="width: 130px;">
+          Open Asset
+        </button>
+        <button type="button" class="btn btn-primary" (click)="dismissAll()" style="width: 130px;">
+          Dismiss All
+        </button>
+      </div>
+    </div>
+    <ag-grid-angular [rowData]="gridData" [columnDefs]="warrantyAlarmGridCols" [rowSelection]="'single'"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (rowClicked)='onRowClicked($event.data)'
+      class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>

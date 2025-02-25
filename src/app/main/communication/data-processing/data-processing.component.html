@@ -1,0 +1,99 @@
+<div class="row mb-3">
+    <div class="col-12">
+      <h5 class="mb-0">Data Processing</h5>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel class="w-100" text="Inventory Schedule" showErrors="initial">
+          <kendo-combobox size="large"
+          [data]="GetAllInvSchs"
+          textField="invDesc"
+          valueField="invSchCode"
+          [(ngModel)]="invSchCode"
+          [valuePrimitive]="true"
+          (valueChange)="getDevice()"
+
+
+         >
+        </kendo-combobox>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-12">
+        <form class="m-0 p-2">
+            <div class="fw-bold mb-3">Show Data</div>
+                <ul class="k-radio-list">
+                  <li class="k-radio-item">
+                    <input
+                      type="radio"
+                      #identifiedAssets
+                      value="identifiedAssets"
+                      kendoRadioButton
+                      name="assets"
+                      [(ngModel)]="assets"
+                      (click)="getDeviceConfiguration(1)"
+                    />
+                    <kendo-label [for]="identifiedAssets" text="Show Identified Assets(Found, Missing, Misplaced,Allocated,Transfered)"></kendo-label>
+                  </li>
+
+                  <li class="k-radio-item">
+                    <input
+                      type="radio"
+                      #anonymousAssets
+                      kendoRadioButton
+                      value="anonymousAssets"
+                      name="assets"
+                      (click)="getDeviceConfiguration(0)"
+                    />
+                    <kendo-label
+                      class="k-radio-label"
+                      [for]="anonymousAssets"
+                      text="Show Anonymous Assets"
+                    ></kendo-label>
+                  </li>
+                </ul>
+
+
+        </form>
+      </div>
+    </div>
+<div class="row mt-3">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Received Data from devices</h5>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <button type="button" class="btn btn-primary" style="width: 130px;" (click)="openAsset()">
+          Open Assets
+        </button>
+        <!-- <button type="button" class="btn btn-primary">
+          Refresh
+        </button> -->
+        <button *ngIf="GeneralService.permissions['Data Processing'].delete" type="button" class="btn btn-primary" (click)="DeleteProcessingData()">
+          Delete
+        </button>
+        <button *ngIf="GeneralService.permissions['Data Processing'].add" type="button" class="btn btn-primary" (click)="ProcessAuditData()">
+          Process
+        </button>
+      </div>
+    </div>
+    <ag-grid-angular [rowData]="gridView" [columnDefs]="dataProcessingGridCols" [rowSelection]="'multiple'" (rowSelected)="onSelectionChange($event)"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+      class="ag-theme-alpine w-100" style="height:50vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>

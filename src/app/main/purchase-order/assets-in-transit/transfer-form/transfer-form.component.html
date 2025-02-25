@@ -1,0 +1,1011 @@
+<div class="row">
+  <div class="col-12">
+    <h5>Assets In Transit</h5>
+  </div>
+</div>
+<form [formGroup]="assetInTransitForm">
+  <div class="row">
+    <div class="col-lg-12 mb-3">
+      <h6 class="fw-bold mb-0">Parent Item Info</h6>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Item Code" showErrors="initial">
+        <kendo-combobox
+          size="large"
+          [data]="purchaseOrderGridView"
+          textField="poItmID"
+          valueField="poItmID"
+          formControlName="itemCode"
+          [(ngModel)]="itemCode"
+          (valueChange)="setAssetValues($event)"
+          [valuePrimitive]="true"
+        ></kendo-combobox>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['itemCode'].valid && assetInTransitForm.controls['itemCode'].touched && assetInTransitForm.controls['itemCode'].errors?.['required']"
+          >Item Code is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-8 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Description"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="astDescription"
+          [(ngModel)]="astDescription"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['astDescription'].valid && assetInTransitForm.controls['astDescription'].touched && assetInTransitForm.controls['astDescription'].errors?.['required']"
+          >Description is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-12">
+      <kendo-floatinglabel class="w-100" text="Category" showErrors="initial">
+        <input
+          type="text"
+          formControlName="catFullPath"
+          [(ngModel)]="catFullPath"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['catFullPath'].valid && assetInTransitForm.controls['catFullPath'].touched && assetInTransitForm.controls['catFullPath'].errors?.['required']"
+          >Category is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 mb-3">
+      <h6 class="fw-bold mb-0">General</h6>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <div class="d-flex align-items-baseline">
+        <kendo-floatinglabel class="w-100" text="Company" showErrors="initial">
+          <kendo-combobox
+            size="large"
+            [data]="allCompanies"
+            textField="companyName"
+            valueField="companyId"
+            formControlName="companyID"
+            [valuePrimitive]="true"
+            [(ngModel)]="companyID"
+          ></kendo-combobox>
+          <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['companyID'].valid && assetInTransitForm.controls['companyID'].touched && assetInTransitForm.controls['companyID'].errors?.['required']"
+          >Company is required
+        </kendo-formerror>
+        </kendo-floatinglabel>
+        <kendo-button size="large" class="ms-2" (click)="openCompanyDialog()"
+          >Add</kendo-button
+        >
+      </div>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel class="w-100" text="Asset #" showErrors="initial">
+        <input
+          type="text"
+          formControlName="astNum"
+          [(ngModel)]="astNum"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['astNum'].valid && assetInTransitForm.controls['astNum'].touched && assetInTransitForm.controls['astNum'].errors?.['required']"
+          >Asset # is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <div class="d-flex align-items-baseline">
+        <kendo-floatinglabel class="w-100" text="Asset ID" showErrors="initial">
+          <input
+            type="text"
+            formControlName="astID"
+            [(ngModel)]="astID"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+          />
+          <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['astID'].valid && assetInTransitForm.controls['astID'].touched && assetInTransitForm.controls['astID'].errors?.['required']"
+          >Asset ID is required
+        </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel class="w-100" text="Ref #" showErrors="initial">
+        <input type="text"
+        formControlName="refNo"
+        [(ngModel)]="refNo"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['refNo'].valid && assetInTransitForm.controls['refNo'].touched && assetInTransitForm.controls['refNo'].errors?.['required']"
+          >Ref # is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <div class="d-flex align-items-baseline">
+        <kendo-floatinglabel
+          class="w-100"
+          text="Custodian"
+          showErrors="initial"
+        >
+          <kendo-combobox
+            size="large"
+            textField="custodianName"
+            valueField="custodianID"
+            formControlName="custodianID"
+            [(ngModel)]="custodianID"
+            [data]="allCustodian"
+            [valuePrimitive]="true"
+          ></kendo-combobox>
+          <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['custodianID'].valid && assetInTransitForm.controls['custodianID'].touched && assetInTransitForm.controls['custodianID'].errors?.['required']"
+          >Custodian is required
+        </kendo-formerror>
+        </kendo-floatinglabel>
+        <kendo-button size="large" class="ms-2" (click)="openCustodianDialog()"
+          >Add</kendo-button
+        >
+      </div>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel class="w-100" text="Serial #" showErrors="initial">
+        <input
+          type="text"
+          formControlName="serialNo"
+          [(ngModel)]="serialNo"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['serialNo'].valid && assetInTransitForm.controls['serialNo'].touched && assetInTransitForm.controls['serialNo'].errors?.['required']"
+          >Serial # is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <div class="d-flex align-items-baseline">
+        <kendo-floatinglabel class="w-100" text="Brand" showErrors="initial">
+          <kendo-combobox
+            size="large"
+            textField="astBrandName"
+            valueField="astBrandID"
+            formControlName="astBrandID"
+            [(ngModel)]="astBrandID"
+            [valuePrimitive]="true"
+            [data]="allBrand"
+          ></kendo-combobox>
+          <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['astBrandID'].valid && assetInTransitForm.controls['astBrandID'].touched && assetInTransitForm.controls['astBrandID'].errors?.['required']"
+          >Brand is required
+        </kendo-formerror>
+        </kendo-floatinglabel>
+        <kendo-button size="large" class="ms-2" (click)="openBrandDialog()"
+          >Add</kendo-button
+        >
+      </div>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel class="w-100" text="Model" showErrors="initial">
+        <input
+          type="text"
+          formControlName="astModel"
+          [(ngModel)]="astModel"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['astModel'].valid && assetInTransitForm.controls['astModel'].touched && assetInTransitForm.controls['astModel'].errors?.['required']"
+          >Model is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <div class="d-flex align-items-baseline">
+        <kendo-floatinglabel class="w-100" text="GL Code" showErrors="initial">
+          <kendo-combobox
+            size="large"
+            textField="glDesc"
+            valueField="glCode"
+            formControlName="glCode"
+            [(ngModel)]="glCode"
+            [valuePrimitive]="true"
+            [data]="allGlCode"
+          ></kendo-combobox>
+          <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['glCode'].valid && assetInTransitForm.controls['glCode'].touched && assetInTransitForm.controls['glCode'].errors?.['required']"
+          >GL Code is required
+        </kendo-formerror>
+        </kendo-floatinglabel>
+        <kendo-button size="large" class="ms-2" (click)="openGLDialog()"
+          >Add</kendo-button
+        >
+      </div>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Asset Piece"
+        showErrors="initial"
+      >
+        <kendo-combobox size="large" [data]="['Piece', 'single']"></kendo-combobox>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-12 mb-3">
+      <div class="d-flex align-items-baseline">
+        <kendo-floatinglabel class="w-100" text="Location" showErrors="initial">
+          <kendo-combobox
+            size="large"
+            textField="values"
+            valueField="locid"
+            formControlName="locID"
+            [(ngModel)]="locID"
+            [valuePrimitive]="true"
+            [data]="allLocation"
+          ></kendo-combobox>
+          <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['locID'].valid && assetInTransitForm.controls['locID'].touched && assetInTransitForm.controls['locID'].errors?.['required']"
+          >Location is required
+        </kendo-formerror>
+        </kendo-floatinglabel>
+        <kendo-button size="large" class="ms-2" (click)="openLocationDialog()"
+          >Add</kendo-button
+        >
+      </div>
+    </div>
+    <div class="col-lg-12 mb-3">
+      <kendo-floatinglabel class="w-100" text="Barcode" showErrors="initial">
+        <input type="text" kendoTextBox class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-12 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Description 1"
+        showErrors="initial"
+      >
+        <input type="text"
+        formControlName="astDesc"
+        [(ngModel)]="astDesc"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['astDesc'].valid && assetInTransitForm.controls['astDesc'].touched && assetInTransitForm.controls['astDesc'].errors?.['required']"
+          >Description 1 is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-12 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Description 2"
+        showErrors="initial"
+      >
+        <input type="text"
+        formControlName="astDesc2"
+        [(ngModel)]="astDesc2"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['astDesc2'].valid && assetInTransitForm.controls['astDesc2'].touched && assetInTransitForm.controls['astDesc2'].errors?.['required']"
+          >Description 2 is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <div class="d-flex align-items-baseline">
+        <kendo-floatinglabel class="w-100" text="Supplier" showErrors="initial">
+          <kendo-combobox
+            size="large"
+            textField="suppName"
+            valueField="suppID"
+            formControlName="suppID"
+            [(ngModel)]="suppID"
+            [valuePrimitive]="true"
+            [data]="allSupplier"
+          ></kendo-combobox>
+          <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['suppID'].valid && assetInTransitForm.controls['suppID'].touched && assetInTransitForm.controls['suppID'].errors?.['required']"
+          >Supplier is required
+        </kendo-formerror>
+        </kendo-floatinglabel>
+        <kendo-button size="large" class="ms-2" (click)="openSupplierDialog()"
+          >Add</kendo-button
+        >
+      </div>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Service Date"
+        showErrors="initial"
+      >
+        <kendo-datepicker
+        formControlName="serviceDate"
+        [(ngModel)]="serviceDate"
+        ></kendo-datepicker>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['serviceDate'].valid && assetInTransitForm.controls['serviceDate'].touched && assetInTransitForm.controls['serviceDate'].errors?.['required']"
+          >Service Date is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 mb-3">
+      <h6 class="fw-bold mb-0">Purchase Info</h6>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Purchase Order #"
+        showErrors="initial"
+      >
+        <input type="text"
+        formControlName="poCode"
+        [(ngModel)]="poCode"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['poCode'].valid && assetInTransitForm.controls['poCode'].touched && assetInTransitForm.controls['poCode'].errors?.['required']"
+          >Purchase Order # is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Date Purchased"
+        showErrors="initial"
+      >
+        <kendo-datepicker
+        formControlName="purchaseDate"
+        [(ngModel)]="purchaseDate"
+        ></kendo-datepicker>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['purchaseDate'].valid && assetInTransitForm.controls['purchaseDate'].touched && assetInTransitForm.controls['purchaseDate'].errors?.['required']"
+          >Date Purchased is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Invoice #" showErrors="initial">
+        <input type="text"
+        formControlName="invNumber"
+        [(ngModel)]="invNumber"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['invNumber'].valid && assetInTransitForm.controls['invNumber'].touched && assetInTransitForm.controls['invNumber'].errors?.['required']"
+          >Invoice # is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Quantity" showErrors="initial">
+        <input type="text"
+        formControlName="quantity"
+        [(ngModel)]="quantity"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['quantity'].valid && assetInTransitForm.controls['quantity'].touched && assetInTransitForm.controls['quantity'].errors?.['required']"
+          >Quantity is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Item Cost" showErrors="initial">
+        <input type="text"
+        formControlName="baseCost"
+        [(ngModel)]="baseCost"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['baseCost'].valid && assetInTransitForm.controls['baseCost'].touched && assetInTransitForm.controls['baseCost'].errors?.['required']"
+          >Item Cost is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Additional Cost"
+        showErrors="initial"
+      >
+        <input type="text"
+        formControlName="tax"
+        [(ngModel)]="tax"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['tax'].valid && assetInTransitForm.controls['tax'].touched && assetInTransitForm.controls['tax'].errors?.['required']"
+          >Additional Cost is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Discount" showErrors="initial">
+        <input type="text"
+        formControlName="discount"
+        [(ngModel)]="discount"
+        kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetInTransitForm.controls['discount'].valid && assetInTransitForm.controls['discount'].touched && assetInTransitForm.controls['discount'].errors?.['required']"
+          >Discount is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Total Cost" showErrors="initial">
+        <input type="text" kendoTextBox class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12 text-end">
+      <button rounded="large" (click)="submit()" kendoButton themeColor="primary">Save</button>
+    </div>
+  </div>
+</form>
+
+<kendo-dialog
+  title="Add GL Code"
+  *ngIf="glOpened"
+  (close)="closeGLDialog('cancel')"
+  [minWidth]="250"
+  [width]="600"
+>
+  <ng-container [formGroup]="glCodeForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Company' | translate }}"
+        >
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="allCompanies"
+            textField="companyName"
+            valueField="companyId"
+            formControlName="companyName"
+            [valuePrimitive]="true"
+            [filterable]="true"
+          ></kendo-dropdownlist>
+          <!-- (filterChange)="handleFilter($event)" -->
+          <kendo-formerror
+            *ngIf="!glCodeForm.controls['companyName'].valid && glCodeForm.controls['companyName'].touched && glCodeForm.controls['companyName'].errors?.['required']"
+          >
+            {{ "Company Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Description' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="glDesc"
+          />
+          <kendo-formerror
+            *ngIf="!glCodeForm.controls['glDesc'].valid && glCodeForm.controls['glDesc'].touched && glCodeForm.controls['glDesc'].errors?.['required']"
+          >
+            {{ "Description Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </ng-container>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeGLDialog('no')">No</button>
+    <button kendoButton (click)="closeGLDialog('yes')" themeColor="primary">
+      {{ sendingRequest ? "Creating..." : ("Create" | translate) }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog
+  title="Add Location"
+  *ngIf="locationOpened"
+  (close)="closeLocationDialog('cancel')"
+  [minWidth]="250"
+  [width]="600"
+>
+<ng-container [formGroup]="locationForm">
+  <div class="row">
+    <div class="col-lg-6">
+      <kendo-floatinglabel size="large" class="w-100" text="Code">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          formControlName="locCode"
+        />
+        <kendo-formerror
+            *ngIf="!locationForm.controls['locCode'].valid && locationForm.controls['locCode'].touched && locationForm.controls['locCode'].errors?.['required']"
+          >
+            {{ "Code is required" | translate }}
+          </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-6">
+      <kendo-floatinglabel size="large" class="w-100" text="companyName">
+        <kendo-combobox
+          size="large"
+          [allowCustom]="true"
+          [data]="allCompanies"
+          [textField]="'companyName'"
+          [valueField]="'companyId'"
+          formControlName="companyId"
+          [valuePrimitive]="true"
+        ></kendo-combobox>
+        <kendo-formerror
+            *ngIf="!locationForm.controls['companyId'].valid && locationForm.controls['companyId'].touched && locationForm.controls['companyId'].errors?.['required']"
+          >
+            {{ "company Name is required" | translate }}
+          </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-12">
+      <kendo-floatinglabel size="large" class="w-100" text="Description">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          formControlName="locDesc"
+        />
+        <kendo-formerror
+            *ngIf="!locationForm.controls['locDesc'].valid && locationForm.controls['locDesc'].touched && locationForm.controls['locDesc'].errors?.['required']"
+          >
+            {{ "Description Name is required" | translate }}
+          </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+  </div>
+</ng-container>
+
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeLocationDialog('no')">No</button>
+    <button
+      kendoButton
+      (click)="closeLocationDialog('yes')"
+      themeColor="primary"
+    >
+      Yes
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog
+  title="Add Custodian"
+  *ngIf="custodianOpened"
+  (close)="closeCustodianDialog('cancel')"
+  [minWidth]="250"
+  [width]="600"
+>
+  <ng-container [formGroup]="custodianForm">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Name' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianName"
+          />
+          <kendo-formerror
+            *ngIf="!custodianForm.controls['custodianName'].valid && custodianForm.controls['custodianName'].touched && custodianForm.controls['custodianName'].errors?.['required']"
+          >
+            {{ "Custodian Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Phone' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianPhone"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Fax' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianFax"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Cell' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianCell"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Email' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianEmail"
+          />
+          <kendo-formerror
+            *ngIf="!custodianForm.controls['custodianEmail'].valid && custodianForm.controls['custodianEmail'].touched && custodianForm.controls['custodianEmail'].errors?.['pattern']"
+          >
+            {{ "Invalid email pattern" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Custodian Address' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="custodianAddress"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Hierarchy' | translate }}"
+          showErrors="initial"
+        >
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="hierarchyList"
+            textField="orgHierName"
+            valueField="orgHierID"
+            formControlName="orgHierID"
+            [valuePrimitive]="true"
+            [filterable]="true"
+          ></kendo-dropdownlist>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Designation' | translate }}"
+          showErrors="initial"
+        >
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="allDesignation"
+            textField="description"
+            valueField="designationID"
+            formControlName="designationID"
+            [valuePrimitive]="true"
+            [filterable]="true"
+          ></kendo-dropdownlist>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </ng-container>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeCustodianDialog('no')">No</button>
+    <button
+      kendoButton
+      (click)="closeCustodianDialog('yes')"
+      themeColor="primary"
+      [disabled]="sendingRequest"
+    >
+      {{ sendingRequest ? "Creating" : ("Create" | translate) }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog
+  title="Add Supplier"
+  *ngIf="supplierOpened"
+  (close)="closeSupplierDialog('cancel')"
+  [minWidth]="250"
+  [width]="600"
+>
+  <ng-container [formGroup]="supplierForm">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Supplier ID' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="suppID"
+          />
+          <kendo-formerror
+            *ngIf="!supplierForm.controls['suppID'].valid && supplierForm.controls['suppID'].touched && supplierForm.controls['suppID'].errors?.['required']"
+          >
+            {{ "Supplier ID is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Supplier Name' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="suppName"
+          />
+          <kendo-formerror
+            *ngIf="!supplierForm.controls['suppName'].valid && supplierForm.controls['suppName'].touched && supplierForm.controls['suppName'].errors?.['required']"
+          >
+            {{ "Supplier Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Supplier Phone' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="suppPhone"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Supplier Fax' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="suppFax"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Supplier Cell' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="suppCell"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Supplier Email' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="suppEmail"
+          />
+          <kendo-formerror
+            *ngIf="!supplierForm.controls['suppEmail'].valid && supplierForm.controls['suppEmail'].touched && supplierForm.controls['suppEmail'].errors?.['pattern']"
+          >
+            {{ "Invalid email pattern" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </ng-container>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeSupplierDialog('no')">No</button>
+    <button
+      [disabled]="sendingRequest"
+      kendoButton
+      (click)="closeSupplierDialog('yes')"
+      themeColor="primary"
+    >
+      {{ sendingRequest ? "Creating..." : ("Create" | translate) }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog
+  title="Add Brand"
+  *ngIf="brandOpened"
+  (close)="closeBrandDialog('cancel')"
+  [minWidth]="250"
+  [width]="600"
+>
+  <ng-container [formGroup]="brandForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Brand Name' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="astBrandName"
+          />
+          <kendo-formerror
+            *ngIf="!brandForm.controls['astBrandName'].valid && brandForm.controls['astBrandName'].touched && brandForm.controls['astBrandName'].errors?.['required']"
+          >
+            {{ "Brand Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </ng-container>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeBrandDialog('no')">No</button>
+    <button
+      kendoButton
+      (click)="closeBrandDialog('yes')"
+      themeColor="primary"
+      [disabled]="sendingRequest"
+    >
+      {{ sendingRequest ? "Creating" : ("Create" | translate) }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog
+  title="Add Company"
+  *ngIf="companyOpened"
+  (close)="closeCompanyDialog('cancel')"
+  [minWidth]="250"
+  [width]="600"
+>
+  <ng-container [formGroup]="companyForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Company Code"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="companyCode"
+          />
+          <kendo-formerror
+            *ngIf="!companyForm.controls['companyCode'].valid && companyForm.controls['companyCode'].touched && companyForm.controls['companyCode'].errors?.['required']"
+          >
+            Company code is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Company Name"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="companyName"
+          />
+          <kendo-formerror
+            *ngIf="!companyForm.controls['companyName'].valid && companyForm.controls['companyName'].touched && companyForm.controls['companyName'].errors?.['required']"
+          >
+            Company Name is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </ng-container>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeCompanyDialog('no')">No</button>
+    <button
+      kendoButton
+      (click)="closeCompanyDialog('yes')"
+      themeColor="primary"
+      [disabled]="sendingRequest"
+    >
+      {{ sendingRequest ? "Creating" : ("Create" | translate) }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

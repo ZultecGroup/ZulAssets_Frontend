@@ -1,0 +1,263 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$zul-assets-primary: mat.define-palette(mat.$indigo-palette);
+$zul-assets-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$zul-assets-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$zul-assets-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $zul-assets-primary,
+      accent: $zul-assets-accent,
+      warn: $zul-assets-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($zul-assets-theme);
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@progress/kendo-theme-fluent/dist/all.css";
+@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-angular-navigations/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+
+@import "~ag-grid-community/styles//ag-grid.css";
+@import "~ag-grid-community/styles//ag-theme-alpine.css";
+
+.k-drawer-item:focus,
+.k-drawer-item.k-focus {
+  box-shadow: none;
+}
+
+mat-tree {
+  background-color: transparent !important;
+  .mat-tree-node {
+    cursor: pointer !important;
+    .mat-icon-button:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+kendo-drawer-container {
+  height: 100vh;
+  .k-drawer-wrapper {
+    height: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.header-logo,
+.sidebar-logo {
+  font-size: 24px;
+  font-family: "Archivo", sans-serif;
+  font-weight: 600;
+  display: inline-block;
+  line-height: 1;
+  color: #212830;
+  letter-spacing: -0.5px;
+  position: relative;
+  &:hover {
+    color: #212830;
+  }
+  &:focus {
+    color: #212830;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 3.5px;
+    right: -8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #506fd9;
+  }
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 0;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-color: #0078d4;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.pagination-table {
+  height: calc(100vh - 100px);
+  @media screen and (max-width: 700px) {
+    height: auto;
+  }
+}
+.k-treeview-filter {
+  margin-bottom: 20px !important;
+}
+
+// .k-drawer {
+//   background-color: #000;
+// }
+
+// .k-drawer-item {
+//   background-color: #000;
+//   color: #fff;
+//   .k-icon {
+//     color: #fff;
+//   }
+// }
+
+form {
+  border: 2px solid;
+  padding: 20px;
+  border-radius: 0;
+  border-color: #e2e5ec;
+  background-color: inherit;
+  position: relative;
+  margin-top: 30px;
+}
+
+h5 {
+  font-family: "Open Sans", sans-serif;
+  font-size: 17.5px;
+  color: #212830;
+  // margin-left: 5px;
+}
+
+.k-input-solid,
+.k-picker-solid {
+  width: 100%;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ccd2da;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.k-floating-label-container:not(.k-focus) {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #a9a9ac;
+}
+@font-face {
+  font-family: "DejaVu Sans";
+  src: url("https://kendo.cdn.telerik.com/2018.2.620/styles/fonts/DejaVu/DejaVuSans.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "DejaVu Sans";
+  font-weight: bold;
+  src: url("https://kendo.cdn.telerik.com/2018.2.620/styles/fonts/DejaVu/DejaVuSans-Bold.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "DejaVu Sans";
+  font-style: italic;
+  src: url("https://kendo.cdn.telerik.com/2018.2.620/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "DejaVu Sans";
+  font-weight: bold;
+  font-style: italic;
+  src: url("https://kendo.cdn.telerik.com/2018.2.620/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf")
+    format("truetype");
+}
+
+.k-grid {
+  font-family: "DejaVu Sans", "Arial", sans-serif;
+}
+
+.pdf-zultec {
+  width: 150px;
+  height: 50px;
+}
+
+.ltr {
+  @import "../src/assets/css/en";
+}
+
+.rtl {
+  @import "../src/assets/css/ar";
+}
+
+// .k-icon-button.k-button-md {
+//   border-radius: 10px;
+// }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-h5,
+.mat-typography .mat-h5,
+.mat-typography h5 {
+  font-size: 17.5px;
+}
+
+.mat-h6,
+.mat-typography .mat-h6,
+.mat-typography h6 {
+  font-size: 16px;
+}
+
+.k-table {
+  width: 100% !important;
+}
+.mat-tree-node {
+  min-height: 2.5em !important;
+  height: 2.5em;
+}
+
+.k-grid .k-command-cell > .k-button {
+  border-radius: 10px;
+}
+
+// ag grid css
+.ag-root-wrapper {
+  border-radius: 10px;
+}
+
+.ag-theme-alpine .ag-header-cell {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.page-item.disabled a {
+  background: #eee;
+}

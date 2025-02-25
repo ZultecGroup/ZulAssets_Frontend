@@ -1,0 +1,269 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Asset Search</h5>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <button type="button" class="btn btn-primary" style="width: 130px;" (click)="openSearchDialog()">
+          Search
+        </button>
+      </div>
+    </div>
+    <ag-grid-angular [rowData]="gridView" [columnDefs]="assetSearchGridCols" [rowSelection]="'single'"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+      class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>
+
+<kendo-dialog
+  title="Asset Search Criteria"
+  *ngIf="opened"
+  (close)="close('cancel')"
+  [minWidth]="250"
+  [width]="800"
+>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Asset ID"
+        showErrors="initial"
+      >
+        <!-- <input
+          type="text"
+          [(ngModel)]="astID"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        /> -->
+        <kendo-combobox
+          size="large"
+          rounded="large"
+          [data]="astDropdown"
+          textField="astDesc"
+          valueField="astID"
+          [virtual]="virtual"
+          [filterable]="true"
+          (filterChange)="handleFilterAstId($event)"
+          [valuePrimitive]="true"
+          [(ngModel)]="astID"
+          size="large"
+        >
+        <ng-template kendoComboBoxItemTemplate let-dataItem>
+          {{ dataItem.astID }} - {{dataItem.astDesc}}
+        </ng-template>
+      </kendo-combobox>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Asset Number"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          [(ngModel)]="astNum"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Item Code"
+        showErrors="initial"
+      >
+        <!-- <input
+          type="text"
+          [(ngModel)]="itemCode"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        /> -->
+        <kendo-combobox
+        size="large"
+        rounded="large"
+        [data]="astItemDropdown"
+        textField="astDesc"
+        valueField="itemCode"
+        [virtual]="virtual"
+        [valuePrimitive]="true"
+        [(ngModel)]="itemCode"
+        size="large"
+      >
+      <ng-template kendoComboBoxItemTemplate let-dataItem>
+        {{ dataItem.itemCode }} - {{dataItem.astDesc}}
+      </ng-template>
+    </kendo-combobox>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Serial Number"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          [(ngModel)]="astDesc"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3 base-align">
+      <kendo-floatinglabel size="large" class="w-100" text="Brand">
+        <kendo-combobox
+          size="large"
+          rounded="large"
+          [data]="brandList"
+          textField="astBrandName"
+          valueField="astBrandID"
+          [valuePrimitive]="true"
+          [(ngModel)]="astBrandID"
+          size="large"
+        >
+        <ng-template kendoComboBoxItemTemplate let-dataItem>
+          {{ dataItem.astBrandID }} - {{dataItem.astBrandName}}
+        </ng-template>
+      </kendo-combobox>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3 base-align">
+      <kendo-floatinglabel size="large" class="w-100" text="Custodian">
+        <kendo-combobox
+          size="large"
+          rounded="large"
+          [data]="custodianList"
+          textField="custodianName"
+          valueField="custodianID"
+          [valuePrimitive]="true"
+          class="base-align"
+          [(ngModel)]="custodianID"
+        >
+        <ng-template kendoComboBoxItemTemplate let-dataItem>
+          {{ dataItem.custodianID }} - {{dataItem.custodianName}}
+        </ng-template>
+      </kendo-combobox>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-12 mb-3 base-align">
+      <kendo-floatinglabel size="large" class="w-100" text="Hierarchy">
+        <!-- <kendo-combobox
+          size="large"
+          rounded="large"
+          [data]="hierarchyList"
+          textField="orgHierName"
+          valueField="orgHierID"
+          [valuePrimitive]="true"
+          class="base-align"
+          [(ngModel)]="orgHierID"
+        ></kendo-combobox> -->
+        <kendo-dropdowntree
+            size="large"
+            rounded="large"
+            kendoDropDownTreeExpandable
+            [kendoDropDownTreeHierarchyBinding]="hierarchyList"
+            textField="orgHierName"
+            valueField="orgHierID"
+            childrenField="children"
+          [valuePrimitive]="true"
+            [filterable]="true"
+            [expandOnFilter]="filterExpandSettings"
+            [(ngModel)]="orgHierID"
+          >
+          </kendo-dropdowntree>
+
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-12 mb-3 base-align">
+      <kendo-floatinglabel size="large" class="w-100" text="Location">
+        <!-- <kendo-combobox
+          size="large"
+          rounded="large"
+          [data]="locationList"
+          textField="values"
+          valueField="locid"
+          [valuePrimitive]="true"
+          class="base-align"
+          [(ngModel)]="locid"
+        ></kendo-combobox> -->
+        <kendo-dropdowntree
+            size="large"
+            rounded="large"
+            kendoDropDownTreeExpandable
+            [kendoDropDownTreeHierarchyBinding]="locationList"
+            textField="locDesc"
+            valueField="locID"
+            childrenField="children"
+          [valuePrimitive]="true"
+            [filterable]="true"
+            [expandOnFilter]="filterExpandSettings"
+            [(ngModel)]="locid"
+          >
+          </kendo-dropdowntree>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-12 mb-3 base-align">
+      <kendo-floatinglabel size="large" class="w-100" text="Category">
+        <!-- <kendo-combobox
+          size="large"
+          rounded="large"
+          [data]="categoryList"
+          textField="astCatDesc"
+          valueField="astCatID"
+          [valuePrimitive]="true"
+          class="base-align"
+          [(ngModel)]="astCatID"
+        ></kendo-combobox> -->
+        <kendo-dropdowntree
+        size="large"
+        rounded="large"
+        kendoDropDownTreeExpandable
+        [kendoDropDownTreeHierarchyBinding]="categoryList"
+        textField="astCatDesc"
+        valueField="astCatID"
+        childrenField="children"
+      [valuePrimitive]="true"
+        [filterable]="true"
+        [expandOnFilter]="filterExpandSettings"
+        [(ngModel)]="astCatID"
+      >
+      </kendo-dropdowntree>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-12 mb-3">
+      <input type="checkbox" #notification kendoCheckBox />
+      <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text="Include Sub Levels of Locations & Categories"
+      ></kendo-label>
+    </div>
+  </div>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="close('no')">Refresh Form</button>
+    <button kendoButton (click)="close('yes')" themeColor="primary">
+      Search Assets
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

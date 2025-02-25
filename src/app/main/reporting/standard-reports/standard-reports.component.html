@@ -1,0 +1,490 @@
+<div class="row">
+  <div class="col-md-12">
+    <div
+      class="d-sm-flex d-block align-items-center justify-content-between w-100"
+    >
+      <h5 class="mb-0">Standard Reports</h5>
+    </div>
+    <div class="col-3 mt-4">
+      <kendo-label text="Select to generate Standard Reports"> </kendo-label>
+      <kendo-dropdownlist
+        [(ngModel)]="selectedReport"
+        [data]="standardReports"
+      ></kendo-dropdownlist>
+    </div>
+    <!-- Conditional div based on dropdown selection -->
+    <div *ngIf="true" class="mt-4">
+      <div class="content-box">
+
+        <div class="p-3 rounded border mb-3">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Company">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataCompany"
+                  textField="companyName"
+                  valueField="companyId"
+                  value="companyID"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="companyId"
+                  [filterable]="true"
+                  (filterChange)="handleCompany($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  *ngIf="!assetsInformationForm.controls['companyID'].valid && assetsInformationForm.controls['companyID'].touched && assetsInformationForm.controls['companyID'].errors?.['required']"
+                  >Company is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Supplier">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataCompany"
+                  textField="Supplier"
+                  valueField="companyId"
+                  value="companyID"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="companyId"
+                  [filterable]="true"
+                  (filterChange)="handleCompany($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  *ngIf="!assetsInformationForm.controls['companyID'].valid && assetsInformationForm.controls['companyID'].touched && assetsInformationForm.controls['companyID'].errors?.['required']"
+                  >Company is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Book">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="AssetList"
+                  textField="Book"
+                  valueField="astID"
+                  value="astID"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="astID"
+                  [filterable]="true"
+                  (filterChange)="handleAssetId($event)"
+                >
+                <ng-template kendoComboBoxItemTemplate let-dataItem>
+                  {{ dataItem.astID }} - {{ dataItem.astDesc }}
+                </ng-template>
+              </kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['astID'].valid && assetsInformationForm.controls['astID'].touched && assetsInformationForm.controls['astID'].errors?.['required']"
+                  >Assets ID is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Brand">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="AssetList"
+                  textField="Brand"
+                  valueField="astID"
+                  value="astID"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="astID"
+                  [filterable]="true"
+                  (filterChange)="handleAssetId($event)"
+                >
+                <ng-template kendoComboBoxItemTemplate let-dataItem>
+                  {{ dataItem.astID }} - {{ dataItem.astDesc }}
+                </ng-template>
+              </kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['astID'].valid && assetsInformationForm.controls['astID'].touched && assetsInformationForm.controls['astID'].errors?.['required']"
+                  >Assets ID is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Custodian">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataCustodian"
+                  textField="custodianName"
+                  valueField="custodianID"
+                  value="custodianID"
+                  [valuePrimitive]="true"
+                  (valueChange)="setCustodianValues($event)"
+                  [(ngModel)]="custodianID"
+                  [filterable]="true"
+                  (filterChange)="handleCustodian($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['custodianID'].valid && assetsInformationForm.controls['custodianID'].touched && assetsInformationForm.controls['custodianID'].errors?.['required']"
+                  >Custodian is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Custodian">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataCustodian"
+                  textField="custodianName"
+                  valueField="custodianID"
+                  value="custodianID"
+                  [valuePrimitive]="true"
+                  (valueChange)="setCustodianValues($event)"
+                  [(ngModel)]="custodianID"
+                  [filterable]="true"
+                  (filterChange)="handleCustodian($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['custodianID'].valid && assetsInformationForm.controls['custodianID'].touched && assetsInformationForm.controls['custodianID'].errors?.['required']"
+                  >Custodian is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Brand">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataBrand"
+                  textField="astBrandName"
+                  valueField="astBrandID"
+                  value="astBrandId"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="astBrandID"
+                  [filterable]="true"
+                  (filterChange)="handleBrand($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['astBrandId'].valid && assetsInformationForm.controls['astBrandId'].touched && assetsInformationForm.controls['astBrandId'].errors?.['required']"
+                  >astBrandId is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Asset Type">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="['Piece', 'Set']"
+                  value="AssetType"
+                  [(ngModel)]="AssetType"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['AssetType'].valid && assetsInformationForm.controls['AssetType'].touched && assetsInformationForm.controls['AssetType'].errors?.['required']"
+                >
+                  Asset Type is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="GL Code">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataGlCode"
+                  textField="glDesc"
+                  valueField="glCode"
+                  value="glCode"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="glCode"
+                  [filterable]="true"
+                  (filterChange)="handleGlCode($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['glCode'].valid && assetsInformationForm.controls['glCode'].touched && assetsInformationForm.controls['glCode'].errors?.['required']"
+                  >GL Code is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Status">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataStatus"
+                  textField="status"
+                  valueField="id"
+                  value="statusID"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="statusID"
+                  [filterable]="true"
+                  (filterChange)="handleStatus($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['statusID'].valid && assetsInformationForm.controls['statusID'].touched && assetsInformationForm.controls['statusID'].errors?.['required']"
+                >
+                  Status is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Location">
+                <!-- <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataLocation"
+                  textField="values"
+                  valueField="locid"
+                  value="locID"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="locid"
+                  [filterable]="true"
+                  (filterChange)="handleLocation($event)"
+                ></kendo-dropdownlist> -->
+                <kendo-dropdowntree
+                  size="large"
+                  rounded="large"
+                  kendoDropDownTreeExpandable
+                  [kendoDropDownTreeHierarchyBinding]="dataLocation"
+                  textField="locDesc"
+                  valueField="locID"
+                  childrenField="children"
+                  value="locID"
+                [dataItem]="dataItem"
+                [valuePrimitive]="true"
+                  [filterable]="true"
+                  [expandOnFilter]="filterExpandSettings"
+                  [(ngModel)]="locid"
+                >
+                </kendo-dropdowntree>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['locID'].valid && assetsInformationForm.controls['locID'].touched && assetsInformationForm.controls['locID'].errors?.['required']"
+                  >Location is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Barcode">
+                <input
+                  type="text"
+                  kendoTextBox
+                  class="k-input-lg k-rounded-lg"
+                  [(ngModel)]="barCode"
+                  value="barCode"
+                />
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['barCode'].valid && assetsInformationForm.controls['barCode'].touched && assetsInformationForm.controls['barCode'].errors?.['required']"
+                >
+                  Barcode is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Cost Center">
+                <kendo-dropdownlist
+                  size="large"
+                  rounded="large"
+                  [data]="dataCost"
+                  textField="costName"
+                  valueField="costID"
+                  value="costCenterID"
+                  [valuePrimitive]="true"
+                  [(ngModel)]="costID"
+                  [filterable]="true"
+                  (filterChange)="handleCost($event)"
+                ></kendo-dropdownlist>
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['costCenterID'].valid && assetsInformationForm.controls['costCenterID'].touched && assetsInformationForm.controls['costCenterID'].errors?.['required']"
+                  >Cost Center is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="RFID Tag">
+                <input
+                  type="text"
+                  [(ngModel)]="RFID"
+                  kendoTextBox
+                  class="k-input-lg k-rounded-lg"
+                  value="RFID"
+                />
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['RFID'].valid && assetsInformationForm.controls['RFID'].touched && assetsInformationForm.controls['RFID'].errors?.['required']"
+                >
+                  RFID Tag is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Description 1">
+                <input
+                  type="text"
+                  [(ngModel)]="astDesc1"
+                  kendoTextBox
+                  class="k-input-lg k-rounded-lg"
+                  value="astDesc1"
+                />
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['astDesc1'].valid && assetsInformationForm.controls['astDesc1'].touched && assetsInformationForm.controls['astDesc1'].errors?.['required']"
+                >
+                  Description 1 is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <kendo-floatinglabel size="large" class="w-100" text="Description 2">
+                <input
+                  type="text"
+                  [(ngModel)]="astDesc1"
+                  kendoTextBox
+                  class="k-input-lg k-rounded-lg"
+                  value="astDesc2"
+                />
+                <!-- <kendo-formerror
+                  class="base-align"
+                  *ngIf="!assetsInformationForm.controls['astDesc2'].valid && assetsInformationForm.controls['astDesc2'].touched && assetsInformationForm.controls['astDesc2'].errors?.['required']"
+                >
+                  Description 2 is required
+                </kendo-formerror> -->
+              </kendo-floatinglabel>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div>
+          <!-- <div class="form-container">
+        <h2>Select Report</h2>
+        <form>
+          <div class="row">
+            <kendo-textbox placeholder="Company"></kendo-textbox>
+            <kendo-textbox placeholder="Supplier"></kendo-textbox>
+          </div>
+          <div class="row">
+            <kendo-textbox placeholder="Book"></kendo-textbox>
+            <kendo-textbox placeholder="Brand"></kendo-textbox>
+          </div>
+          <div class="row">
+            <kendo-textbox placeholder="Custodian"></kendo-textbox>
+            <kendo-textbox placeholder="Hierarchy"></kendo-textbox>
+          </div>
+          <div class="row">
+            <kendo-textbox placeholder="Item"></kendo-textbox>
+            <kendo-textbox placeholder="Category"></kendo-textbox>
+          </div>
+          <div class="row">
+            <kendo-textbox placeholder="Location"></kendo-textbox>
+            <kendo-dropdownlist  placeholder="Asset Status"></kendo-dropdownlist>
+          </div>
+          <div class="row">
+            <kendo-dropdownlist placeholder="Last Inventory Status"></kendo-dropdownlist>
+            <kendo-numerictextbox format="c" placeholder="Total Cost"></kendo-numerictextbox>
+          </div>
+          <div class="row checkboxes">
+            <kendo-formfield>
+              <input type="checkbox" kendoCheckBox id="includeSub" />
+              <label for="includeSub">Include Sub Levels of Locations & Categories</label>
+            </kendo-formfield>
+            <kendo-formfield>
+              <input type="checkbox" kendoCheckBox id="showDisposed" />
+              <label for="showDisposed">Show Only Disposed Assets</label>
+            </kendo-formfield>
+            <kendo-formfield>
+              <input type="checkbox" kendoCheckBox id="excludeDisposed" />
+              <label for="excludeDisposed">Exclude Disposed Assets</label>
+            </kendo-formfield>
+          </div>
+          <div class="row">
+            <h4>Filter by Purchase Date</h4>
+            <div>
+              <kendo-datepicker placeholder="From"></kendo-datepicker>
+              <kendo-datepicker placeholder="To"></kendo-datepicker>
+            </div>
+          </div>
+          <div class="row submit-row">
+            <button kendoButton>Generate Report</button>
+          </div>
+        </form>
+      </div> -->
+
+          <p>Content related to the selected report: {{ selectedReport }}</p>
+        </div>
+      </div>
+      <button class="close-button" (click)="closeContent()">Close</button>
+    </div>
+    <div
+      class="d-sm-flex d-block align-items-center justify-content-end w-100 my-3"
+    >
+      <button type="button" class="btn btn-outline-success me-2">
+        <fa-icon [icon]="faFileExcel"></fa-icon>
+        {{ "Export to Excel" | translate }}
+      </button>
+      <button type="button" class="btn btn-outline-danger">
+        <fa-icon [icon]="faFilePdf"></fa-icon>
+        {{ "Export to PDF" | translate }}
+      </button>
+    </div>
+    <ag-grid-angular
+      [rowData]="gridView"
+      [columnDefs]="standardReportsGridCols"
+      [rowSelection]="'single'"
+      [rowMultiSelectWithClick]="true"
+      [defaultColDef]="defaultColDefs"
+      class="ag-theme-alpine w-100"
+      style="height: 70vh"
+    >
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination
+        [collectionSize]="pagination.totalItems"
+        [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)"
+        [pageSize]="pagination.pageSize"
+        [maxSize]="10"
+        [rotate]="true"
+        [boundaryLinks]="true"
+      />
+
+      <div class="me-3 d-flex flex-row">
+        <select
+          class="form-select form-select-sm"
+          name=""
+          id=""
+          [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)"
+        >
+          <option
+            *ngFor="let value of pagination.pageSizes"
+            [value]="value"
+            [selected]="pagination.pageSize == value"
+          >
+            {{ value }}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>

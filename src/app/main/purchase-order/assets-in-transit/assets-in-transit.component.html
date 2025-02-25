@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Approved Purchase Orders</h5>
+    </div>
+    <ag-grid-angular [rowData]="approvedPurchaseOrderGridView" [columnDefs]="approvedPurchaseOrderGridCols"
+      [rowSelection]="'single'" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+      (rowSelected)="selectedRowChange($event)" class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event, true)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event, true)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Purchase Order Items</h5>
+    </div>
+    <ag-grid-angular [rowData]="purchaseOrderGridView" [columnDefs]="purchaseOrderGridCols" [rowSelection]="'single'"
+      (rowSelected)="selectedItemRowChange($event)" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+      class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="paginationSecond.totalItems" [(page)]="paginationSecond.currentPage" (pageChange)="pageChange($event, false)" [pageSize]="paginationSecond.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="paginationSecond.pageSize"
+          (ngModelChange)="pageSizeChange($event, false)">
+          <option *ngFor="let value of paginationSecond.pageSizes" [value]="value" [selected]="paginationSecond.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>
+
+<div class="mt-3 text-end">
+  <button  kendoButton themeColor="primary" (click)="transfer()" [disabled]="!item">
+    Transfer Assets
+  </button>
+</div>

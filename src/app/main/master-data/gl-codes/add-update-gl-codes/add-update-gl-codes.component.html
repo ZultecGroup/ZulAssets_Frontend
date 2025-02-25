@@ -1,0 +1,86 @@
+<ng-container *ngIf="!fetchingData; else loader">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h5 translate>{{ isEditMode ? "Update" : "Create New" }} GL Code</h5>
+    </div>
+  </div>
+  <form [formGroup]="glCodeForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Company' | translate }}"
+        >
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="data"
+            textField="companyName"
+            valueField="companyId"
+            formControlName="companyId"
+            [valuePrimitive]="true"
+            [filterable]="true"
+            (filterChange)="handleFilter($event)"
+          ></kendo-dropdownlist>
+          <kendo-formerror
+            *ngIf="!glCodeForm.controls['companyId'].valid && glCodeForm.controls['companyId'].touched && glCodeForm.controls['companyId'].errors?.['required']"
+          >
+            {{ "Company Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{ 'Description' | translate }}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="glDesc"
+          />
+          <kendo-formerror
+            *ngIf="!glCodeForm.controls['glDesc'].valid && glCodeForm.controls['glDesc'].touched && glCodeForm.controls['glDesc'].errors?.['required']"
+          >
+            {{ "Description Name is required" | translate }}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-12 text-end">
+        <button
+          kendoButton
+          size="large"
+          rounded="large"
+          fillMode="outline"
+          themeColor="primary"
+          [routerLink]="isEditMode ? '../../' : '../'"
+          [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+          class="me-2"
+          [disabled]="sendingRequest"
+        >
+          {{ "Back" | translate }}
+        </button>
+        <button
+          [disabled]="sendingRequest"
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          (click)="onSubmit()"
+        >
+          {{ (isEditMode ? "Update" : "Create") | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

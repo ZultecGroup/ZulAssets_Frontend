@@ -1,0 +1,166 @@
+<ng-container *ngIf="!fetchingData; else loader">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h5 class="mb-0">
+        {{ isEditMode ? "Update" : "Create New" }} Barcode Structure
+      </h5>
+    </div>
+  </div>
+  <form class="mt-0" [formGroup]="barCodeStructureForm">
+    <div class="row mb-3">
+      <h5>Bar Code</h5>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Description"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="barStructDesc"
+          />
+
+          <kendo-formerror
+            *ngIf="!barCodeStructureForm.controls['barStructDesc'].valid && barCodeStructureForm.controls['barStructDesc'].touched && barCodeStructureForm.controls['barStructDesc'].errors?.['required']"
+          >
+            Description is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="border-bottom"></div>
+      </div>
+    </div>
+    <div class="row mb-3 mt-4">
+      <h5>Bar Code Structure Definition</h5>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Prefix"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="barStructPrefix"
+            [(ngModel)]="barStructPrefix"
+            (ngModelChange)="onWordInputChange()"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Value Separator">
+          <kendo-dropdownlist
+            textField="text"
+            valueField="value"
+            formControlName="valueSep"
+            [(ngModel)]="valueSep"
+            [data]="seperatorList"
+            (valueChange)="calculateSelectedLengthSum()"
+            [defaultItem]="{ text: 'None', value: '' }"
+            [valuePrimitive]="true"
+          ></kendo-dropdownlist>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Bar Code Length"
+          showErrors="initial"
+        >
+          <input
+            type="number"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="barStructLength"
+            [(ngModel)]="barStructLength"
+            readonly
+          />
+
+          <kendo-formerror
+            *ngIf="barStructLength > 20"
+          >
+          Allowed Barcode size exceeded
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-12 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Code Contents"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="barcode"
+            [(ngModel)]="barcode"
+            readonly
+          />
+
+          <kendo-formerror
+            *ngIf="!barCodeStructureForm.controls['barcode'].valid && barCodeStructureForm.controls['barcode'].touched && barCodeStructureForm.controls['barcode'].errors?.['required']"
+          >
+            Code Contents is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div style="width: 100%; height: 400px;">
+        <ag-grid-angular
+          #agGrid
+          [rowData]="rowData"
+          [columnDefs]="columnDefs"
+          [domLayout]="'autoHeight'"
+          [gridOptions]="gridOptions"
+          (cellValueChanged)="onDropdownChange($event)"
+          class="ag-theme-alpine"
+        ></ag-grid-angular>
+      </div>
+    </div>
+    <div class="col-12 text-end">
+      <button
+          kendoButton
+          size="large"
+          rounded="large"
+          fillMode="outline"
+          themeColor="primary"
+          [routerLink]="isEditMode ? '../../' : '../'"
+          [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+          class="me-2"
+          [disabled]="sendingRequest"
+        >
+          Back
+        </button>
+    <button
+          [disabled]="sendingRequest"
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          (click)="onSubmit()"
+        >
+          {{ isEditMode ? "Update" : "Create" }}
+        </button>
+      </div>
+  </form>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

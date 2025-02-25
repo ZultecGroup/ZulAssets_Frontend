@@ -1,0 +1,121 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5 class="mb-0">Detail & Maintenance</h5>
+  </div>
+</div>
+<div class="row">
+  <kendo-tabstrip (tabSelect)="onTabSelect($event)" [scrollable]="{ scrollButtons: 'visible' }">
+    <kendo-tabstrip-tab
+      title="Asset Information"
+      [selected]="selectedTab == 0"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-assets-information
+            #firstChild
+            (astIDforParrent)="getAstID($event)"
+            [parrentAstID]="astID"
+            [detailsMaintenanceDataReturn]="detailsMaintenanceData"
+            (detailsMaintenanceData)="getDetailsMaintenanceData($event)">
+          </app-assets-information>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab
+      title="Extended Information"
+      [selected]="selectedTab == 1"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-extended-information
+            [detailsMaintenanceData]="detailsMaintenanceData">
+          </app-extended-information>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab
+      title="Depreciation Information"
+      [selected]="selectedTab == 2"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-depreciation-information
+            [detailsMaintenanceData]="detailsMaintenanceData">
+          </app-depreciation-information>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab
+      title="Tracking History"
+      [selected]="selectedTab == 3"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-tracking-history
+            [detailsMaintenanceData]="detailsMaintenanceData">
+          </app-tracking-history>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab
+      title="Custodian History"
+      [selected]="selectedTab == 4"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-custodian-history
+            [detailsMaintenanceData]="detailsMaintenanceData">
+          </app-custodian-history>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab
+      title="Additional Cost History"
+      [selected]="selectedTab == 5"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-additional-cost-history
+            [detailsMaintenanceData]="detailsMaintenanceData">
+          </app-additional-cost-history>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab
+      title="Extended Warranty"
+      [selected]="selectedTab == 6"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-extended-warranty
+            [detailsMaintenanceData]="detailsMaintenanceData">
+          </app-extended-warranty>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab
+      title="Disposal / Sale Information"
+      [selected]="selectedTab == 7"
+    >
+      <ng-template kendoTabContent kendoTabKeepTabContent>
+        <div class="content">
+          <app-disposal-or-sales-information
+            [detailsMaintenanceData]="detailsMaintenanceData">
+          </app-disposal-or-sales-information>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+  </kendo-tabstrip>
+</div>
+
+<div class="d-flex justify-content-between mt-3">
+  <button (click)="PreviousTabButton()" class="btn btn-primary">Previous</button>
+  <button (click)="NextTabButton()" class="btn btn-primary">Next</button>
+</div>

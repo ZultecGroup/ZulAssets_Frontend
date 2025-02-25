@@ -1,0 +1,290 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5 class="mb-0">System Configuration</h5>
+  </div>
+</div>
+<kendo-stepper
+  #stepper
+  [steps]="steps"
+  [stepType]="'full'"
+  [(currentStep)]="currentStep"
+  [linear]="true"
+>
+</kendo-stepper>
+
+<div class="content mt-4">
+  <form [formGroup]="form" *ngIf="!fetchingData; else loader">
+    <ng-container formGroupName="generalForm" *ngIf="currentStep === 0">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <h6 class="fw-bold">Depreciation Configuration</h6>
+          <div class="d-flex">
+            <input
+              type="radio"
+              name="depreciationRunType"
+              [value]="0"
+              #manual
+              formControlName="depreciationRunType"
+              kendoRadioButton
+            />
+            <kendo-label
+              [for]="manual"
+              text="Manual Depreciation"
+              class="mx-2"
+            ></kendo-label>
+
+            <input
+              type="radio"
+              name="depreciationRunType"
+              [value]="1"
+              #auto
+              formControlName="depreciationRunType"
+              kendoRadioButton
+            />
+            <kendo-label
+              [for]="auto"
+              text="Auto Depreciation"
+              class="mx-2"
+            ></kendo-label>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <h6 class="fw-bold">Asset Coding Mode</h6>
+          <div class="d-flex">
+            <input
+              type="radio"
+              [value]="true"
+              #manual
+              formControlName="codingMode"
+              kendoRadioButton
+            />
+            <kendo-label
+              text="Use Assets Coding Definition"
+              class="mx-2"
+            ></kendo-label>
+
+            <input
+              type="radio"
+              [value]="false"
+              #auto
+              formControlName="codingMode"
+              kendoRadioButton
+            />
+            <kendo-label
+              text="Use Incremental Coding"
+              class="mx-2"
+            ></kendo-label>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <h6 class="fw-bold">Daily Maintenance</h6>
+          <div class="d-flex">
+            <input
+              type="checkbox"
+              #deletePermanent
+              kendoCheckBox
+              formControlName="deletePermanent"
+            />
+            <kendo-label
+              class="k-checkbox-label mx-2"
+              [for]="deletePermanent"
+              text="Delete Data Permanently"
+            ></kendo-label>
+            <input
+              type="checkbox"
+              #exportToServer
+              kendoCheckBox
+              formControlName="exportToServer"
+            />
+            <kendo-label
+              class="k-checkbox-label mx-2"
+              [for]="exportToServer"
+              text="Save to Export Server"
+            ></kendo-label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <h6 class="fw-bold">Personalize</h6>
+          <kendo-floatinglabel
+            class="w-100"
+            text="Set Date Format"
+            showErrors="initial"
+          >
+            <kendo-combobox
+              size="large"
+              [data]="['dd/MM/yyyy', 'MM/dd/yyyy']"
+              formControlName="dateFormat"
+            ></kendo-combobox>
+          </kendo-floatinglabel>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="fw-bold">Warranty Alarm</h6>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="d-flex">
+            <input
+              type="checkbox"
+              #showAlarmOnStartup
+              kendoCheckBox
+              formControlName="showAlarmOnStartup"
+            />
+            <kendo-label
+              class="k-checkbox-label mx-2"
+              [for]="showAlarmOnStartup"
+              text="Show Alarm on Startup"
+            ></kendo-label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <kendo-floatinglabel text="Alarm Before (Days)" showErrors="initial">
+            <kendo-numerictextbox
+              [style.width.px]="170"
+              [autoCorrect]="true"
+              [min]="0"
+              format="n0"
+              formControlName="alarmBeforeDays"
+            ></kendo-numerictextbox>
+          </kendo-floatinglabel>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container formGroupName="assetImagesForm" *ngIf="currentStep === 1">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <h6 class="fw-bold">Storage Location</h6>
+          <div class="d-flex">
+            <input
+              type="radio"
+              value="Database"
+              formControlName="imgStorageLoc"
+              kendoRadioButton
+            />
+            <kendo-label text="Database" class="mx-2"></kendo-label>
+
+            <input
+              type="radio"
+              value="Shared Folder"
+              formControlName="imgStorageLoc"
+              kendoRadioButton
+            />
+            <kendo-label text="Shared Folder" class="mx-2"></kendo-label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <h6 class="fw-bold">Asset or Item based images</h6>
+          <div class="d-flex">
+            <input
+              type="radio"
+              value="Item Images"
+              formControlName="imgType"
+              kendoRadioButton
+            />
+            <kendo-label text="Item Images" class="mx-2"></kendo-label>
+
+            <input
+              type="radio"
+              value="Asset Images"
+              #auto
+              formControlName="imgType"
+              kendoRadioButton
+            />
+            <kendo-label text="Asset Images" class="mx-2"></kendo-label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container
+      formGroupName="assetDescriptionForm"
+      *ngIf="currentStep === 2"
+    >
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="fw-bold">Asset Description for Reports</h6>
+        </div>
+        <div class="col-md-12">
+          <div class="d-flex">
+            <input
+              type="radio"
+              value="Item Description"
+              formControlName="descForReport"
+              kendoRadioButton
+            />
+            <kendo-label text="Item Description" class="mx-2"></kendo-label>
+          </div>
+          <div class="d-flex my-3">
+            <input
+              type="radio"
+              value="Asset Description 1"
+              formControlName="descForReport"
+              kendoRadioButton
+            />
+            <kendo-label text="Asset Description 1" class="mx-2"></kendo-label>
+          </div>
+          <div class="d-flex">
+            <input
+              type="radio"
+              value="Asset Description 2"
+              formControlName="descForReport"
+              kendoRadioButton
+            />
+            <kendo-label text="Asset Description 2" class="mx-2"></kendo-label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div
+      class="k-form-buttons mt-3 k-buttons-end d-flex align-items-center justify-content-between"
+    >
+      <span class="page">Step {{ currentStep + 1 }} of 3</span>
+      <div>
+        <button
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          [disabled]="submittingData"
+          *ngIf="currentStep !== 0"
+          (click)="prev()"
+        >
+          Previous
+        </button>
+        <button
+          kendoButton
+          size="large"
+          class="ms-2"
+          rounded="large"
+          themeColor="primary"
+          [disabled]="submittingData"
+          (click)="next()"
+          *ngIf="currentStep !== 2"
+        >
+          Next
+        </button>
+        <button
+          kendoButton
+          class="ms-2"
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          [disabled]="submittingData"
+          (click)="submit()"
+          *ngIf="currentStep === 2"
+        >
+          {{submittingData ? 'Submitting...' : 'Submit'}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

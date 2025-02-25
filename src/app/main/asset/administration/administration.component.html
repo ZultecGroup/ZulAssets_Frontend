@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-body p-0 d-flex flex-column">
+        <kendo-tabstrip class="flex-grow-1" style="height: 800px;" (tabSelect)="onTabSelect($event)"
+          [scrollable]="{ scrollButtons: 'visible' }">
+          <kendo-tabstrip-tab title="Locations" [selected]="true" [selected]="selectedTab == 0">
+            <ng-template kendoTabContent>
+              <div class="content" #locData>
+                <app-locations (dropEvent)="onDropEventLoc($event)" [locationupdate]="locationupdate"
+                  (locationDetails)="getData('loc',$event)"></app-locations>
+              </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab title="Asset By Category" [selected]="selectedTab == 1">
+            <ng-template kendoTabContent>
+              <app-assets-categories [categoriesupdate]="categoriesupdate"
+                (AssestDetails)="getData('cat',$event)"></app-assets-categories>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab title="Item By category" [selected]="selectedTab == 2">
+            <ng-template kendoTabContent>
+              <app-assets-categories [categoriesupdate]="categoriesupdate" (dropEvent)="onDropEventItem($event)"
+                (AssestDetails)="getData('cat',$event)"></app-assets-categories>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab title="Custodian" [selected]="selectedTab == 3">
+            <ng-template kendoTabContent>
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <h4 class="fw-bold mb-0">Custodian</h4>
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                  <input
+                  type="search"
+                  placeholder="Search"
+                  (input)="filterCustodians($event)"
+                  class="form-control" >
+                </div>
+              </div>
+              <div class="content">
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Assets Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr [class.table-primary]="selectedId == custodians.custodianID" style="cursor: pointer;"
+                        (click)="getData('cus',custodians)" (drop)="onDropEventCustodian($event, custodians)"
+                        (dragover)="onDragOver($event)" *ngFor="let custodians of CustodianView">
+                        <td>{{ custodians.custodianID || '-' }}</td>
+                        <td>{{ custodians.custodianCode || '-' }}</td>
+                        <td>{{ custodians.custodianName }}</td>
+                        <td>{{ custodians.custAssetsCount || '-' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+        <div class="p-3 border-top">
+          <input type="checkbox" [(ngModel)]="subLocationCheckBox" [disabled]="selectedTab != 0"
+            (ngModelChange)="onCheckboxChange()" #sublocation kendoCheckBox />
+          <kendo-label class="k-checkbox-label" [for]="sublocation" text="Show Sub Locations Assets"></kendo-label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Assets Administration</h5>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <input type="search" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+          (ngModelChange)="onFilterTextBoxChanged()">
+      </div>
+    </div>
+
+    <ag-grid-angular *ngIf="selectedTab != 2" [rowData]="itemView" [columnDefs]="administrationGridCols"
+      [rowSelection]="'multiple'" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+      [enableMultiRowDragging]="true" [rowDragMultiRow]="true" [rowDragManaged]="true"
+      (rowDoubleClicked)="assetDoubleClick($event)" (gridReady)="onGridReady($event)"
+      (rowClicked)='getReadOnlyByAstId($event.data)' [suppressRowClickSelection]="true" class="ag-theme-alpine w-100"
+      style="height:70vh">
+    </ag-grid-angular>
+
+    <ag-grid-angular *ngIf="selectedTab == 2" [rowData]="itemView" [columnDefs]="administrationAssetItemGridCols"
+      [rowSelection]="'multiple'" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+      (rowClicked)='getReadOnlyByItemId($event.data)' (rowDoubleClicked)="itemDoubleClick($event)"
+      (gridReady)="onGridReadyItem($event)" [rowDragManaged]="true" [suppressRowClickSelection]="true"
+      class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+    <!-- <ag-grid-angular
+    [rowData]="itemView"
+    [columnDefs]="administrationGridCols"
+    [rowDragManaged]="true"
+      [animateRows]="true"
+      (rowDragMove)="onRowDragMove($event)"
+      (rowDragEnd)="onRowDragEnd($event)"
+    class="ag-theme-alpine w-100"
+    style="height:70vh">
+
+    </ag-grid-angular> -->
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+    <ag-grid-angular [rowData]="rowData" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+      class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+  </div>
+  <div class="d-flex align-items-center justify-content-end mt-4">
+    <button rounded="large" class="me-2" kendoButton themeColor="primary" (click)="getZplCodeApi('Asset Barcode')">
+      Assets Barcode
+    </button>
+    <button rounded="large" class="me-2" kendoButton themeColor="primary" (click)="getZplCodeApi('Location Barcode')">
+      Location Barcode
+    </button>
+
+  </div>
+</div>

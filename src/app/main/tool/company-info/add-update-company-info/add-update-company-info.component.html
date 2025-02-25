@@ -1,0 +1,223 @@
+<ng-container *ngIf="!fetchingData; else loader">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h5>{{ isEditMode ? "Update" : "Create New" }} Company Information</h5>
+    </div>
+  </div>
+  <form [formGroup]="companyInfoForm">
+    <div class="row">
+      <div class="col-auto mb-1 text-center">
+        <img
+          [src]="image"
+          class="upload-img"
+          alt="logo"
+          *ngIf="image; else imgWrapper"
+        />
+        <input
+          type="file"
+          id="file"
+          name="file"
+          #file
+          [hidden]="true"
+          accept=".jpg, .jpeg, .png"
+          (change)="handleFileInput($event)"
+        />
+        <button
+          rounded="large"
+          [disabled]="sendingRequest"
+          kendoButton
+          themeColor="primary"
+          (click)="file.click()"
+        >
+          Upload
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Name"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="name"
+          />
+          <kendo-formerror
+            *ngIf="!companyInfoForm.controls['name'].valid && companyInfoForm.controls['name'].touched && companyInfoForm.controls['name'].errors?.['required']"
+          >
+            Supplier Name is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Address"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="address"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="City"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="city"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="State/Province"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="state"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Country"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="country"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Fax"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="fax"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Zip/Postal Code"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="pCode"
+          />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Email"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="email"
+          />
+          <kendo-formerror
+            *ngIf="!companyInfoForm.controls['email'].valid && companyInfoForm.controls['email'].touched && companyInfoForm.controls['email'].errors?.['pattern']"
+          >
+            Invalid email pattern
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Phone Number"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="phoneNo"
+          />
+        </kendo-floatinglabel>
+      </div>
+
+      <div class="col-12 text-end">
+        <button
+          kendoButton
+          size="large"
+          rounded="large"
+          fillMode="outline"
+          themeColor="primary"
+          [routerLink]="isEditMode ? '../../' : '../'"
+          [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+          class="me-2"
+          [disabled]="sendingRequest"
+        >
+          Back
+        </button>
+        <button
+          [disabled]="sendingRequest"
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          (click)="onSubmit()"
+        >
+          {{ isEditMode ? "Update" : "Create" }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>
+
+<ng-template #imgWrapper>
+  <div class="upload-img d-flex align-items-center justify-content-center">
+    <small class="fw-bold"> Company Logo </small>
+  </div>
+</ng-template>

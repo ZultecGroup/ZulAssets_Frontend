@@ -1,0 +1,97 @@
+<div class="page-sign" [ngClass]="'currentTheme' | translate">
+  <div class="card card-sign">
+    <div class="card-header">
+      <a href="../" class="header-logo mb-4 d-flex justify-content-center">
+        <img class="logo-size" src="../../../../assets/img/ZulAssets logo.jpg">
+      </a>
+      <h3  translate class="card-title base-align">Sign In</h3>
+      <p  translate class="card-text base-align">Welcome back! Please signin to continue.</p>
+    </div>
+    <!-- card-header -->
+    <div class="card-body pt-3">
+      <form [formGroup]="signUpForm">
+        <div class="mb-3 base-align">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100 base-align"
+            text="{{'Email Address' | translate}}"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              placeholder="{{'Enter User Name' | translate}}"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg base-align"
+              rounded="large"
+              size="large"
+              formControlName="loginName"
+            />
+            <kendo-formerror class="base-align"
+              *ngIf="!signUpForm.controls['loginName'].valid && signUpForm.controls['loginName'].touched && signUpForm.controls['loginName'].errors?.['required']"
+            >
+              {{'Username is required' | translate }}
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="mb-3">
+          <kendo-floatinglabel size="large" class="w-100" text="{{'Password' | translate}}">
+            <kendo-textbox
+            #Password
+            placeholder="{{'Enter password' | translate}}"
+            class="k-input-lg k-rounded-lg base-align"
+            formControlName="password"
+          >
+            <ng-template kendoTextBoxSuffixTemplate>
+              <button
+                kendoButton
+                look="clear"
+                icon="eye"
+                (click)="toggleConfirmVisibility()"
+              ></button>
+            </ng-template>
+          </kendo-textbox>
+            <kendo-formerror class="base-align"
+              *ngIf="!signUpForm.controls['password'].valid && signUpForm.controls['password'].touched && signUpForm.controls['password'].errors?.['required']"
+            >
+              {{'Password is required' | translate}}
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="mb-3 text-center">
+          <a
+            kendoButton
+            size="large"
+            rounded="large"
+            routerLink="/authentication/forgot-password"
+            fillMode="link"
+          >
+            {{'Forgot Password?' | translate}}
+          </a>
+        </div>
+        <button
+          class="w-100"
+          kendoButton
+          size="large"
+          rounded="large"
+          size="large"
+          fillMode="solid"
+          themeColor="primary"
+          (click)="signIn()"
+          type="submit"
+          [disabled]="sendingRequest"
+        >
+          {{ (sendingRequest ? "SIGNING IN..." : "SIGN IN") | translate }}
+        </button>
+      </form>
+      <div class="row justify-content-end mt-4 ml-2">
+        <p class="col-6"><b>{{'Select Language :' | translate}}</b></p>
+        <a class="col-3 signInButtons" role="button" (click)="changeLangage('en')">English</a>
+      <a class="col-3 signInButtons" role="button"  (click)="changeLangage('ar')">العربية</a>
+      </div>
+      
+      
+    </div>
+    <!-- card-body -->
+  </div>
+  <!-- card -->
+</div>

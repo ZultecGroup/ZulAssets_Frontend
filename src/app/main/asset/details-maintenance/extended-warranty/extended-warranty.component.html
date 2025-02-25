@@ -1,0 +1,131 @@
+
+<div class="row mt-3">
+  <div class="col-md-12 mb-3">
+    <h5>Extended Warranty</h5>
+  </div>
+  <ng-container [formGroup]="extendWarranty">
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Warranty Start"
+        showErrors="initial"
+      >
+      <kendo-datepicker
+        formControlName="warrantyStart"
+        [(ngModel)]="warrantyStart">
+      </kendo-datepicker>
+      <kendo-formerror
+            class="base-align"
+            *ngIf="!extendWarranty.controls['warrantyStart'].valid && extendWarranty.controls['warrantyStart'].touched && extendWarranty.controls['warrantyStart'].errors?.['required']"
+          >
+           Warranty Start is required
+      </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Warranty End"
+        showErrors="initial"
+      >
+      <kendo-datepicker
+        formControlName="WarrantyEnd"
+        [(ngModel)]="warrantyEnd"
+        >
+      </kendo-datepicker>
+      <kendo-formerror
+            class="base-align"
+            *ngIf="!extendWarranty.controls['WarrantyEnd'].valid && extendWarranty.controls['WarrantyEnd'].touched && extendWarranty.controls['WarrantyEnd'].errors?.['required']"
+          >
+            Warranty End is required
+      </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Warranty(month)"
+        showErrors="initial"
+      >
+      <!-- <input type="text"
+        formControlName="Warrantymonth"
+        kendoTextBox class="k-input-lg k-rounded-lg"
+        [(ngModel)]="warrantyPeriodMonth"
+      /> -->
+      <kendo-numerictextbox
+      class="k-input-lg k-rounded-lg"
+
+      id="months"
+      [(ngModel)]="warrantyPeriodMonth"
+      (valueChange)="calc()"
+      formControlName="warrantyPeriodMonth"
+      format="N0"
+
+    >
+    </kendo-numerictextbox>
+      <kendo-formerror
+            class="base-align"
+            *ngIf="!extendWarranty.controls['warrantyPeriodMonth'].valid && extendWarranty.controls['warrantyPeriodMonth'].touched && extendWarranty.controls['warrantyPeriodMonth'].errors?.['required']"
+          >
+          Warranty Month is required
+      </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3 mt-4">
+      <input type="checkbox" [(ngModel)]="alarmActivate" formControlName="alarmActivate" #disposed kendoCheckBox />
+      <kendo-label
+        class="k-checkbox-label"
+        [for]="disposed"
+        text="Activate Alarm"
+      ></kendo-label>
+    </div>
+    <div class="d-flex align-items-center justify-content-end">
+      <button
+        rounded="large"
+        class="me-2"
+        kendoButton
+        themeColor="primary"
+        (click)="clear()"
+      >
+        clear
+      </button>
+      <button
+      *ngIf="generalService.permissions['Detail & Maintenance'].add || (isEditMode && generalService.permissions['Detail & Maintenance'].edit) "
+        rounded="large"
+        class="me-2"
+        kendoButton
+        themeColor="primary"
+        (click)="submit()"
+        [disabled]="!extendWarranty.valid"
+      >
+        Save
+      </button>
+    </div>
+  </ng-container>
+
+  <div class="row my-3">
+    <div class="col-md-12">
+      <ag-grid-angular [rowData]="gridView" [columnDefs]="extendedWarrantyGridCols" [rowSelection]="'single'"
+        [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (rowClicked)='onRowClicked($event.data)'
+        class="ag-theme-alpine w-100" style="height:70vh">
+      </ag-grid-angular>
+      <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+        <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+          (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+          [boundaryLinks]="true" />
+
+        <div class="me-3 d-flex flex-row">
+          <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+            (ngModelChange)="pageSizeChange($event)">
+            <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+              {{value}}
+            </option>
+          </select>
+        </div>
+        <label for="pageSize" class="text-muted">Page Size</label>
+      </div>
+    </div>
+  </div>

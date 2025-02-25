@@ -1,0 +1,163 @@
+<ng-container >
+  <div >
+    <div class="row mt-3">
+      <div class="col-md-12 mb-3">
+        <h5>Asset Book</h5>
+        <ag-grid-angular [rowData]="assetBookList" [columnDefs]="assetsBookListGridCols" [rowSelection]="'single'"
+          [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"(rowClicked)='onRowClicked($event.data)'
+
+           class="ag-theme-alpine w-100"
+          style="height:50vh">
+        </ag-grid-angular>
+        <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+          <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+            (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+            [boundaryLinks]="true" />
+
+          <div class="me-3 d-flex flex-row">
+            <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+              (ngModelChange)="pageSizeChange($event)">
+              <option *ngFor="let value of pagination.pageSizes" [value]="value"
+                [selected]="pagination.pageSize == value">
+                {{value}}
+              </option>
+            </select>
+          </div>
+          <label for="pageSize" class="text-muted">Page Size</label>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3" [formGroup]="detailMaintenanceService.detailForm">
+        <div class="row">
+          <h5>Book Detail</h5>
+          <div class="col-md-6 mb-3">
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Asset ID">
+              <input type="text" [(ngModel)]="astID" kendoTextBox class="k-input-lg k-rounded-lg"
+                formControlName="astID" name="astID" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Book Description">
+              <input type="text" kendoTextBox class="k-input-lg k-rounded-lg" [(ngModel)]="description"
+                formControlName="description"  name="description"/>
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Depreciation Method">
+              <input type="text" formControlName="depDesc" [(ngModel)]="depDesc" kendoTextBox name="depDesc"
+                class="k-input-lg k-rounded-lg" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Acc. Deprec.">
+              <input type="text" formControlName="AccDeprec" [(ngModel)]="AccDeprec" kendoTextBox name="AccDeprec"
+                class="k-input-lg k-rounded-lg" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Salvage Year">
+              <input type="text" formControlName="salvageYear" [(ngModel)]="salvageYear" kendoTextBox name="salvageYear"
+                class="k-input-lg k-rounded-lg" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Salvage Year (%)">
+              <input type="text" formControlName="salvageValuePercent" [(ngModel)]="salvageValuePercent" kendoTextBox name="salvageValuePercent"
+                class="k-input-lg k-rounded-lg" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+          </div>
+          <div class="col-md-6 mb-3">
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Book ID">
+              <input type="text" [(ngModel)]="bookID" kendoTextBox class="k-input-lg k-rounded-lg"
+                formControlName="bookID" name="bookID" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Book Last Update">
+              <kendo-datepicker class="k-input-lg k-rounded-lg" [(ngModel)]="bookUpdateDate" formControlName="bookUpdateDate" name="bookUpdateDate"></kendo-datepicker>
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Total Cost">
+              <input type="text" [(ngModel)]="totalCost" formControlName="totalCost" kendoTextBox
+                class="k-input-lg k-rounded-lg" name="totalCost" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Current Book Value">
+              <input type="text" [(ngModel)]="currentBV" formControlName="currentBV" kendoTextBox
+                class="k-input-lg k-rounded-lg" name="currentBV" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Salvage Month">
+              <input type="text" [(ngModel)]="salvageMonth" formControlName="salvageMonth" kendoTextBox
+                class="k-input-lg k-rounded-lg" name="salvageMonth" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel size="large" class="w-100 mb-3" text="Salvage Value">
+              <input type="text" [(ngModel)]="salvageValue" formControlName="salvageValue" kendoTextBox
+                class="k-input-lg k-rounded-lg" name="salvageValue" />
+              <kendo-formerror> </kendo-formerror>
+            </kendo-floatinglabel>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <h5>Annual Expected Deprication</h5>
+        <ag-grid-angular [rowData]="annualExpectedDepreciation" [columnDefs]="expectedDepricationGridCols"
+          [rowSelection]="'single'" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+          class="ag-theme-alpine w-100" style="height:50vh">
+        </ag-grid-angular>
+        <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+          <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+            (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+            [boundaryLinks]="true" />
+
+          <div class="me-3 d-flex flex-row">
+            <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+              (ngModelChange)="pageSizeChange($event)">
+              <option *ngFor="let value of pagination.pageSizes" [value]="value"
+                [selected]="pagination.pageSize == value">
+                {{value}}
+              </option>
+            </select>
+          </div>
+          <label for="pageSize" class="text-muted">Page Size</label>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3">
+        <h5>Monthly Expected Depreciation</h5>
+        <ag-grid-angular [rowData]="monthlyExpectedDepreciation" [columnDefs]="fiscalYearDepreciationGridCols"
+          [rowSelection]="'single'" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+          class="ag-theme-alpine w-100" style="height:50vh">
+        </ag-grid-angular>
+        <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+          <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+            (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+            [boundaryLinks]="true" />
+
+          <div class="me-3 d-flex flex-row">
+            <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+              (ngModelChange)="pageSizeChange($event)">
+              <option *ngFor="let value of pagination.pageSizes" [value]="value"
+                [selected]="pagination.pageSize == value">
+                {{value}}
+              </option>
+            </select>
+          </div>
+          <label for="pageSize" class="text-muted">Page Size</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>
+<ng-template #imgWrapper>
+  <div class="upload-img d-flex align-items-center justify-content-center">
+    <small class="fw-bold"> Item Image </small>
+  </div>
+</ng-template>

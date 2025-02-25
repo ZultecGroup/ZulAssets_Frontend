@@ -1,0 +1,91 @@
+<kendo-drawer-container>
+  <app-loader></app-loader>
+  <kendo-drawer
+    #drawer
+    [items]="items"
+    [mode]="mode"
+    [expanded]="expanded"
+    (select)="onSelect($event)"
+    [isItemExpanded]="isItemExpanded"
+    (expandedChange)="isExpanded($event)"
+    [autoCollapse]="false"
+    >
+    <a routerLink="main/master-data/gl-codes">Zul Assets</a>
+    <ng-template kendoDrawerHeaderTemplate>
+      <div class="p-3 drawer-design d-flex align-items-center justify-content-between">
+        <a
+          routerLink="main/dashboard"
+          class="sidebar-logo"
+          *ngIf="isDrawerExpanded"
+          ><img class="side-logo-size" src="../../assets/img/ZulAssets logo.jpg"></a
+        >
+        <a
+          routerLink="main/dashboard"
+          class="sidebar-logo"
+          *ngIf="!isDrawerExpanded"
+          >Z</a
+        >
+        <kendo-button icon="close" (click)="drawer.toggle()" class="d-block d-md-none"></kendo-button>
+      </div>
+    </ng-template>
+    <!-- <ng-template kendoDrawerFooterTemplate>
+      <a kendodraweritem class="k-drawer-item" (click)="logout()">Logout</a>
+    </ng-template> -->
+  </kendo-drawer>
+
+  <kendo-drawer-content>
+    <div class="px-2 top-bar d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center me-2">
+        <div (click)="drawer.toggle()" class="menu-link me-3 me-lg-4">
+          <i class="ri-menu-2-fill" style="font-size: 24px"></i>
+        </div>
+         <div class="form-search me-auto" style="background-color: #efefef">
+            <input type="text" class="form-control" placeholder="{{'Search' | translate}}" />
+            <i class="ri-search-line"></i>
+          </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <!-- <button class="btn btn-primary rounded-pill" (click)="changeLangage('ar')">العربية</button>
+        <button class="btn btn-primary rounded-pill mx-2" (click)="changeLangage('en')">English</button> -->
+        <div class="dropdown dropdown-profile">
+          <a
+            href=""
+            class="dropdown-link"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+            ><div class="avatar online">
+              <img src="../assets/img/img1.jpg" alt="" /></div
+          ></a>
+          <div class="dropdown-menu dropdown-menu-end mt-10-f">
+            <div class="dropdown-menu-body">
+              <div class="avatar avatar-xl online mb-3">
+                <img src="../assets/img/img1.jpg" alt="" />
+              </div>
+              <h5 class="mb-1 text-dark fw-semibold">{{user.userName}}</h5>
+              <p class="fs-sm text-secondary">{{user.loginName}}</p>
+
+              <!-- <nav class="nav">
+                <a href=""><i class="ri-edit-2-line"></i> Edit Profile</a>
+                <a href=""><i class="ri-profile-line"></i> View Profile</a>
+              </nav> -->
+              <hr />
+              <nav class="nav">
+                <!-- <a href=""><i class="ri-question-line"></i> Help Center</a>
+                <a href=""><i class="ri-lock-line"></i> Privacy Settings</a>
+                <a href=""
+                  ><i class="ri-user-settings-line"></i> Account Settings</a
+                > -->
+                <a href="javascript:void(0)" (click)="logout()"><i class="ri-logout-box-r-line"></i> Log Out</a>
+              </nav>
+            </div>
+            <!-- dropdown-menu-body -->
+          </div>
+          <!-- dropdown-menu -->
+        </div>
+      </div>
+    </div>
+    <div class="p-3 wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </kendo-drawer-content>
+</kendo-drawer-container>

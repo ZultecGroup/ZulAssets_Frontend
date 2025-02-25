@@ -1,0 +1,40 @@
+.mt-20{
+    margin-top: 20px;
+}
+
+.hidden {
+    display: block;
+  }
+
+  .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .menu-item {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .menu-name {
+    font-weight: bold;
+    flex: 1;
+  }
+  .sub-menu-name {
+    flex: 1;
+  }
+
+  .menu-options {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .save-button {
+    margin-top: 20px;
+    text-align: right;
+  }

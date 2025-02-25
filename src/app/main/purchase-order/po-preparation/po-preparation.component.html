@@ -1,0 +1,562 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>Purchase Orders</h5>
+  </div>
+</div>
+<form [formGroup]="poPreParationForm">
+  <div class="row">
+    <div class="col-md-12 mb-3">
+      <!--<div class="d-flex align-items-center justify-content-between">
+        <h6 class="mb-0 fw-bold">General Info</h6>
+        <button
+          (click)="clear()"
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+        >
+          New Purchase Order
+        </button>
+      </div>-->
+    </div>
+    <!-- <div class="col-md-4 mb-3">
+        <kendo-floatinglabel class="w-100" text="Asset ID" showErrors="initial">
+          <kendo-combobox size="large" textField="poCode"
+          valueField="poCode" [data]="pOList" [(ngModel)]="selectedValue" name="Product Group"></kendo-combobox>
+        </kendo-floatinglabel>
+      </div> -->
+    <div class="col-md-3 mb-4 d-flex">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Purchase Order #"
+        showErrors="initial"
+      >
+        <kendo-combobox
+          size="large"
+          rounded="large"
+          [data]="pOList"
+          textField="poCode"
+          valueField="poCode"
+          [valuePrimitive]="true"
+          formControlName="poCode"
+          [(ngModel)]="poCode"
+          (valueChange)="setValues($event)"
+        ></kendo-combobox>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-1 mt-3">
+      <button
+        (click)="clear()"
+        kendoButton
+        size="large"
+        rounded="large"
+        themeColor="primary"
+      >
+        New
+      </button>
+    </div>
+    <div class="col-md-4 mb-4">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Supplier"
+        showErrors="initial"
+      >
+        <kendo-combobox
+          [data]="allSupplier"
+          textField="suppName"
+          valueField="suppName"
+          formControlName="suppID"
+          [valuePrimitive]="true"
+          [(ngModel)]="suppName"
+          size="large"
+        ></kendo-combobox>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['suppID'].valid && poPreParationForm.controls['suppID'].touched && poPreParationForm.controls['suppID'].errors?.['required']"
+          >Supplier is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-4">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Cost Center"
+        showErrors="initial"
+      >
+        <kendo-combobox
+          [data]="allCostcenter"
+          textField="costName"
+          valueField="costID"
+          [valuePrimitive]="true"
+          formControlName="costID"
+          [(ngModel)]="costID"
+          size="large"
+        ></kendo-combobox>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['costID'].valid && poPreParationForm.controls['costID'].touched && poPreParationForm.controls['costID'].errors?.['required']"
+          >Costcenter is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Quotation Reference"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="quotation"
+          [(ngModel)]="quotation"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['quotation'].valid && poPreParationForm.controls['quotation'].touched && poPreParationForm.controls['quotation'].errors?.['required']"
+          >Quotation is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Reference #"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="referenceNo"
+          [(ngModel)]="referenceNo"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['referenceNo'].valid && poPreParationForm.controls['referenceNo'].touched && poPreParationForm.controls['referenceNo'].errors?.['required']"
+          >Reference # is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <!-- <div class="col-md-4 mb-3">
+        <kendo-floatinglabel class="w-100" text="Supplier" showErrors="initial">
+          <kendo-combobox size="large" [data]="[]"></kendo-combobox>
+        </kendo-floatinglabel>
+      </div> -->
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Prepared By"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="preparedBy"
+          [(ngModel)]="preparedby"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['preparedBy'].valid && poPreParationForm.controls['preparedBy'].touched && poPreParationForm.controls['preparedBy'].errors?.['required']"
+          >Prepared By is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Date"
+        showErrors="initial"
+      >
+        <kendo-datepicker
+          formControlName="poDate"
+          [(ngModel)]="poDate"
+        ></kendo-datepicker>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['poDate'].valid && poPreParationForm.controls['poDate'].touched && poPreParationForm.controls['poDate'].errors?.['required']"
+          >Date is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <!-- <div class="col-md-4 mb-3">
+        <kendo-floatinglabel class="w-100" text="Cost Center" showErrors="initial">
+          <kendo-combobox size="large" [data]="[]"></kendo-combobox> //
+        </kendo-floatinglabel>
+      </div> -->
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Approved By"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="approvedBy"
+          [(ngModel)]="approvedby"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['approvedBy'].valid && poPreParationForm.controls['approvedBy'].touched && poPreParationForm.controls['approvedBy'].errors?.['required']"
+          >Approved By is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Status"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="poStatus"
+          [(ngModel)]="poStatus"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['poStatus'].valid && poPreParationForm.controls['poStatus'].touched && poPreParationForm.controls['poStatus'].errors?.['required']"
+          >Status is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+  </div>
+<div class="row mt-3">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">PO Item List</h5>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <button type="button" class="btn btn-primary" (click)="open()" style="width: 130px;">
+          Add Item
+        </button>
+      </div>
+    </div>
+    <ag-grid-angular [rowData]="poItems" [columnDefs]="PoPreparationGridCols" [rowSelection]="'single'" (gridReady)="onGridReady($event)"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+      class="ag-theme-alpine w-100" style="height:50vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>
+
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <h6 class="fw-bold">Requested By</h6>
+      <kendo-floatinglabel
+        class="w-100"
+        text="Requested By"
+        showErrors="initial"
+      >
+        <kendo-combobox
+          size="large"
+          size="large"
+          rounded="large"
+          [data]="CustodianData"
+          textField="custodianName"
+          valueField="custodianID"
+          formControlName="requestedBy"
+          [valuePrimitive]="true"
+          [(ngModel)]="requestedby"
+        ></kendo-combobox>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['requestedBy'].valid && poPreParationForm.controls['requestedBy'].touched && poPreParationForm.controls['requestedBy'].errors?.['required']"
+          >Requested By is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-8 mb-3">
+      <h6 class="fw-bold">Accounts Info</h6>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Amount"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="amount"
+              [(ngModel)]="amount"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+            <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['amount'].valid && poPreParationForm.controls['amount'].touched && poPreParationForm.controls['amount'].errors?.['required']"
+          >Amount is required
+        </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-3 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Add Charges"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="addCharges"
+              [(ngModel)]="addCharges"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+            <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['addCharges'].valid && poPreParationForm.controls['addCharges'].touched && poPreParationForm.controls['addCharges'].errors?.['required']"
+          >Add Charges is required
+        </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-3 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Discount"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="discount"
+              [(ngModel)]="discount"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+            <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['discount'].valid && poPreParationForm.controls['discount'].touched && poPreParationForm.controls['discount'].errors?.['required']"
+          >Discount is required
+        </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-3 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Total Cost"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              formControlName="totalAmount"
+              [(ngModel)]="totalAmount"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+            />
+            <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['totalAmount'].valid && poPreParationForm.controls['totalAmount'].touched && poPreParationForm.controls['totalAmount'].errors?.['required']"
+          >Total Cost is required
+        </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <h6 class="fw-bold">Terms and Conditions</h6>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Mode of Delivery"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="modeDelivery"
+          [(ngModel)]="modeDelivery"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['modeDelivery'].valid && poPreParationForm.controls['modeDelivery'].touched && poPreParationForm.controls['modeDelivery'].errors?.['required']"
+          >Mode of Delivery is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Payment Terms"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="payTerm"
+          [(ngModel)]="payterm"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['payTerm'].valid && poPreParationForm.controls['payTerm'].touched && poPreParationForm.controls['payTerm'].errors?.['required']"
+          >Payment Terms is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Remarks"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="remarks"
+          [(ngModel)]="remarks"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['remarks'].valid && poPreParationForm.controls['remarks'].touched && poPreParationForm.controls['remarks'].errors?.['required']"
+          >Remarks is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Terms and Conditions"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          formControlName="termNCon"
+          [(ngModel)]="termCondition"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!poPreParationForm.controls['termNCon'].valid && poPreParationForm.controls['termNCon'].touched && poPreParationForm.controls['termNCon'].errors?.['required']"
+          >Terms and Conditions is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-between">
+    <h6 class="mb-0 fw-bold">General Info</h6>
+    <button
+    *ngIf="GeneralService.permissions['PO Preparation'].add"
+      (click)="submit()"
+      kendoButton
+      size="large"
+      rounded="large"
+      themeColor="primary"
+    >
+      save
+    </button>
+  </div>
+</form>
+<kendo-dialog
+  title="PO Item List"
+  *ngIf="opened"
+  (close)="close()"
+  [minWidth]="250"
+  [width]="500"
+>
+  <div class="row">
+    <div class="col-lg-4">
+      <kendo-floatinglabel size="large" class="w-100" text="Item Code">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          [(ngModel)]="itemCodeBox"
+        />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4">
+      <kendo-floatinglabel size="large" class="w-100" text="Item Cost">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          [(ngModel)]="itemCostBox"
+        />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4">
+      <kendo-floatinglabel size="large" class="w-100" text="Add. Charges">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          [(ngModel)]="addChargesBox"
+        />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4">
+      <kendo-floatinglabel size="large" class="w-100" text="Item Quantity">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          [(ngModel)]="itemQuantityBox"
+        />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4">
+      <kendo-floatinglabel size="large" class="w-100" text="Unit">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          [(ngModel)]="unitBox"
+        />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4">
+      <kendo-floatinglabel size="large" class="w-100" text="Total Cost">
+        <input
+          type="text"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+          [(ngModel)]="totalCostBox"
+        />
+      </kendo-floatinglabel>
+    </div>
+  </div>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="Savedata()" themeColor="primary">Save</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

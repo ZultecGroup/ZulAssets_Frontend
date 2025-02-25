@@ -1,0 +1,154 @@
+<div class="row mb-3">
+    <div class="col-12">
+      <h5>Device Configuration</h5>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Device ID"
+          showErrors="initial"
+        >
+          <input type="number" [(ngModel)]="deviceId" [readOnly]="true" kendoTextBox class="k-input-lg k-rounded-lg" />
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Device Description"
+          showErrors="initial"
+        >
+          <input type="text" [(ngModel)]="deviceDesc" kendoTextBox class="k-input-lg k-rounded-lg" />
+          <!-- <kendo-formerror
+              *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+            >
+              Address description is required
+            </kendo-formerror> -->
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Device Phone No"
+          showErrors="initial"
+        >
+          <input type="text" [(ngModel)]="devicePhoneNo" kendoTextBox class="k-input-lg k-rounded-lg" />
+          <!-- <kendo-formerror
+              *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+            >
+              Address description is required
+            </kendo-formerror> -->
+        </kendo-floatinglabel>
+      </div>
+      <!-- <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Communication Type"
+          showErrors="initial"
+        >
+        <kendo-combobox size="large" textField="name"
+        valueField="id" [(ngModel)]="type"
+        [data]="[{id:1, name:'MS Active Sync'}, {id:2, name:'Web Service'}]">
+      </kendo-combobox>
+        </kendo-floatinglabel>
+      </div> -->
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Status"
+          showErrors="initial"
+        >
+        <kendo-combobox
+        size="large"
+        textField="name"
+        [(ngModel)]="status"
+        valueField="id"
+        [disabled]="true"
+        [valuePrimitive]="true"
+        [data]="[{id:true , name:'Active'}, {id:false, name:'Inactive'}]">
+      </kendo-combobox>
+
+          <!-- <kendo-formerror
+              *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+            >
+              Address description is required
+            </kendo-formerror> -->
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Hardware ID"
+          showErrors="initial"
+        >
+          <input type="text" [readOnly]="true" [(ngModel)]="serialNo" kendoTextBox class="k-input-lg k-rounded-lg" />
+          <!-- <kendo-formerror
+              *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+            >
+              Address description is required
+            </kendo-formerror> -->
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Device S.No"
+          showErrors="initial"
+        >
+          <input type="text"  [(ngModel)]="deviceSNo" kendoTextBox class="k-input-lg k-rounded-lg" />
+          <!-- <kendo-formerror
+              *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+            >
+              Address description is required
+            </kendo-formerror> -->
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="License Key"
+          showErrors="initial"
+        >
+          <input type="text"  [(ngModel)]="licKey" kendoTextBox class="k-input-lg k-rounded-lg" />
+          <!-- <kendo-formerror
+              *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+            >
+              Address description is required
+            </kendo-formerror> -->
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-12 text-end">
+        <button
+          kendoButton
+          size="large"
+          rounded="large"
+          fillMode="outline"
+          themeColor="primary"
+          [routerLink]="'../../'"
+          [queryParams]="{ currentPage: pagination.currentPage, pageSize: pagination.pageSize }"
+          class="me-2"
+          [disabled]="sendingRequest"
+        >
+          Back
+        </button>
+        <button
+        [disabled]="sendingRequest"
+        kendoButton
+        size="large"
+        rounded="large"
+        themeColor="primary"
+        (click)="onSubmit()"
+        >
+          {{ "Save" }}
+        </button>
+      </div>
+    </div>

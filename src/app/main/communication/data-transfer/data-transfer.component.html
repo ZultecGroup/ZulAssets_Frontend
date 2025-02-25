@@ -1,0 +1,114 @@
+<form>
+  <div class="row">
+    <div class="col-12">
+      <h6 class="mb-0 fw-bold">Data Transmission</h6>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-lg-auto">
+      <input type="checkbox" #assets kendoCheckBox />
+      <kendo-label
+        class="k-checkbox-label"
+        [for]="assets"
+        text="Assets"
+      ></kendo-label>
+    </div>
+    <div class="col-lg mb-3">
+      <form class="mt-0">
+        <div class="row">
+          <div class="col-12 mb-3">
+            <h6 class="mb-0 fw-bold">Asset Filter(Keep empty for all)</h6>
+          </div>
+          <div class="col-md-6 mb-3">
+            <kendo-floatinglabel
+              class="w-100"
+              text="Location"
+              showErrors="initial"
+            >
+              <kendo-combobox size="large" [data]="[]"></kendo-combobox>
+            </kendo-floatinglabel>
+          </div>
+          <div class="col-md-6 mb-3">
+            <kendo-floatinglabel
+              class="w-100"
+              text="Category"
+              showErrors="initial"
+            >
+              <kendo-combobox size="large" [data]="[]"></kendo-combobox>
+            </kendo-floatinglabel>
+          </div>
+          <div class="col-md-6 mb-3">
+            <kendo-floatinglabel
+              class="w-100"
+              text="Cost Center"
+              showErrors="initial"
+            >
+              <kendo-combobox size="large" [data]="[]"></kendo-combobox>
+            </kendo-floatinglabel>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-auto">
+        <input type="checkbox" #users kendoCheckBox />
+        <kendo-label
+          class="k-checkbox-label"
+          [for]="users"
+          text="Users"
+        ></kendo-label>
+      </div>
+      <div class="col-lg-auto">
+        <input type="checkbox" #locations kendoCheckBox />
+        <kendo-label
+          class="k-checkbox-label"
+          [for]="locations"
+          text="Locations"
+        ></kendo-label>
+      </div>
+      <div class="col-lg-auto">
+        <input type="checkbox" #categories kendoCheckBox />
+        <kendo-label
+          class="k-checkbox-label"
+          [for]="categories"
+          text="Categories"
+        ></kendo-label>
+      </div>
+  </div>
+</form>
+
+<div class="row mt-3">
+  <div class="col-md-12">
+    <kendo-grid
+      [kendoGridBinding]="gridView"
+      [pageable]="true"
+      [pageSize]="15"
+      [sortable]="true"
+      [loading]="fetchingData"
+      [selectable]="true"
+      [resizable]="true"
+      #grid
+    >
+      <ng-template kendoGridToolbarTemplate>
+        <div class="d-flex align-items-center justify-content-between w-100">
+          <h5 class="mb-0">Devices</h5>
+          <button kendoButton size="large" rounded="large" themeColor="primary">
+            Send
+          </button>
+        </div>
+      </ng-template>
+      <kendo-grid-checkbox-column
+        [showSelectAll]="true"
+      ></kendo-grid-checkbox-column>
+      <kendo-grid-column field="deviceID" title="Device ID">
+      </kendo-grid-column>
+      <kendo-grid-column field="deviceDesc" title="Description">
+      </kendo-grid-column>
+      <kendo-grid-column field="commType" title="Type"> </kendo-grid-column>
+      <kendo-grid-column field="deviceIp" title="Device IP">
+      </kendo-grid-column>
+      <kendo-grid-column field="progress" title="Progress"> </kendo-grid-column>
+    </kendo-grid>
+  </div>
+</div>

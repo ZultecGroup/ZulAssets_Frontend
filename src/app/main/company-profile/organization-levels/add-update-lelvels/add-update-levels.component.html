@@ -1,0 +1,62 @@
+<ng-container *ngIf="!fetchingData; else loader">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h5 translate>{{ isEditMode ? "Update" : "Create New"  }} Level</h5>
+    </div>
+  </div>
+  <form [formGroup]="LevelForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="{{'Level Name' | translate}}"
+          showErrors="initial"
+        >
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            formControlName="lvlDesc"
+          />
+          <kendo-formerror
+            *ngIf="!LevelForm.controls['lvlDesc'].valid && LevelForm.controls['lvlDesc'].touched && LevelForm.controls['lvlDesc'].errors?.['required']"
+          >
+          {{'Level Name is required' | translate}}
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-12 text-end">
+        <button
+          kendoButton
+          size="large"
+          rounded="large"
+          fillMode="outline"
+          themeColor="primary"
+          [routerLink]="isEditMode ? '../../' : '../'"
+           [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+          class="me-2"
+          [disabled]="sendingRequest"
+        >
+          {{'Back' | translate}}
+        </button>
+        <button
+          [disabled]="sendingRequest"
+          kendoButton
+          size="large"
+          rounded="large"
+          themeColor="primary"
+          (click)="onSubmit()"
+        >
+          {{ (isEditMode ? "Update" : "Create") | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

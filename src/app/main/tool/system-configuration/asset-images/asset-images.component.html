@@ -1,0 +1,57 @@
+<form class="mt-0">
+    <ng-container [formGroup]="assetImagesForm">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <h6 class="fw-bold">Storage Location</h6>
+          <div class="d-flex">
+            <input
+              type="radio"
+              value="Database"
+              formControlName="imgStorgeLoc"
+              kendoRadioButton
+            />
+            <kendo-label
+              text="Database"
+              class="mx-2"
+            ></kendo-label>
+  
+            <input
+              type="radio"
+              value="Shared Folder"
+              formControlName="imgStorgeLoc"
+              kendoRadioButton
+            />
+            <kendo-label
+              text="Shared Folder"
+              class="mx-2"
+            ></kendo-label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <h6 class="fw-bold">Asset or Item based images</h6>
+          <div class="d-flex">
+            <input
+              type="radio"
+              value="Item Images"
+              formControlName="imgType"
+              kendoRadioButton
+            />
+            <kendo-label
+              text="Item Images"
+              class="mx-2"
+            ></kendo-label>
+  
+            <input
+              type="radio"
+              value="Asset Images"
+              #auto
+              formControlName="imgType"
+              kendoRadioButton
+            />
+            <kendo-label text="Asset Images" class="mx-2"></kendo-label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+  

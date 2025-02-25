@@ -1,0 +1,84 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>{{ "Create New" }} Barcode Company Policy</h5>
+  </div>
+</div>
+<form [formGroup]="barCodePolicyForm">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+
+
+      <kendo-floatinglabel size="large" class="w-100" text="Company">
+        <kendo-dropdownlist
+        size="large"
+        rounded="large"
+        [data]="data"
+        textField="companyName"
+        valueField="companyId"
+        formControlName="companyID"
+        [valuePrimitive]="true"
+        [filterable]="true"
+        (filterChange)="handleFilter($event)"
+        ></kendo-dropdownlist>
+        <kendo-formerror
+        *ngIf="!barCodePolicyForm.controls['companyID'].valid && barCodePolicyForm.controls['companyID'].touched && barCodePolicyForm.controls['companyID'].errors?.['required']"
+        >Company is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+
+
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Structure"
+        showErrors="initial"
+      >
+        <kendo-dropdownlist
+        size="large"
+        rounded="large"
+        [data]="BarcodeStructureView"
+        textField="barCode"
+        valueField="barStructID"
+        formControlName="barcodeStructureID"
+        [valuePrimitive]="true"
+        [filterable]="true"
+        (filterChange)="handleFilter($event)"
+
+
+        ></kendo-dropdownlist>
+        <kendo-formerror
+            *ngIf="!barCodePolicyForm.controls['barcodeStructureID'].valid && barCodePolicyForm.controls['barcodeStructureID'].touched && barCodePolicyForm.controls['barcodeStructureID'].errors?.['required']"
+          >
+            Structure is required
+          </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-12 text-end">
+      <button
+        kendoButton
+        size="large"
+        rounded="large"
+        fillMode="outline"
+        themeColor="primary"
+        [routerLink]="isEditMode ? '../../' : '../'"
+        [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+        class="me-2"
+      >
+        Back
+      </button>
+      <button
+        kendoButton
+        size="large"
+        [disabled]="sendingRequest"
+        rounded="large"
+        themeColor="primary"
+        type="button"
+        (click)="ApplyPolicy()"
+      >
+        {{ "Apply Policy" }}
+      </button>
+    </div>
+  </div>
+</form>

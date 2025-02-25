@@ -1,0 +1,27 @@
+<div class="row my-3">
+  <div class="col-md-12">
+    <div class="w-100 mb-2">
+      <p><b> Previous Location:</b> {{fromLoc}}</p>
+      <p class="mb-0"> <b> Current Location:</b> {{toLoc}}</p>
+    </div>
+    <ag-grid-angular [rowData]="gridView" [columnDefs]="trackingHistoryGridCols" [rowSelection]="'single'"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (rowClicked)='onRowClicked($event.data)'
+      class="ag-theme-alpine w-100" style="height:50vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>

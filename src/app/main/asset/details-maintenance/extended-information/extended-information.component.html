@@ -1,0 +1,607 @@
+<ng-container [formGroup]="extendedInformationForm">
+  <div class="p-3 my-3 border rounded">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>Additional Information</h5>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Model">
+          <input
+            type="text"
+            [(ngModel)]="astModel"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            name="astModel"
+            formControlName="astModel"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['astModel'].valid && extendedInformationForm.controls['astModel'].touched && extendedInformationForm.controls['astModel'].errors?.['required']"
+          >
+            Model is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Serial #">
+          <input
+            type="text"
+            [(ngModel)]="serialNo"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            name="serialNo"
+            formControlName="serialNo"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['serialNo'].valid && extendedInformationForm.controls['serialNo'].touched && extendedInformationForm.controls['serialNo'].errors?.['required']"
+          >
+            Serial # is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Labels Printed">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="labelCount"
+            name="labelCount"
+            formControlName="labelCount"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['labelCount'].valid && extendedInformationForm.controls['labelCount'].touched && extendedInformationForm.controls['labelCount'].errors?.['required']"
+          >
+            Labels Printed is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Old Asset ID">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="oldAstID"
+            name="oldAstID"
+            formControlName="oldAstID"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['oldAstID'].valid && extendedInformationForm.controls['oldAstID'].touched && extendedInformationForm.controls['oldAstID'].errors?.['required']"
+          >
+            Old Asset ID is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Transfer Remarks">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="transRemarks"
+            name="transRemarks"
+            formControlName="transRemarks"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['transRemarks'].valid && extendedInformationForm.controls['transRemarks'].touched && extendedInformationForm.controls['transRemarks'].errors?.['required']"
+          >
+            Transfer Remarks is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </div>
+  <div class="p-3 mb-3 border rounded">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>Supplier/Insurer</h5>
+      </div>
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Supplier">
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="dataSupplier"
+            textField="suppName"
+            [(ngModel)]="suppID"
+            valueField="suppID"
+            name="suppID"
+            formControlName="suppID"
+            [valuePrimitive]="true"
+            [filterable]="true"
+            (filterChange)="handleSupplier($event)"
+          ></kendo-dropdownlist>
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['suppID'].valid && extendedInformationForm.controls['suppID'].touched && extendedInformationForm.controls['suppID'].errors?.['required']"
+          >
+            Supplier is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-6 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Insurer">
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="dataInsurer"
+            textField="insName"
+            [(ngModel)]="insID"
+            valueField="insCode"
+            name="insID"
+            formControlName="insID"
+            [valuePrimitive]="true"
+            [filterable]="true"
+            (filterChange)="handleInsurer($event)"
+          ></kendo-dropdownlist>
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['insID'].valid && extendedInformationForm.controls['insID'].touched && extendedInformationForm.controls['insID'].errors?.['required']"
+          >
+            Insurer is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </div>
+  <div class="p-3 mb-3 border rounded">
+    <div class="row">
+      <div class="col-12">
+        <h5>Purchase/Info</h5>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="PO Code">
+          <!-- <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="poCode"
+            name="poCode"
+            formControlName="poCode"
+          /> -->
+          <kendo-dropdownlist
+            size="large"
+            rounded="large"
+            [data]="allPO"
+            textField="poCode"
+            [(ngModel)]="poCode"
+            valueField="poCode"
+            name="poCode"
+            formControlName="poCode"
+            [valuePrimitive]="true"
+            [filterable]="true"
+            (filterChange)="handlePO($event)"
+          ></kendo-dropdownlist>
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['poCode'].valid && extendedInformationForm.controls['poCode'].touched && extendedInformationForm.controls['poCode'].errors?.['required']"
+          >
+            PO Code is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="PO #">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="poNumber"
+            name="poNumber"
+            formControlName="poNumber"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['poNumber'].valid && extendedInformationForm.controls['poNumber'].touched && extendedInformationForm.controls['poNumber'].errors?.['required']"
+          >
+            PO # is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Invoice #">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="invNumber"
+            name="invNumber"
+            formControlName="invNumber"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['invNumber'].valid && extendedInformationForm.controls['invNumber'].touched && extendedInformationForm.controls['invNumber'].errors?.['required']"
+          >
+            Invoice # is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </div>
+  <div class="p-3 mb-3 border rounded">
+    <div class="row">
+      <h5>ERP Information</h5>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel
+          size="large"
+          class="w-100"
+          text="Capitilization Date"
+        >
+          <kendo-datepicker
+            [(ngModel)]="capitalizationDate"
+            name="capitalizationDate"
+            formControlName="capitalizationDate"
+          ></kendo-datepicker>
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['capitalizationDate'].valid && extendedInformationForm.controls['capitalizationDate'].touched && extendedInformationForm.controls['capitalizationDate'].errors?.['required']"
+          >
+            Capitilization Date is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Business Area">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="bussinessArea"
+            name="bussinessArea"
+            formControlName="bussinessArea"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['bussinessArea'].valid && extendedInformationForm.controls['bussinessArea'].touched && extendedInformationForm.controls['bussinessArea'].errors?.['required']"
+          >
+            Business Area is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Inventory Number">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="invNumber"
+            name="invNumber"
+            formControlName="invNumber"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['invNumber'].valid && extendedInformationForm.controls['invNumber'].touched && extendedInformationForm.controls['invNumber'].errors?.['required']"
+          >
+            invNumber is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Created By">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="createdBy"
+            name="createdBy"
+            formControlName="createdBy"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['createdBy'].valid && extendedInformationForm.controls['createdBy'].touched && extendedInformationForm.controls['createdBy'].errors?.['required']"
+          >
+            createdBy is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Reference Code">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="refCode"
+            name="refCode"
+            formControlName="refCode"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['refCode'].valid && extendedInformationForm.controls['refCode'].touched && extendedInformationForm.controls['refCode'].errors?.['required']"
+          >
+            refCode is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Plate #">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="plate"
+            name="plate"
+            formControlName="plate"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['plate'].valid && extendedInformationForm.controls['plate'].touched && extendedInformationForm.controls['plate'].errors?.['required']"
+          >
+            plate is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="PO">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="poerp"
+            name="poerp"
+            formControlName="poerp"
+          />
+
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['poerp'].valid && extendedInformationForm.controls['poerp'].touched && extendedInformationForm.controls['poCode'].errors?.['required']"
+          >
+            po Erp is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Capex #">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="capex"
+            name="capex"
+            formControlName="capex"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['capex'].valid && extendedInformationForm.controls['capex'].touched && extendedInformationForm.controls['capex'].errors?.['required']"
+          >
+            capex is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="GRN #">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="grn"
+            name="grn"
+            formControlName="grn"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['grn'].valid && extendedInformationForm.controls['grn'].touched && extendedInformationForm.controls['grn'].errors?.['required']"
+          >
+            grn is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <input type="checkbox" #disposed kendoCheckBox />
+        <kendo-label
+          class="k-checkbox-label"
+          [for]="disposed"
+          text="Asset with value"
+        ></kendo-label>
+      </div>
+    </div>
+  </div>
+  <div class="p-3 mb-3 border rounded">
+    <div class="row">
+      <h5>Custom Field</h5>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 1">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld1"
+            name="customFld1"
+            formControlName="customFld1"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld1'].valid && extendedInformationForm.controls['customFld1'].touched && extendedInformationForm.controls['customFld1'].errors?.['required']"
+          >
+            customFld1 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 2">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld2"
+            name="customFld2"
+            formControlName="customFld2"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld2'].valid && extendedInformationForm.controls['customFld2'].touched && extendedInformationForm.controls['customFld2'].errors?.['required']"
+          >
+            customFld2 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 3">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld3"
+            name="customFld3"
+            formControlName="customFld3"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld3'].valid && extendedInformationForm.controls['customFld3'].touched && extendedInformationForm.controls['customFld3'].errors?.['required']"
+          >
+            customFld3 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 4">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld4"
+            name="customFld4"
+            formControlName="customFld4"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld4'].valid && extendedInformationForm.controls['customFld4'].touched && extendedInformationForm.controls['customFld4'].errors?.['required']"
+          >
+            customFld4 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 5">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld5"
+            name="customFld5"
+            formControlName="customFld5"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld5'].valid && extendedInformationForm.controls['customFld5'].touched && extendedInformationForm.controls['customFld5'].errors?.['required']"
+          >
+            customFld5 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 6">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld6"
+            name="customFld6"
+            formControlName="customFld6"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld6'].valid && extendedInformationForm.controls['customFld6'].touched && extendedInformationForm.controls['customFld6'].errors?.['required']"
+          >
+            customFld6 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 7">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld7"
+            name="customFld7"
+            formControlName="customFld7"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld7'].valid && extendedInformationForm.controls['customFld7'].touched && extendedInformationForm.controls['customFld7'].errors?.['required']"
+          >
+            customFld7 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 8">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld8"
+            name="customFld8"
+            formControlName="customFld8"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld8'].valid && extendedInformationForm.controls['customFld8'].touched && extendedInformationForm.controls['customFld8'].errors?.['required']"
+          >
+            customFld8 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Custom Field 9">
+          <input
+            type="text"
+            kendoTextBox
+            class="k-input-lg k-rounded-lg"
+            [(ngModel)]="customFld9"
+            name="customFld9"
+            formControlName="customFld9"
+          />
+          <kendo-formerror
+            class="base-align"
+            *ngIf="!extendedInformationForm.controls['customFld9'].valid && extendedInformationForm.controls['customFld9'].touched && extendedInformationForm.controls['customFld9'].errors?.['required']"
+          >
+            customFld9 is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-12 text-end mb-3">
+      <button *ngIf="GeneralService.permissions['Detail & Maintenance'].edit"
+        rounded="large"
+        kendoButton
+        themeColor="primary"
+        (click)="submit()"
+        class="me-2"
+      >
+        Save
+      </button>
+      <button
+        rounded="large"
+        kendoButton
+        themeColor="primary"
+        (click)="clear()"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>
+<ng-template #imgWrapper>
+  <div class="upload-img d-flex align-items-center justify-content-center">
+    <small class="fw-bold"> Item Image </small>
+  </div>
+</ng-template>

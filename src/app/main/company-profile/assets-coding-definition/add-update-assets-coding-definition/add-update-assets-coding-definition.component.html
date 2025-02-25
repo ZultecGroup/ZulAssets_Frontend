@@ -1,0 +1,122 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>{{ "Create New" }} Asset Coding Definition</h5>
+  </div>
+</div>
+<form [formGroup]="assetsCodingForm">
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Company"
+        showErrors="initial"
+      >
+        <kendo-dropdownlist
+          size="large"
+          rounded="large"
+          [data]="allCompanies"
+          textField="companyName"
+          valueField="companyId"
+          formControlName="companyID"
+          [valuePrimitive]="true"
+          [(ngModel)]="Company"
+        ></kendo-dropdownlist>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetsCodingForm.controls['companyID'].valid && assetsCodingForm.controls['companyID'].touched && assetsCodingForm .controls['companyID'].errors?.['required']"
+          >Company ID is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+
+      <!-- <kendo-formerror
+            *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+          >
+            Address description is required
+          </kendo-formerror> -->
+      <!-- </kendo-floatinglabel> -->
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Start Serial"
+        showErrors="initial"
+      >
+        <input
+          type="number"
+          formControlName="startSerial"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <!-- <kendo-formerror
+            *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+          >
+            Address description is required
+          </kendo-formerror> -->
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetsCodingForm.controls['startSerial'].valid && assetsCodingForm.controls['startSerial'].touched && assetsCodingForm.controls['startSerial'].errors?.['required']"
+          >startSerial is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-4 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="End Serial"
+        showErrors="initial"
+      >
+        <input
+          type="number"
+          formControlName="endSerial"
+          kendoTextBox
+          class="k-input-lg k-rounded-lg"
+        />
+        <!-- <kendo-formerror
+            *ngIf="!addressForm.controls['addressDesc'].valid && addressForm.controls['addressDesc'].touched && addressForm.controls['addressDesc'].errors?.['required']"
+          >
+            Address description is required
+          </kendo-formerror> -->
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetsCodingForm.controls['endSerial'].valid && assetsCodingForm.controls['endSerial'].touched && assetsCodingForm.controls['endSerial'].errors?.['required']"
+          >endSerial is required
+        </kendo-formerror>
+        <kendo-formerror
+          class="base-align"
+          *ngIf="!assetsCodingForm.controls['endSerial'].valid &&
+            assetsCodingForm.controls['endSerial'].touched &&
+            assetsCodingForm.hasError('greaterThan')"
+        >
+          End Serial must be greater than start serial
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-12 text-end">
+      <button
+        kendoButton
+        size="large"
+        rounded="large"
+        fillMode="outline"
+        themeColor="primary"
+        [routerLink]="isEditMode ? '../../' : '../'"
+        [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+        class="me-2"
+      >
+        Back
+      </button>
+      <button
+        kendoButton
+        size="large"
+        rounded="large"
+        themeColor="primary"
+        type="button"
+        (click)="submit()"
+      >
+        {{ "Save" }}
+      </button>
+    </div>
+  </div>
+</form>

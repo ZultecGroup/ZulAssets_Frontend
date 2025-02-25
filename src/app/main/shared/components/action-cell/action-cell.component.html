@@ -1,0 +1,2 @@
+<button *ngIf="permissions?.edit" type="button" class="btn btn-outline-primary btn-sm me-1" (click)="onClick($event,rowData,true)"><fa-icon [icon]="faEdit"></fa-icon></button>
+<button *ngIf="permissions?.delete" type="button" class="btn btn-outline-danger btn-sm" (click)="onClick($event,rowData,false)"><fa-icon [icon]="faTrash"></fa-icon></button>

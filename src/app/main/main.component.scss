@@ -1,0 +1,127 @@
+.wrapper {
+  height: calc(100vh - 68px);
+  overflow: auto;
+}
+
+kendo-drawer-content {
+  height: 100vh;
+  overflow: hidden;
+}
+
+// .k-drawer {
+//   background-color: #f2f2f2;
+//   border-right: 1px solid #ccc;
+// }
+
+.kendo-drawer-bg {
+  background-color: #f2f2f2;
+}
+
+.drawer-design {
+  border-bottom: 1px solid #f3f5f9;
+  height: 72px;
+}
+
+::ng-deep .k-drawer-items {
+  padding-top: 1px;
+}
+
+::ng-deep .k-drawer-item {
+  border-bottom: 1px solid #f3f5f9;
+  padding: 7px 20px;
+}
+
+::ng-deep .k-drawer-item.k-level-1 {
+  border: none;
+  padding-left: 20px;
+
+  .k-item-text {
+    text-transform: lowercase;
+    font-family: "Open Sans", sans-serif;
+    text-transform: capitalize;
+    color: #41505f;
+    position: relative;
+    font-size: 14px;
+  }
+}
+
+::ng-deep .k-item-text {
+  display: block;
+  font-size: 11px;
+  font-family: "Archivo", sans-serif;
+  text-transform: uppercase;
+  color: #6e7985;
+  letter-spacing: 0.7px;
+  position: relative;
+}
+
+// ::ng-deep  .k-i-arrow-chevron-down ::before {
+//   color: #41505f !important ;
+// }
+
+.top-bar {
+  height: 72px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 800;
+  border-bottom: 1px solid #f3f5f9;
+  background-color: #fff;
+  transition: all 0.25s;
+  box-shadow: 0 1px 1px rgba(33, 40, 48, 0.01), 0 4px 4px rgba(33, 40, 48, 0.01),
+    0 16px 16px rgba(33, 40, 48, 0.01);
+}
+
+// .sidebar-logo {
+//   margin-top: 3px;
+// }
+
+::ng-deep .k-drawer-item.k-selected {
+  background-color: white;
+}
+
+::ng-deep .k-drawer-item.k-selected:hover,
+.k-drawer-item.k-selected.k-hover {
+  background-color: white;
+}
+
+::ng-deep .k-drawer-item.k-selected .k-item-text {
+  color: #506fd9;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+}
+
+::ng-deep .k-drawer-item .k-icon,
+.k-drawer-item.k-selected .k-icon {
+  color: #6e7985;
+}
+
+::ng-deep .k-drawer-push .k-drawer {
+  box-shadow: 1px 0 1px rgba(33, 40, 48, 0.01), 4px 0 4px rgba(33, 40, 48, 0.01),
+    16px 0 16px rgba(33, 40, 48, 0.01);
+  // flex-basis: 250px !important;
+}
+
+::ng-deep .k-drawer-item .k-drawer-toggle {
+  font-size: 12px;
+}
+
+.side-logo-size{
+  width: 150px;
+  height: 40px;
+}
+
+.header-logo::after, .sidebar-logo::after{
+  display: none;
+}
+
+// ::ng-deep .kendo-drawer-container .k-drawer-wrapper {
+//   width: 250px !important;
+// }
+// // ::ng-deep .k-drawer-items, .k-drawer-items ul{
+// //   width: 102%;
+// // }
+
+// ::ng-deep .k-drawer-wrapper {
+//   width: 250px !important;
+// }

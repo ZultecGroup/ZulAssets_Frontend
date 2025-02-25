@@ -1,0 +1,211 @@
+<div [ngClass]="'currentTheme' | translate">
+  <ng-container *ngIf="!fetchingData; else loader">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h5 class="base-align" translate>Create Application User</h5>
+      </div>
+    </div>
+    <form [formGroup]="applicationUserForm">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <kendo-floatinglabel
+            class="base-align"
+            size="large"
+            class="w-100"
+            text="{{ 'Login Name' | translate }}"
+          >
+            <input
+              type="text"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg base-align"
+              formControlName="loginName"
+            />
+            <kendo-formerror
+              class="base-align"
+              *ngIf="!applicationUserForm.controls['loginName'].valid && applicationUserForm.controls['loginName'].touched && applicationUserForm.controls['loginName'].errors?.['required']"
+            >
+              {{ "Login Name is required" | translate }}
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-4 mb-3 base-align">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="{{ 'User Name' | translate }}"
+          >
+            <input
+              type="text"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg base-align"
+              formControlName="userName"
+            />
+            <kendo-formerror
+              class="base-align"
+              *ngIf="!applicationUserForm.controls['userName'].valid && applicationUserForm.controls['userName'].touched && applicationUserForm.controls['userName'].errors?.['required']"
+            >
+              {{ "User Name is required" | translate }}
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-4 mb-3 base-align">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="{{ 'Role' | translate }}"
+          >
+            <kendo-dropdownlist
+              size="large"
+              rounded="large"
+              [data]="data"
+              textField="description"
+              valueField="roleID"
+              formControlName="roleID"
+              [valuePrimitive]="true"
+              class="base-align"
+              [filterable]="true"
+              (filterChange)="handleFilter($event)"
+            ></kendo-dropdownlist>
+            <kendo-formerror
+              class="base-align"
+              *ngIf="!applicationUserForm.controls['roleID'].valid && applicationUserForm.controls['roleID'].touched && applicationUserForm.controls['roleID'].errors?.['required']"
+            >
+              {{ "Role is required" | translate }}
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-4 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="{{ 'Password' | translate }}"
+          >
+            <kendo-textbox
+              #password
+              placeholder="Password"
+              formControlName="password"
+              class="k-input-lg k-rounded-lg base-align"
+            >
+              <ng-template kendoTextBoxSuffixTemplate>
+                <button
+                  kendoButton
+                  look="clear"
+                  icon="eye"
+                  (click)="toggleVisibility()"
+                ></button>
+              </ng-template>
+            </kendo-textbox>
+            <kendo-formerror>
+              <span
+                class="base-align"
+                *ngIf="(applicationUserForm.controls['password'].touched || submitted) && applicationUserForm.controls['password'].errors?.['required']"
+              >
+                {{
+                  "Password must contain minimum 8 character, A number, A lowercase and uppercase letter"
+                    | translate
+                }}
+              </span>
+              <span
+                class="base-align"
+                *ngIf="applicationUserForm.controls['password'].touched && applicationUserForm.controls['password'].errors?.['invalidPassword']"
+              >
+                {{ "Please enter valid password" | translate }}
+              </span>
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-4 mb-3 base-align">
+          <kendo-floatinglabel
+            class="base-align"
+            size="large"
+            class="w-100 base-align"
+            text="{{ 'Confirm Password' | translate }}"
+          >
+            <kendo-textbox
+              #confirmPassword
+              placeholder="Confirm Password"
+              formControlName="confirmPassword"
+              class="k-input-lg k-rounded-lg base-align"
+            >
+              <ng-template kendoTextBoxSuffixTemplate>
+                <button
+                  kendoButton
+                  look="clear"
+                  icon="eye"
+                  (click)="toggleConfirmVisibility()"
+                ></button>
+              </ng-template>
+            </kendo-textbox>
+            <kendo-formerror>
+              <span
+                class="base-align"
+                *ngIf="(applicationUserForm.controls['confirmPassword'].touched || submitted)&& applicationUserForm.controls['confirmPassword'].errors?.['required']"
+              >
+                {{ "Please enter confirm password" | translate }}
+              </span>
+              <span
+                class="base-align"
+                *ngIf="applicationUserForm.controls['confirmPassword'].touched && applicationUserForm.controls['confirmPassword'].errors?.['passwordMismatch']"
+              >
+                {{ "password does not match" | translate }}
+              </span>
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-4 mb-4 base-align">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100 base-align"
+            text="{{ 'User Access' | translate }}"
+          >
+            <kendo-dropdownlist
+              size="large"
+              rounded="large"
+              [filterable]="true"
+              [data]="accessList"
+              formControlName="userAccess"
+              textField="text"
+              valueField="value"
+              [valuePrimitive]="true"
+              class="base-align"
+            ></kendo-dropdownlist>
+            <kendo-formerror
+              class="base-align"
+              *ngIf="!applicationUserForm.controls['userAccess'].valid && applicationUserForm.controls['userAccess'].touched && applicationUserForm.controls['userAccess'].errors?.['required']"
+            >
+              {{ "User Access is required" | translate }}
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-12 text-end">
+          <button
+            kendoButton
+            size="large"
+            rounded="large"
+            fillMode="outline"
+            themeColor="primary"
+            (click)="back()"
+            class="me-2 base-align"
+          >
+            {{ "Back" | translate }}
+          </button>
+          <button
+            [disabled]="sendingRequest"
+            kendoButton
+            size="large"
+            rounded="large"
+            themeColor="primary"
+            (click)="onSubmit()"
+          >
+            {{ (isEditMode ? "Update" : "Create") | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

@@ -1,0 +1,131 @@
+<ng-container >
+  <div class="row mb-3">
+    <div class="col-12">
+      <h5>{{ isEditMode ? "Update" : "Create New" }} Inventory Schedule</h5>
+    </div>
+  </div>
+    <div class="row">
+  <!-- <form > -->
+<div class="row" [formGroup]="scheduleForm">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Inventory Description" showErrors="initial">
+          <input type="text" kendoTextBox class="k-input-lg k-rounded-lg" formControlName="invDesc" />
+
+          <kendo-formerror
+            *ngIf="!scheduleForm.controls['invDesc'].valid && scheduleForm.controls['invDesc'].touched && scheduleForm.controls['invDesc'].errors?.['required']">
+            Inventory description is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Inventory Start Date" showErrors="initial">
+          <kendo-datepicker [incompleteDateValidation]="true" [(ngModel)]="invStartDate" formControlName="invStartDate"></kendo-datepicker>
+          <kendo-formerror
+            *ngIf="!scheduleForm.controls['invStartDate'].valid && scheduleForm.controls['invStartDate'].touched && scheduleForm.controls['invStartDate'].errors?.['required']">
+            Inventory start date is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Inventory End Date" showErrors="initial">
+          <kendo-datepicker [incompleteDateValidation]="true" [min]="invStartDate" formControlName="invEndDate"></kendo-datepicker>
+          <kendo-formerror
+            *ngIf="!scheduleForm.controls['invEndDate'].valid && scheduleForm.controls['invEndDate'].touched && scheduleForm.controls['invEndDate'].errors?.['required']">
+            Inventory end date is required
+          </kendo-formerror>
+          <kendo-formerror *ngIf="scheduleForm.errors?.['dateRangeInvalid']">
+            Start date must not be greater than the end date.
+          </kendo-formerror>
+
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  <!-- </form> -->
+
+      <div class="row mt-5">
+        <div class="col-md-5">
+          <div class="card h-100" >
+            <div class="card-body p-0 d-flex flex-column h-100" >
+
+              <div class="content" style="height: 55vh; overflow: auto;" #locData>
+                <app-locations (treeReady)="onTreeReady()" (invtorySelectedLocations)="getInvtorySelectedLocations($event)" [isInvantory]="true">
+
+                </app-locations>
+              </div>
+
+
+              <div class="p-3 border-top" style="height: 30vh; overflow: auto;">
+                <div class="selected-nodes">
+                  <h5>Selected Nodes</h5>
+                  <ul>
+                    <li *ngFor="let node of selectedLeafNodes">
+                      {{ node.locationFullPath }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+
+          <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+            <h5 class="mb-0">Devices</h5>
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              <input type="search" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+                (ngModelChange)="onFilterTextBoxChanged()">
+
+            </div>
+          </div>
+
+          <ag-grid-angular [rowData]="gridView" [getRowId]="getRowId" [columnDefs]="deviceConfigGridCols" [rowSelection]="'multiple'"
+            [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (selectionChanged)="onSelectionChanged()" (rowDataUpdated)="onRowDataUpdated()" (gridReady)="onGridReady($event)"
+            class="ag-theme-alpine w-100" style="height:75vh">
+          </ag-grid-angular>
+          <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+            <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+              (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+              [boundaryLinks]="true" />
+
+            <div class="me-3 d-flex flex-row">
+              <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+                (ngModelChange)="pageSizeChange($event)">
+                <option *ngFor="let value of pagination.pageSizes" [value]="value"
+                  [selected]="pagination.pageSize == value">
+                  {{value}}
+                </option>
+              </select>
+            </div>
+            <label for="pageSize" class="text-muted">Page Size</label>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="col-12 text-end mt-2">
+        <button kendoButton size="large" rounded="large" fillMode="outline" themeColor="primary"
+          [routerLink]="isEditMode ? '../../' : '../'"
+          [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+          class="me-2" [disabled]="sendingRequest">
+          Back
+        </button>
+        <button [disabled]="sendingRequest" kendoButton size="large" rounded="large" themeColor="primary"
+          (click)="onSubmit()">
+          {{ isEditMode ? "Update" : "Create" }}
+        </button>
+      </div>
+
+    </div>
+
+
+
+</ng-container>
+
+<ng-template #loader>
+  <div class="d-flex align-items-center justify-content-center h-100">
+    <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+  </div>
+</ng-template>

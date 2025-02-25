@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Companies</h5>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <input type="search" class="form-control" placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="onFilterTextBoxChanged()">
+        <button *ngIf="GeneralService.permissions.Companies.add" type="button" class="btn btn-primary" [routerLink]="'create'" style="width: 130px;">
+          Add New
+        </button>
+      </div>
+    </div>
+    <ag-grid-angular [rowData]="gridView" [columnDefs]="companiesGridCols" [rowSelection]="'single'"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (gridReady)="onGridReady($event)"
+      class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        [pageSize]="pagination.pageSize" [boundaryLinks]="true" (pageChange)="onPageChange($event)" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="changePageSize($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>

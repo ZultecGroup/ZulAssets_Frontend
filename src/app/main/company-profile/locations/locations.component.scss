@@ -1,0 +1,36 @@
+.example-full-width {
+    height: 40px;
+}
+
+.example-full-width ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+.example-full-width ::ng-deep .mat-mdc-form-field-infix {
+    min-height: 100%;
+    padding-top: 10px !important;
+}
+
+.mat-tree-node {
+  display: flex;
+  align-items: center;
+}
+
+.example-tree-invisible {
+  display: none;
+}
+
+.selected-nodes {
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.selected-nodes h3 {
+  margin: 0;
+}
+
+.selected-nodes ul {
+  list-style-type: none;
+  padding: 0;
+}
+

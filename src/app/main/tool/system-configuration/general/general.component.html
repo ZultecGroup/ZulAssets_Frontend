@@ -1,0 +1,140 @@
+<form class="mt-0">
+  <ng-container [formGroup]="generalForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <h6 class="fw-bold">Depreciation Configuration</h6>
+        <div class="d-flex">
+          <input
+            type="radio"
+            name="depRunType"
+            value="0"
+            #manual
+            formControlName="depRunType"
+            kendoRadioButton
+          />
+          <kendo-label
+            [for]="manual"
+            text="Manual Depreciation"
+            class="mx-2"
+          ></kendo-label>
+
+          <input
+            type="radio"
+            name="depRunType"
+            value="1"
+            #auto
+            formControlName="depRunType"
+            kendoRadioButton
+          />
+          <kendo-label
+            [for]="auto"
+            text="Auto Depreciation"
+            class="mx-2"
+          ></kendo-label>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <h6 class="fw-bold">Asset Coding Mode</h6>
+        <div class="d-flex">
+          <input
+            type="radio"
+            value="true"
+            #manual
+            formControlName="codingMode"
+            kendoRadioButton
+          />
+          <kendo-label
+            text="Use Assets Coding Definition"
+            class="mx-2"
+          ></kendo-label>
+
+          <input
+            type="radio"
+            value="false"
+            #auto
+            formControlName="codingMode"
+            kendoRadioButton
+          />
+          <kendo-label text="Use Incremental Coding" class="mx-2"></kendo-label>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <h6 class="fw-bold">Daily Maintenance</h6>
+        <div class="d-flex">
+          <input
+            type="checkbox"
+            #deletePermanently
+            kendoCheckBox
+            formControlName="deletePermanent"
+          />
+          <kendo-label
+            class="k-checkbox-label mx-2"
+            [for]="deletePermanently"
+            text="Delete Data Permanently"
+          ></kendo-label>
+          <input
+            type="checkbox"
+            #exportToServer
+            kendoCheckBox
+            formControlName="exportToServer"
+          />
+          <kendo-label
+            class="k-checkbox-label mx-2"
+            [for]="exportToServer"
+            text="Save to Export Server"
+          ></kendo-label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <h6 class="fw-bold">Personalize</h6>
+        <kendo-floatinglabel
+          class="w-100"
+          text="Set Date Format"
+          showErrors="initial"
+        >
+          <kendo-combobox
+            size="large"
+            [data]="['dd/MM/yyyy', 'yyyy/MM/dd']"
+            formControlName="dateFormat"
+          ></kendo-combobox>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h6 class="fw-bold">Warranty Alarm</h6>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="d-flex">
+          <input
+            type="checkbox"
+            #showAlarmOnStartup
+            kendoCheckBox
+            formControlName="showAlarmOnStartup"
+          />
+          <kendo-label
+            class="k-checkbox-label mx-2"
+            [for]="showAlarmOnStartup"
+            text="Show Alarm on Startup"
+          ></kendo-label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <kendo-floatinglabel
+          text="Alarm Before (Days)"
+          showErrors="initial"
+        >
+          <kendo-numerictextbox
+            [style.width.px]="170"
+            [autoCorrect]="true"
+            [min]="0"
+            format="n0"
+            formControlName="alarmBeforeDays"
+          ></kendo-numerictextbox>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </ng-container>
+</form>

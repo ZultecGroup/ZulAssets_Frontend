@@ -1,0 +1,25 @@
+ ::ng-deep .k-tabstrip-items {
+    border-radius: 7px;
+}
+
+::ng-deep .k-tabstrip-items-wrapper .k-item > .k-link{
+    border: 1px solid #e2e5ec;
+    border-radius: 5px;
+}
+
+
+::ng-deep .k-tabstrip > .k-content {
+    height: calc(100vh - 265px) !important;
+    border: 1px solid #e2e5ec;
+
+}
+
+
+
+::ng-deep .k-tabstrip-top > .k-tabstrip-items-wrapper{
+    margin-bottom: 15px;
+}
+
+::ng-deep .k-tabstrip-scrollable > .k-tabstrip-items-wrapper > .k-button {
+    display: none;
+}

@@ -1,0 +1,134 @@
+<ng-container>
+  <div class="row mt-3" [formGroup]="disposalMethodForm">
+    <div class="col-md-12 mb-3">
+      <h5>Disposal / Sales</h5>
+    </div>
+    <div class="col-md-12 mb-3" >
+      <input
+        type="checkbox"
+        #dis
+        [checked]="true"
+        [(ngModel)]="disposed"
+        kendoCheckBox
+        name="disposed"
+        formControlName="disposed"
+      />
+      <kendo-label
+        class="k-checkbox-label"
+        [for]="dis"
+        text="Disposed"
+      ></kendo-label>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        class="w-100"
+        text="Disposal Method"
+        showErrors="initial"
+      >
+        <kendo-dropdownlist
+          size="large"
+          rounded="large"
+          [data]="dataDisposal"
+          textField="dispDesc"
+          valueField="dispCode"
+          [(ngModel)]="dispCode"
+          formControlName="dispCode"
+          [valuePrimitive]="true"
+          [filterable]="true"
+          (filterChange)="handleDisposal($event)"
+        ></kendo-dropdownlist>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Disposal Date"
+        showErrors="initial"
+      >
+        <kendo-datepicker [(ngModel)]="dispDate"
+        name="dispDate"
+        formControlName="dispDate"></kendo-datepicker>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-md-6 mb-3">
+      <kendo-floatinglabel
+        size="large"
+        class="w-100"
+        text="Disposal Comments"
+        showErrors="initial"
+      >
+        <input
+          type="text"
+          kendoTextBox
+          [(ngModel)]="disposalComments"
+          class="k-input-lg k-rounded-lg"
+          name="disposalComments"
+          formControlName="disposalComments"
+        />
+      </kendo-floatinglabel>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-12 text-end">
+        <button
+        *ngIf="generalService.permissions['Detail & Maintenance'].edit"
+          (click)="submit()"
+          [disabled]="disposalMethodForm.invalid"
+          class="btn btn-primary"
+        >
+          Save
+        </button>
+      </div>
+      <!-- <button (click)="NextTabButton()" class="btn btn-primary">Next</button> -->
+    </div>
+  </div>
+  <!-- <div class="row my-3">
+    <div class="col-md-12">
+      <ag-grid-angular
+        [rowData]="allDisposalMethod"
+        [columnDefs]="disposalOrSalesInfoGridCols"
+        [rowSelection]="'single'"
+        [rowMultiSelectWithClick]="true"
+        [defaultColDef]="defaultColDefs"
+        class="ag-theme-alpine w-100"
+        style="height: 70vh"
+      >
+      </ag-grid-angular>
+      <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+        <ngb-pagination
+          [collectionSize]="pagination.totalItems"
+          [(page)]="pagination.currentPage"
+          (pageChange)="pageChange($event)"
+          [pageSize]="pagination.pageSize"
+          [maxSize]="10"
+          [rotate]="true"
+          [boundaryLinks]="true"
+        />
+
+        <div class="me-3 d-flex flex-row">
+          <select
+            class="form-select form-select-sm"
+            name=""
+            id=""
+            [ngModel]="pagination.pageSize"
+            (ngModelChange)="pageSizeChange($event)"
+          >
+            <option
+              *ngFor="let value of pagination.pageSizes"
+              [value]="value"
+              [selected]="pagination.pageSize == value"
+            >
+              {{ value }}
+            </option>
+          </select>
+        </div>
+        <label for="pageSize" class="text-muted">Page Size</label>
+      </div>
+    </div>
+  </div> -->
+</ng-container>
+<!--
+<div class="row">
+  <button [disabled]="detailMaintenanceService.detailForm.invalid">Save</button>
+</div> -->

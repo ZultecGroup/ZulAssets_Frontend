@@ -1,0 +1,75 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5 translate>{{ isEditMode ? "Update" : "Create New" }} Role</h5>
+  </div>
+</div>
+
+<div class="mb-4">
+  <form [formGroup]="userRoleForm">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="{{ 'Role Description' | translate }}">
+          <input type="text" kendoTextBox class="k-input-lg k-rounded-lg" rounded="large" size="large"
+            formControlName="description" />
+        </kendo-floatinglabel>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="row" *ngIf="isEditMode">
+  <div class="col-xl-12 col-auto mb-3 ml-4">
+    <div class="p-4" style="border: 2px solid #e2e5ec">
+      <h5 translate>User Right</h5>
+      <div class="menu-list">
+        <div *ngFor="let menu of menus" class="menu-item">
+          <!-- Menu Name -->
+          <div class="row">
+            <div class="menu-name col-md-2 mb-3">
+              {{ menu.menuName }}
+            </div>
+
+            <!-- Options -->
+
+            <div class="menu-options col-md-6">
+              <ng-container *ngFor="let option of menu.options">
+
+                <input type="checkbox" [(ngModel)]="option.checked" kendoCheckBox />
+                {{ option.text }} &nbsp;
+
+              </ng-container>
+            </div>
+
+
+          </div>
+          <div class="row" *ngFor="let item of menu.items">
+            <div class="sub-menu-name col-md-2 mb-2">
+              {{ item.menuName }}
+            </div>
+            <div class="menu-options col-md-6">
+              <ng-container *ngFor="let option of item.options">
+
+                <input type="checkbox" [(ngModel)]="option.checked" kendoCheckBox />
+                {{ option.text }} &nbsp;&nbsp;&nbsp;
+
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+<div class="col-12 text-end">
+  <button kendoButton size="large" rounded="large" fillMode="outline" themeColor="primary" class="me-2" (click)="back()">
+    {{ "Back" | translate }}
+  </button>
+  <button kendoButton size="large" rounded="large" themeColor="primary" (click)="onSubmit()">
+    {{ (isEditMode ? "Update" : "Create") | translate }}
+  </button>
+</div>

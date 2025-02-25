@@ -1,0 +1,221 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>Inter Company Transfer</h5>
+  </div>
+</div>
+<form [formGroup]="interCompanyForm">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h6 class="mb-0 fw-bold">Asset Information</h6>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <div class="d-flex align-items-baseline">
+        <button kendoButton size="large" rounded="large" themeColor="primary" class="me-1" data-bs-toggle="modal"
+          data-bs-target="#assetListModal">
+          Select Asset
+        </button>
+        <kendo-floatinglabel class="w-100" text="Asset ID" showErrors="initial">
+          <input type="text" formControlName="astID" [(ngModel)]="astID" kendoTextBox class="k-input-lg k-rounded-lg" />
+          <kendo-formerror class="base-align"
+            *ngIf="!interCompanyForm.controls['astID'].valid && interCompanyForm.controls['astID'].touched && interCompanyForm.controls['astID'].errors?.['required']">Asset
+            ID is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Asset #" showErrors="initial">
+        <input type="text" formControlName="astNum" [disabled]="true" [(ngModel)]="astNum" kendoTextBox class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel text="Purchase Date">
+        <kendo-datepicker formControlName="purDate" [disabled]="true" [(ngModel)]="purDate"></kendo-datepicker>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Ref #" showErrors="initial">
+        <input type="text" [disabled]="true" formControlName="refNoOld" [(ngModel)]="refCode" kendoTextBox class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Company" showErrors="initial">
+        <input type="text" formControlName="companyName" [disabled]="true" [(ngModel)]="companyName" kendoTextBox
+          class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="GL Code" showErrors="initial">
+        <input type="text" formControlName="glDesc" [disabled]="true" [(ngModel)]="glCode" kendoTextBox class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Description" showErrors="initial">
+        <input formControlName="astDesc" [disabled]="true" [(ngModel)]="astDesc" type="text" kendoTextBox
+          class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+  </div>
+</form>
+<div class="row mt-3">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+      <h5 class="mb-0">Asset Books</h5>
+    </div>
+    <ag-grid-angular [rowData]="gridView" [columnDefs]="interCompanyTransferGridCols" [rowSelection]="'single'"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (rowClicked)='onRowClicked($event.data)' (gridReady)="onGridReady($event)"
+      class="ag-theme-alpine w-100" style="height:50vh">
+    </ag-grid-angular>
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="gridView.length" [(page)]="pagination.bookCurrentPage" [pageSize]="pagination.bookPageSize" [maxSize]="10" [rotate]="true" [boundaryLinks]="true" />
+    </div>
+  </div>
+</div>
+<form [formGroup]="interCompanyForm">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h6 class="mb-0 fw-bold">Transfer Details</h6>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel class="w-100" text="Company" showErrors="initial">
+        <kendo-combobox size="large" rounded="large" [data]="allCompanies" textField="companyName"
+          valueField="companyId" formControlName="newCompanyID" [valuePrimitive]="true" [(ngModel)]="companyId"
+          (valueChange)="setBarCodesValues($event)"></kendo-combobox>
+        <kendo-formerror class="base-align"
+          *ngIf="!interCompanyForm.controls['newCompanyID'].valid && interCompanyForm.controls['newCompanyID'].touched && interCompanyForm.controls['newCompanyID'].errors?.['required']">New
+          Company ID is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-6 mb-3">
+      <kendo-floatinglabel class="w-100" text="GL Code" showErrors="initial">
+        <kendo-combobox [data]="allGlcodes" textField="glDesc" valueField="glCode" formControlName="glCodes"
+          [valuePrimitive]="true" [(ngModel)]="glDesc" size="large"><ng-template kendoComboBoxItemTemplate let-dataItem>
+            {{ dataItem.glCode }} - {{ dataItem.glDesc }}
+          </ng-template></kendo-combobox>
+        <kendo-formerror class="base-align"
+          *ngIf="!interCompanyForm.controls['glCodes'].valid && interCompanyForm.controls['glCodes'].touched && interCompanyForm.controls['glCodes'].errors?.['required']">GL
+          Code is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-3 mb-3">
+      <kendo-floatinglabel class="w-100" text="Current BV" showErrors="initial">
+        <input type="text" formControlName="currentBV" [(ngModel)]="currentBV" kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror class="base-align"
+          *ngIf="!interCompanyForm.controls['currentBV'].valid && interCompanyForm.controls['currentBV'].touched && interCompanyForm.controls['currentBV'].errors?.['required']">Current
+          BV is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-3 mb-3">
+      <kendo-floatinglabel text="Salvage Year">
+        <input type="text" formControlName="salYr" (ngModel)="0" kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror class="base-align"
+          *ngIf="!interCompanyForm.controls['salYr'].valid && interCompanyForm.controls['salYr'].touched && interCompanyForm.controls['salYr'].errors?.['required']">Salvage
+          Year is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-3 mb-3">
+      <kendo-floatinglabel text="Salvage Value">
+        <input type="text" formControlName="salValue" (ngModel)="0" kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror class="base-align"
+          *ngIf="!interCompanyForm.controls['salValue'].valid && interCompanyForm.controls['salValue'].touched && interCompanyForm.controls['salValue'].errors?.['required']">Salvage
+          Value is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-3 mb-3">
+      <kendo-floatinglabel class="w-100" text="Ref #" showErrors="initial">
+        <input type="text" formControlName="refNo" kendoTextBox class="k-input-lg k-rounded-lg" />
+        <kendo-formerror class="base-align"
+          *ngIf="!interCompanyForm.controls['refNo'].valid && interCompanyForm.controls['refNo'].touched && interCompanyForm.controls['refNo'].errors?.['required']">Ref
+          # is required
+        </kendo-formerror>
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-12 mb-3">
+      <kendo-floatinglabel class="w-100" text="Remarks" showErrors="initial">
+        <input type="text" formControlName="transRemarks" kendoTextBox class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+  </div>
+</form>
+<!-- <form> -->
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h6 class="mb-0 fw-bold">New Asset Info</h6>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Asset ID" showErrors="initial">
+        <input type="text" kendoTextBox [disabled]="true" [(ngModel)]="newAstID" class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="Asset Number" showErrors="initial">
+        <input type="text" kendoTextBox [disabled]="true" [(ngModel)]="newAstNum" class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <kendo-floatinglabel class="w-100" text="GL Code" showErrors="initial">
+        <input type="text" kendoTextBox [disabled]="true" [(ngModel)]="newGlCode" class="k-input-lg k-rounded-lg" />
+      </kendo-floatinglabel>
+    </div>
+  </div>
+<!-- </form> -->
+<div class="row mt-3">
+  <div class="col-12 text-end">
+    <button *ngIf="generalService.permissions['Inter Company Transfer'].add" kendoButton size="large" rounded="large" themeColor="primary" (click)="submit()">
+      Transfer Assets
+    </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade modal-xl" id="assetListModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Select Asset(s)</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="d-sm-flex d-block align-items-center justify-content-between w-100 mb-2">
+              <h5 class="mb-0">Asset List</h5>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <input type="search" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+                  (ngModelChange)="onFilterTextBoxChanged()">
+              </div>
+            </div>
+            <ag-grid-angular [rowData]="dialogDataGrid" [columnDefs]="assetListModalGridCols" [rowSelection]="'single'"
+              [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (gridReady)="onGridReady($event)"
+              (selectionChanged)="onSelectionChange($event)" class="ag-theme-alpine w-100" style="height:60vh">
+            </ag-grid-angular>
+            <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+              <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+                (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+                [boundaryLinks]="true" />
+              <div class="me-3 d-flex flex-row">
+                <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+                  (ngModelChange)="pageSizeChange($event)">
+                  <option *ngFor="let value of pagination.pageSizes" [value]="value"
+                    [selected]="pagination.pageSize == value">
+                    {{value}}
+                  </option>
+                </select>
+              </div>
+              <label for="pageSize" class="text-muted">Page Size</label>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary w-100" data-bs-dismiss="modal" (click)="close('yes')" [disabled]="fetchingData">
+          {{ fetchingData ? "Fetching..." : "Select" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-sm-flex d-block center w-100" style="place-content: center;">
+      <h4 class="mb-0">Audit Status Reports</h4>
+
+    </div>
+
+    <div class="d-sm-flex d-block align-items-center justify-content-between w-100">
+      <div class="col-md-3 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Reports">
+          <kendo-dropdownlist [(ngModel)]="selectedReport" [data]="reportsDD" textField="reportName" valueField="id"
+            [valuePrimitive]="true" (valueChange)="onReportChange($event)"></kendo-dropdownlist>
+        </kendo-floatinglabel>
+      </div>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <input type="search" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+          (ngModelChange)="onFilterTextBoxChanged()">
+        <button type="button" class="btn btn-primary" style="width: 220px;" data-bs-toggle="modal"
+        data-bs-target="#astListModal" [disabled]="generateReportButton"
+          (click)="generateReport()">
+          {{"Generate Report" | translate}}
+        </button>
+      </div>
+    </div>
+    <div class="row mb-3" *ngIf="postedCheckboxVisible">
+      <div class="col-md-4">
+        <input
+          type="checkbox"
+          #dis
+          [checked]="true"
+          [(ngModel)]="posted"
+          kendoCheckBox
+        />
+        <kendo-label
+          class="k-checkbox-label"
+          [for]="dis"
+          text="Posted"
+        ></kendo-label>
+      </div>
+
+    </div>
+    <!-- <div class="d-sm-flex d-block align-items-center justify-content-end w-100 my-3">
+      <button type="button" class="btn btn-outline-success me-2">
+        <fa-icon [icon]="faFileExcel"></fa-icon>
+        {{ "Export to Excel" | translate }}
+      </button>
+      <button type="button" class="btn btn-outline-danger">
+        <fa-icon [icon]="faFilePdf"></fa-icon>
+        {{ "Export to PDF" | translate }}
+      </button>
+    </div> -->
+
+    <ag-grid-angular [rowData]="gridData" [columnDefs]="inventorySchedulesGridCols" [rowSelection]="'multiple'"
+      [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs" (gridReady)="onGridReady($event)"
+      (selectionChanged)="onSelectionChanged()" class="ag-theme-alpine w-100" style="height:70vh">
+    </ag-grid-angular>
+
+    <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+      <ngb-pagination [collectionSize]="pagination.totalItems" [(page)]="pagination.currentPage"
+        (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [maxSize]="10" [rotate]="true"
+        [boundaryLinks]="true" />
+
+      <div class="me-3 d-flex flex-row">
+        <select class="form-select form-select-sm" name="" id="" [ngModel]="pagination.pageSize"
+          (ngModelChange)="pageSizeChange($event)">
+          <option *ngFor="let value of pagination.pageSizes" [value]="value" [selected]="pagination.pageSize == value">
+            {{value}}
+          </option>
+        </select>
+      </div>
+      <label for="pageSize" class="text-muted">Page Size</label>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+  <div class="modal fade modal-xl" style="--bs-modal-width: 100% !important;" id="astListModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">{{reportName}} Report</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row contact-row">
+                <div class="contact flex-row" *ngFor="let count of summaryCountData" summaryCountData>
+                  <div class="k-hstack">
+                    <div>
+                      <h2>{{count.statusDesc}}</h2>
+                      <p>{{count.statusCount}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-sm-flex d-block align-items-center justify-content-end w-100 my-3">
+                <button type="button" (click)="exportToCSVWithBoxes()" class="btn btn-outline-success me-2">
+                  <fa-icon [icon]="faFileExcel"></fa-icon>
+                  {{ "Export to Excel" | translate }}
+                </button>
+                <button type="button" (click)="exportToPDF()" class="btn btn-outline-danger">
+                  <fa-icon [icon]="faFilePdf"></fa-icon>
+                  {{ "Export to PDF" | translate }}
+                </button>
+              </div>
+              <ag-grid-angular [rowData]="reportGridView" [columnDefs]="reportGridCols" (gridReady)="onGridReadyReport($event)" [rowSelection]="'single'"
+                [defaultColDef]="defaultColDefs" class="ag-theme-alpine w-100" style="height: 60vh">
+              </ag-grid-angular>
+
+              <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+                <ngb-pagination [collectionSize]="paginationReport.totalItems" [(page)]="paginationReport.currentPage"
+                  (pageChange)="pageChangeReport($event)" [pageSize]="paginationReport.pageSize" [maxSize]="10"
+                  [rotate]="true" [boundaryLinks]="true" />
+                <div class="me-3 d-flex flex-row">
+                  <select class="form-select form-select-sm" name="" id="" [ngModel]="paginationReport.pageSize"
+                    (ngModelChange)="pageSizeChangeReport($event)">
+                    <option *ngFor="let value of paginationReport.pageSizes" [value]="value"
+                      [selected]="paginationReport.pageSize == value">
+                      {{ value }}
+                    </option>
+                  </select>
+                </div>
+                <label for="pageSize" class="text-muted">Page Size</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

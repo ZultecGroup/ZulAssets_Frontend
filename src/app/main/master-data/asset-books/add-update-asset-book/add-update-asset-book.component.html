@@ -1,0 +1,114 @@
+<ng-container *ngIf="!fetchingData; else loader">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h5>{{ isEditMode ? "Update" : "Create " }} Asset Book</h5>
+      </div>
+    </div>
+    <form [formGroup]="bookForm">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Depreciation Method"
+            showErrors="initial"
+          >
+          <kendo-dropdownlist
+          size="large"
+          rounded="large"
+          [data]="AllDepMethods"
+          textField="depDesc"
+          valueField="depCode"
+          formControlName="depCode"
+          [valuePrimitive]="true"
+
+
+          ></kendo-dropdownlist>
+            <kendo-formerror
+            *ngIf="!bookForm.controls['depCode'].valid && bookForm.controls['depCode'].touched && bookForm.controls['depCode'].errors?.['required']"
+          >
+          Depreciation Method is required
+          </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+  
+        <div class="col-md-4 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Company"
+            showErrors="initial"
+          >
+          <kendo-dropdownlist
+          size="large"
+          rounded="large"
+          [data]="allCompanyData"
+          textField="companyName"
+          valueField="companyId"
+          formControlName="companyID"
+          [valuePrimitive]="true"
+
+
+          ></kendo-dropdownlist>
+            <kendo-formerror
+              *ngIf="!bookForm.controls['companyID'].valid && bookForm.controls['companyID'].touched && bookForm.controls['companyID'].errors?.['required']"
+            >
+            Company is required
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-4 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Description"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+              formControlName="description"
+            />
+            <kendo-formerror
+            *ngIf="!bookForm.controls['description'].valid && bookForm.controls['description'].touched && bookForm.controls['description'].errors?.['required']"
+          >
+          Description is required
+          </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-12 text-end">
+          <button
+            kendoButton
+            size="large"
+            rounded="large"
+            fillMode="outline"
+            themeColor="primary"
+            [routerLink]="isEditMode ? '../../' : '../'"
+            [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+            class="me-2"
+            [disabled]="sendingRequest"
+          >
+            Back
+          </button>
+          <button
+            [disabled]="sendingRequest"
+            kendoButton
+            size="large"
+            rounded="large"
+            themeColor="primary"
+            (click)="onSubmit()"
+          >
+            {{ isEditMode ? "Update" : "Create" }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  
+  <ng-template #loader>
+    <div class="d-flex align-items-center justify-content-center h-100">
+      <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+    </div>
+  </ng-template>
+  

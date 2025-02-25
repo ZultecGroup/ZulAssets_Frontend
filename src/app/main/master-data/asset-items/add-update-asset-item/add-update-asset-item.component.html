@@ -1,0 +1,160 @@
+<ng-container *ngIf="!fetchingData; else loader">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h5>{{ isEditMode ? "Update" : "Create " }} Asset Item</h5>
+      </div>
+    </div>
+    <form [formGroup]="assetItemForm">
+        <div class="row">
+            <div class="col-auto mb-1 text-center">
+              <img
+                [src]="image"
+                class="upload-img"
+                alt="logo"
+                *ngIf="image; else imgWrapper"
+              />
+              <input
+                type="file"
+                id="file"
+                name="file"
+                #file
+                [hidden]="true"
+                accept=".jpg, .jpeg, .png"
+                (change)="handleFileInput($event)"
+              />
+              <button
+                rounded="large"
+                [disabled]="sendingRequest"
+                kendoButton
+                themeColor="primary"
+                (click)="file.click()"
+              >
+                Upload
+              </button>
+            </div>
+          </div>
+      <div class="row">
+        <div class="col-md-4 mb-3" *ngIf="isEditMode">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Item Code"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+              formControlName="itemCode"
+            />
+            <kendo-formerror
+              *ngIf="!assetItemForm.controls['itemCode'].valid && assetItemForm.controls['itemCode'].touched && assetItemForm.controls['itemCode'].errors?.['required']"
+            >
+              Item Code is required
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Description"
+            showErrors="initial"
+          >
+            <input
+              type="text"
+              kendoTextBox
+              class="k-input-lg k-rounded-lg"
+              formControlName="astDesc"
+            />
+            <kendo-formerror
+              *ngIf="!assetItemForm.controls['astDesc'].valid && assetItemForm.controls['astDesc'].touched && assetItemForm.controls['astDesc'].errors?.['required']"
+            >
+              Description is required
+            </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-md-4 mb-3">
+          <kendo-floatinglabel
+            size="large"
+            class="w-100"
+            text="Category"
+            showErrors="initial"
+          >
+          <!-- <kendo-dropdownlist
+          size="large"
+          rounded="large"
+          [data]="data"
+          textField="astCatDesc"
+          valueField="astCatID"
+          formControlName="astCatID"
+          [valuePrimitive]="true"
+          [filterable]="true"
+          (filterChange)="handleFilter($event)"
+
+
+          ></kendo-dropdownlist> -->
+          <kendo-dropdowntree
+          size="large"
+          rounded="large"
+          kendoDropDownTreeExpandable
+          [kendoDropDownTreeHierarchyBinding]="dropDownData"
+          textField="name"
+          valueField="value"
+          childrenField="children"
+          formControlName="astCatID"
+          [filterable]="true"
+          [expandOnFilter]="filterExpandSettings"
+        >
+        <ng-template kendoDropDownTreeValueTemplate let-dataItem>
+          {{ dataItem?.path }}
+        </ng-template>
+          </kendo-dropdowntree>
+
+            <kendo-formerror
+            *ngIf="!assetItemForm.controls['astCatID'].valid && assetItemForm.controls['astCatID'].touched && assetItemForm.controls['astCatID'].errors?.['required']"
+          >
+            Category is required
+          </kendo-formerror>
+          </kendo-floatinglabel>
+        </div>
+        <div class="col-12 text-end">
+          <button
+            kendoButton
+            size="large"
+            rounded="large"
+            fillMode="outline"
+            themeColor="primary"
+            [routerLink]="isEditMode ? '../../' : '../'"
+            [queryParams]="isEditMode ? { currentPage: pagination.currentPage, pageSize: pagination.pageSize } : null"
+            class="me-2"
+            [disabled]="sendingRequest"
+          >
+            Back
+          </button>
+          <button
+            [disabled]="sendingRequest"
+            kendoButton
+            size="large"
+            rounded="large"
+            themeColor="primary"
+            (click)="onSubmit()"
+          >
+            {{ isEditMode ? "Update" : "Create" }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-template #loader>
+    <div class="d-flex align-items-center justify-content-center h-100">
+      <kendo-loader type="converging-spinner" size="large"></kendo-loader>
+    </div>
+  </ng-template>
+  <ng-template #imgWrapper>
+    <div class="upload-img d-flex align-items-center justify-content-center">
+      <small class="fw-bold"> Item Image </small>
+    </div>
+  </ng-template>
