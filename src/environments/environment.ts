@@ -4,9 +4,7 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'http://shahroz07-001-site1.etempurl.com/api/'
-  apiUrl: 'http://195.250.24.128:5203/api/'
-  // apiUrl: 'http://172.15.20.20:5201/api/'
+  apiUrl: 'https://zulassetsapi-gafvbteyd2bbgsgd.uaenorth-01.azurewebsites.net/api/'
 };
 
 /*/index.html
