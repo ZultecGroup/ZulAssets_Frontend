@@ -51,7 +51,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: node-app
-        path: ./dist
+        path: ./dist/zul-assets
 
   deploy:
     permissions:
