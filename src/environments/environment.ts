@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://zulassetsapi-gafvbteyd2bbgsgd.uaenorth-01.azurewebsites.net/api/'
+ apiUrl: 'https://zulassetsapi-gafvbteyd2bbgsgd.uaenorth-01.azurewebsites.net/api/'
 };
 
 /*/index.html

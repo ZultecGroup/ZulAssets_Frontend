@@ -15,12 +15,16 @@
     <div class="col-lg-auto mb-3">
       <kendo-floatinglabel text="Update books till">
         <kendo-datepicker formControlName="updateBookTillDate" placeholder=""></kendo-datepicker>
+        <kendo-formerror class="base-align"
+            *ngIf="!depForm.controls['updateBookTillDate'].valid && depForm.controls['updateBookTillDate'].touched && depForm.controls['updateBookTillDate'].errors?.['required']">
+            Date is required
+          </kendo-formerror>
       </kendo-floatinglabel>
     </div>
-    <div class="col-lg-auto d-flex align-items-center">
+    <!-- <div class="col-lg-auto d-flex align-items-center">
       <input type="checkbox" #allPO kendoCheckBox />
       <kendo-label class="k-checkbox-label" [for]="allPO" text="Select all books from all companies"></kendo-label>
-    </div>
+    </div> -->
   </div>
 </form>
 <div class="row mt-3">
@@ -30,14 +34,16 @@
       <div class="d-flex align-items-center justify-content-center gap-2">
         <input type="search" class="form-control" placeholder="Search" [(ngModel)]="searchString"
           (input)="onFilterTextBoxChanged($event)">
-        <button *ngIf="GeneralService.permissions['Depreciation Engine'].add" type="button" class="btn btn-primary" [routerLink]="'create'" style="width: 225px;"
+        <button *ngIf="GeneralService.permissions['Depreciation Engine'].add"
+        type="button" class="btn btn-primary" [disabled]="!isRowSelected" style="width: 225px;"
           (click)="CloseBooksNow()">
           Close Books Now
         </button>
       </div>
     </div>
     <ag-grid-angular [rowData]="allDepreciationEngine" [columnDefs]="depreciationEngineGridCols"
-      [rowSelection]="'single'" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
+    (selectionChanged)="onSelectionChanged()"
+      [rowSelection]="'multiple'" [rowMultiSelectWithClick]="true" [defaultColDef]="defaultColDefs"
       (gridReady)="onGridReady($event)" class="ag-theme-alpine w-100" style="height:70vh">
     </ag-grid-angular>
     <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">

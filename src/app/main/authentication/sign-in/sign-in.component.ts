@@ -32,7 +32,7 @@ export class SignInComponent implements OnInit {
     private tokenService: TokenStorageService,
     private translateService : TranslateService,
     private messages: MessageService,
-    // public generalService : GeneralService
+    public generalService : GeneralService
 
   ) { }
 
@@ -109,6 +109,7 @@ export class SignInComponent implements OnInit {
         if (res.status == '200') {
           this.tokenService.saveToken(res.token)
           this.tokenService.saveUserObj(res)
+          this.generalService.getRoleRightsByID();
           this.router.navigate(['/main/dashboard']);
           this.toast.show(res.message, 'success')
         }

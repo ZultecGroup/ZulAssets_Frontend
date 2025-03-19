@@ -29,6 +29,7 @@ export class DepreciationEngineComponent implements OnInit
   sendingRequest: boolean;
   searchString: string | null;
   depreciationEngineGridCols: ColDef[] = [];
+  isRowSelected: boolean = false; // Track selection state
 
   defaultColDefs: ColDef = {
     sortable: true,
@@ -59,6 +60,8 @@ export class DepreciationEngineComponent implements OnInit
   {
     this.getAllCompanies();
     this.initializeForm();
+    this.getDepreciationEngine(this.companyId, this.pagination.currentPage, this.pagination.pageSize);
+
   }
 
   ngOnDestroy()
@@ -67,8 +70,12 @@ export class DepreciationEngineComponent implements OnInit
     this.isDestroyed$.complete()
   }
 
+  onSelectionChanged() {
+    this.isRowSelected = this.gridApi.getSelectedRows().length > 0;
+  }
   getDepreciationEngine(company: number, pageNumber: number, pageSize: number)
   {
+    this.isRowSelected = false;
     this.companyId = company;
     this.fetchingData = true
     let paginationParam = {
@@ -92,15 +99,9 @@ export class DepreciationEngineComponent implements OnInit
   initializeForm(data?: any)
   {
     this.depForm = this.fb.group({
-      companyID: [ '', [Validators.required, noWhitespaceValidator()] ],
-      updateBookTillDate: [ '', [Validators.required, noWhitespaceValidator()] ],
-      depEngTree: [
-        [
-          {
-            bookIDs: 4
-          }
-        ]
-      ]
+      companyID: [''],
+      updateBookTillDate: [ '', Validators.required ],
+
       // invStartDate: [this.today, [Validators.required, noWhitespaceValidator()]],
       // invEndDate: [this.today, [Validators.required, noWhitespaceValidator()]],
     });
@@ -126,10 +127,19 @@ export class DepreciationEngineComponent implements OnInit
   }
   CloseBooksNow()
   {
+    console.log('dd');
     if (this.depForm.valid)
     {
+
+      let depEngTree: any = [];
+      this.gridApi.getSelectedRows().map((x: any) => {
+        depEngTree.push({
+          bookIDs: x.bookID,
+        });
+      });
+
       this.sendingRequest = true
-      const apiCall$ = this.tableDataService.getTableData('DepreciationMethod/RunDepreciationEngineonAssets', { add: 1, ...this.depForm.value })
+      const apiCall$ = this.tableDataService.getTableData('DepreciationMethod/RunDepreciationEngineonAssets', { add: 1, updateBookTillDate: this.depForm.get('updateBookTillDate')?.value, depEngTree })
       apiCall$.pipe(finalize(() => this.sendingRequest = false))
         .subscribe({
           next: (res) =>

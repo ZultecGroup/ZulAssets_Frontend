@@ -219,20 +219,20 @@ export class AssetsInformationComponent implements OnInit {
 
   initializeAssetForm(data?: any) {
     this.assetsInformationForm = this.fb.group({
-      ItemCode: ['', [Validators.required, noWhitespaceValidator()]],
+      ItemCode: ['', [Validators.required]],
       astDesc: [''],
       category: [{ value: '', disabled: true }],
-      companyID: ['', [Validators.required, noWhitespaceValidator()]],
+      companyID: ['', [Validators.required]],
       AssetsNum: [{ value: '', disabled: true }],
-      astID: ['', [Validators.required, noWhitespaceValidator()]],
-      refCode: ['', [Validators.required, noWhitespaceValidator()]],
-      custodianID: ['', [Validators.required, noWhitespaceValidator()]],
+      astID: ['', [Validators.required]],
+      refCode: ['', [Validators.required]],
+      custodianID: ['', [Validators.required]],
       Hierarchy: [{ value: '', disabled: true }],
-      astBrandId: ['', [Validators.required, noWhitespaceValidator()]],
+      astBrandId: ['', [Validators.required]],
       AssetType: [''],
-      glCode: ['', [Validators.required, noWhitespaceValidator()]],
-      statusID: ['', [Validators.required, noWhitespaceValidator()]],
-      locID: ['', [Validators.required, noWhitespaceValidator()]],
+      glCode: ['', [Validators.required]],
+      statusID: ['', [Validators.required]],
+      locID: ['', [Validators.required]],
       barCode: [{ value: '', disabled: true }],
       costCenterID: [''],
       RFID: [''],
@@ -246,10 +246,10 @@ export class AssetsInformationComponent implements OnInit {
       tax: [0],
       discount: [0],
       totalCost: [{ value: 0, disabled: true }],
-      purDate: ['', [Validators.required, noWhitespaceValidator()]],
+      purDate: ['', [Validators.required]],
       BookID: ['1'],
-      // invStartDate: [this.today, [Validators.required, noWhitespaceValidator()]],
-      // invEndDate: [this.today, [Validators.required, noWhitespaceValidator()]],
+      // invStartDate: [this.today, [Validators.required]],
+      // invEndDate: [this.today, [Validators.required]],
     });
   }
   formatAssetTime() {

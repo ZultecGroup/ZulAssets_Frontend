@@ -565,7 +565,7 @@ export class LocationCustodyTransferComponent implements OnInit
 
   handleCustodian(value: any)
   {
-    this.dataCust = this.allCustodian.filter(
+    this.allCustodian= this.dataCust.filter(
       (s: any) =>
         s.custodianName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
@@ -586,7 +586,7 @@ export class LocationCustodyTransferComponent implements OnInit
   }
   handleStatus(value: any)
   {
-    this.dataStatusAsset = this.allStatus.filter(
+    this.allStatus = this.dataStatusAsset.filter(
       (s: any) => s.status.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }

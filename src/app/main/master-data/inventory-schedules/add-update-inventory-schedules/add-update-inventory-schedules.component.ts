@@ -97,12 +97,13 @@ export class AddUpdateInventorySchedulesComponent implements OnInit {
     this.scheduleId = params['id'];
 
     this.isEditMode = !!this.scheduleId;
-    this.initializescheduleForm();
-
-    this.searchHandler();
     if (this.isEditMode) {
       this.getScheduleById();
     }
+    this.initializescheduleForm();
+
+    this.searchHandler();
+
   }
 
   onTreeReady() {
@@ -114,6 +115,7 @@ export class AddUpdateInventorySchedulesComponent implements OnInit {
 
   selectDevice() {
     // Programmatically select rows based on hardwareID
+
     const hardwareIDs = this.deviceTrees.map(
       (item: any) => item.deviceHardwareID
     );
@@ -162,7 +164,7 @@ export class AddUpdateInventorySchedulesComponent implements OnInit {
           });
           this.deviceTrees = res?.deviceTrees;
           this.locTrees = res?.locTrees;
-
+          this.onTreeReady();
           console.log('loc tree', res?.locTrees);
           // this.GeneralService.setPreselectedNodes(res?.locTrees);
         },

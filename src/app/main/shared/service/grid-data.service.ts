@@ -452,7 +452,7 @@ export class GridDataService {
 
   getDepreciationEngineGridCols(): ColDef[] {
     return [
-      { field: 'bookID', headerName: '', width: 5, checkboxSelection: true },
+      { field: 'bookID', headerName: '', width: 5, checkboxSelection: true, headerCheckboxSelection: true },
       { field: 'bookID', flex: 1, headerName: 'Book ID' },
       { field: 'description', flex: 1, headerName: 'Description' },
       { field: 'depDesc', flex: 1, headerName: 'Depreciation Method' },
