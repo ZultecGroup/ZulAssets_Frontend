@@ -39,6 +39,11 @@
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                 "styles": true,
+                 "fonts": false
+             },
               "budgets": [
                 {
                   "type": "initial",
@@ -50,6 +55,7 @@
                   "maximumWarning": "2mb",
                   "maximumError": "8mb"
                 }
+                
               ],
               "fileReplacements": [
                 {

@@ -19,6 +19,7 @@ import {  CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgGridModule } from 'ag-grid-angular';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     LocationsModule,
     AssetsCategoriesModule,
     DragDropModule,
+    FontAwesomeModule,
   ]
 })
 export class AdministrationModule { }

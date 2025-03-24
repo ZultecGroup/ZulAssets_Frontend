@@ -12,6 +12,7 @@ import { GridType } from '../../shared/dtos/GridType/GridType';
 import { GridDataService } from '../../shared/service/grid-data.service';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { GeneralService } from '../../shared/service/general.service';
+import { faFileExcel, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-administration',
@@ -66,6 +67,7 @@ export class AdministrationComponent implements OnInit {
   rowData: any =[];
   gridApi2: GridApi<any>;
   gridColumnApi2: any;
+  faFileExcel = faFileExcel
 
   constructor(
     private tableDataService: TableDataService,
@@ -167,7 +169,11 @@ export class AdministrationComponent implements OnInit {
     }
   }
 
-  getAllAssetsAdministrator(currentPage: number, pageSize: number) {
+  exportToCSV(){
+    this.getAllAssetsAdministrator(1,this.pagination.totalItems, true)
+  }
+
+  getAllAssetsAdministrator(currentPage: number, pageSize: number, excelExport?: boolean) {
     this.fetchingData = true;
 
     let pagePayload: any = {
@@ -203,11 +209,42 @@ export class AdministrationComponent implements OnInit {
         )
         .subscribe({
           next: (res: any) => {
+            if(excelExport){
+              console.log('dasdsa hhh');
+
+              if (!res.data || res.data.length === 0) {
+                console.warn('No data available for export.');
+                this.toast.show('No data available for export.', 'error')
+                return;
+              }
+              console.log('dasdsa');
+              // Step 2: Get Visible Columns from AG Grid
+              const visibleColumnKeys = this.gridColumnApi2.getAllGridColumns() // Get all columns
+              .filter((col: any, index: number) => col.isVisible() && index !== 0) // Filter only visible ones
+              .map((col: any) => col.getColId()); // Get column keys
+
+              console.log('Visible Columns:', visibleColumnKeys); // Debugging
+
+              // Step 3: Filter API Data to Match Visible Columns
+              const filteredData = res.data.map((row: any) =>
+                Object.fromEntries(
+                  visibleColumnKeys.map((key: any) => [key, row[key]]) // Keep only visible columns
+                )
+              );
+
+              console.log('Filtered Data:', filteredData); // Debugging
+
+              // Step 4: Convert Data to CSV Format
+              const csvContent = this.convertToCSV(filteredData);
+
+              // Step 5: Download the CSV File
+              this.downloadCSV(csvContent, 'assets_administration.csv');
+            }else{
             this.gridData = res.data.reverse();
             this.itemView = this.gridData.reverse();
             this.pagination.currentPage = currentPage;
             this.pagination.pageSize = pageSize;
-            this.pagination.totalItems = res.totalRowsCount;
+            this.pagination.totalItems = res.totalRowsCount;}
           },
           error: (err) =>
             this.toast.show(err ?? 'Something went wrong!', 'error'),
@@ -224,11 +261,43 @@ export class AdministrationComponent implements OnInit {
         )
         .subscribe({
           next: (res: AdministrationDtoResponse) => {
+            if(excelExport){
+              console.log('dasdsa hhh');
+
+              if (!res.data || res.data.length === 0) {
+                console.warn('No data available for export.');
+                this.toast.show('No data available for export.', 'error')
+                return;
+              }
+              console.log('dasdsa');
+              // Step 2: Get Visible Columns from AG Grid
+              const visibleColumnKeys = this.gridColumnApi.getAllGridColumns() // Get all columns
+                .filter((col: any, index: number) => col.isVisible() && index !== 0) // Filter only visible ones
+                .map((col: any) => col.getColId()); // Get column keys
+
+              console.log('Visible Columns:', visibleColumnKeys); // Debugging
+
+              // Step 3: Filter API Data to Match Visible Columns
+              const filteredData = res.data.map((row: any) =>
+                Object.fromEntries(
+                  visibleColumnKeys.map((key: any) => [key, row[key]]) // Keep only visible columns
+                )
+              );
+
+              console.log('Filtered Data:', filteredData); // Debugging
+
+              // Step 4: Convert Data to CSV Format
+              const csvContent = this.convertToCSV(filteredData);
+
+              // Step 5: Download the CSV File
+              this.downloadCSV(csvContent, 'assets_administration.csv');
+            }else{
             this.gridData = res.data.reverse();
             this.itemView = this.gridData.reverse();
             this.pagination.currentPage = currentPage;
             this.pagination.pageSize = pageSize;
             this.pagination.totalItems = res.totalRowsCount[0].totalRowsCount;
+          }
           },
           error: (err) =>
             this.toast.show(err ?? 'Something went wrong!', 'error'),
@@ -651,4 +720,30 @@ console.log('search', searchText);
   );
 }
 
+// Helper function: Convert JSON data to CSV format
+convertToCSV(data: any[]): string {
+  if (!data.length) return '';
+
+  const headers = Object.keys(data[0]); // CSV headers
+  const csvRows = [headers.join(',')]; // Start with header row
+
+  data.forEach(row => {
+    const values = headers.map(header => row[header] ?? ''); // Map data
+    csvRows.push(values.join(',')); // Join values with commas
+  });
+
+  return csvRows.join('\n'); // Combine all rows
+}
+
+// Helper function: Trigger CSV download
+downloadCSV(csvContent: string, filename: string) {
+  const bom = '\uFEFF'; // UTF-8 BOM
+  const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 }
