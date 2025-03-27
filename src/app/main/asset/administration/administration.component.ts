@@ -13,6 +13,7 @@ import { GridDataService } from '../../shared/service/grid-data.service';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { GeneralService } from '../../shared/service/general.service';
 import { faFileExcel, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+const JsBarcode = require('jsbarcode');
 
 @Component({
   selector: 'app-administration',
@@ -565,7 +566,10 @@ console.log('rows',rows);
     this.toast.show('No rows available to generate ZPL!', 'error');
     return;
   }
-
+  function isArabic(text: string): boolean {
+    const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+    return arabicRegex.test(text);
+  }
   // Confirm print action before proceeding
   this.confirmationDialogService
     .customDialog(`Are you sure you want to print ${rows.length} label(s)?`)
@@ -577,13 +581,67 @@ console.log('rows',rows);
         rows.forEach((row: any) => {
           if (isAssetBarcodeLabel) {
             zplCode += this.replacePlaceholders(zplTemplate, row);
+            debugger
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d')!;
+          
+            // Exact Label Size (2x1 inches → 200x100 pixels)
+            canvas.width = 200;
+            canvas.height = 100;
+          
+            // White Background (Optional)
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+            // English Text (Top-Left)
+            ctx.fillStyle = 'black';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('BAJA FOOD INDUSTRIES', 0, 15);
+          
+            // English or Arabic alignment
+          if (isArabic(row.assetDescription)) {
+            ctx.textAlign = 'right';
+            ctx.direction = 'rtl';
+            ctx.fillText(row.assetDescription, 195, 35); // Right-aligned for Arabic
+          } else {
+            ctx.textAlign = 'left';
+            ctx.direction = 'ltr';
+            ctx.fillText(row.assetDescription, 5, 35); // Left-aligned for English
+          }
+          
+            // Generate Barcode on a separate canvas (No padding)
+            const barcodeCanvas = document.createElement('canvas');
+            JsBarcode(barcodeCanvas, '019269', {
+              format: 'CODE128',
+              width: 2,
+              height: 40,
+              displayValue: false,
+              margin: 0, // Remove padding around barcode
+            });
+          
+            // Draw Barcode (Starts from exact left)
+            ctx.drawImage(barcodeCanvas, 20, 40);
+          
+            // Barcode Number (Just below barcode)
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(row.barCode, 30, 95);
+          
+            // Convert to Image and Print
+            const finalImageUrl = canvas.toDataURL();
+            this.printImage(finalImageUrl);
+
+
+
           } else if (isLocationBarcodeLabel) {
             zplCode += this.replacePlaceholdersLoc(zplTemplate, row);
+           
           }
         });
 
         console.log('Generated ZPL Code:', zplCode);
-        this.printZPL(zplCode);
+    //    this.printZPL(zplCode);
       }
     })
     .catch((error) => {
@@ -591,12 +649,50 @@ console.log('rows',rows);
     });
 }
 
+overlayArabicText(imageUrl: string, row: any) {
+ 
+  const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d')!;
+const img = new Image();
+
+img.onload = () => {
+  // Set canvas size to exactly 2x1 inches (406x203 pixels)
+  canvas.width = 1200;
+  canvas.height = 600;
+  
+  ctx.fillStyle = 'white'; // White background
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw barcode image at the correct position
+  ctx.drawImage(img, 0, 10); // Adjust position & size
+
+  // Add Arabic text above barcode
+  ctx.font = '20px Tahoma'; // Small font for 2x1 inches
+  ctx.direction = 'rtl';
+  ctx.fillStyle = 'black';
+  ctx.textAlign = 'center';
+    ctx.fillText(row.assetDescription ,150, 200); // Adjust position
+
+ // Convert to final image and print
+ const finalImageUrl = canvas.toDataURL();
+ this.printImage(finalImageUrl);
+};
+
+// Load barcode image
+img.src = imageUrl;
+}
+  printImage(imageUrl: string) {
+    const printWindow = window.open('', '_blank');
+    printWindow?.document.write(`<img src="${imageUrl}" onload="window.print();window.close();"/>`);
+    printWindow?.document.close();
+  }
+
 // Function to replace placeholders with asset data in the ZPL template
 private replacePlaceholders(template: string, row: any): string {
   return template
     .replace('#Barcode', row.barCode || 'N/A')
     .replace('#Ref', row['asset#'] || 'N/A')
-    .replace('#ItemDesc', row.assetDescription || 'No Description')
+   // .replace('#ItemDesc', row.assetDescription || 'No Description')
     // .replace('#Size', row.Size || 'N/A')
     // .replace('#RegularPrice', row.RegularPrice || '0')
     // .replace('#QR', row.QR || 'No QR Code');

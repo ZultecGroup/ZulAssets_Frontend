@@ -60,6 +60,7 @@
     "ag-grid-community": "^28.2.1",
     "bootstrap": "^5.2.3",
     "imng-kendo-data-entry": "^4.117.5",
+    "jsbarcode": "^3.11.6",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "mat-tree-select-input": "^1.2.0",
