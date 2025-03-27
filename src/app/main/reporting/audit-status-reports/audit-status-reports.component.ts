@@ -417,26 +417,38 @@ export class AuditStatusReportsComponent implements OnInit {
     });
   }
   convertToCSV(data: any[]): string {
+  
     if (!data.length) return '';
-  
+
     const headers = Object.keys(data[0]); // CSV headers
-    const csvRows = [headers.join(',')]; // Start with header row
-  
+    const csvRows = [headers.map(header => `"${header}"`).join(',')]; // Quote headers
+
     data.forEach(row => {
-      const values = headers.map(header => row[header] ?? ''); // Map data
-      csvRows.push(values.join(',')); // Join values with commas
+        const values = headers.map(header => {
+            let value = row[header] ?? ''; // Get value or empty if undefined/null
+            if (typeof value === 'string' && value.includes(',')) {
+                value = `"${value.replace(/"/g, '""')}"`; // Escape double quotes
+            }
+            return value;
+        });
+
+        csvRows.push(values.join(',')); // Join values with commas
     });
+
+    return csvRows.join('\n'); // Combine all rows  // if (!data.length) return '';
+  
+    // const headers = Object.keys(data[0]); // CSV headers
+    // const csvRows = [headers.join(',')]; // Start with header row
+  
+    // data.forEach(row => {
+    //   const values = headers.map(header => row[header] ?? ''); // Map data
+    //   csvRows.push(values.join(',')); // Join values with commas
+    //});
   
     return csvRows.join('\n'); // Combine all rows
   }
   downloadCSV(csvContent: string, filename: string) {
-    // const bom = '\uFEFF'; // UTF-8 BOM
-    // const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
-    // const link = document.createElement('a');
-    // link.href = URL.createObjectURL(blob);
-    // link.download = filename;
-    // document.body.appendChild(link);
-    // link.click();
+   
     // document.body.removeChild(link);
     const bom = '\uFEFF'; // UTF-8 BOM
 
