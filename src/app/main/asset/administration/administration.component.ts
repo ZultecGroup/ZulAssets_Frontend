@@ -588,7 +588,7 @@ console.log('rows',rows);
         // Loop through rows and replace placeholders
         rows.forEach((row: any) => {
 
-          
+          debugger
           if (isAssetBarcodeLabel) {
             
             zplCode += this.replacePlaceholders(zplTemplate, row);
@@ -596,11 +596,19 @@ console.log('rows',rows);
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d')!;
            
-            // Exact Label Size (2x1 inches → 200x100 pixels)
-
+            const scale = 3;
+            const displayWidth = 200;
+            const displayHeight = 100;
+            const width = displayWidth * scale; // 600
+            const height = displayHeight * scale; // 300
             
-              canvas.width = 200;
-              canvas.height = 100;
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.width = `${displayWidth}px`;
+            canvas.style.height = `${displayHeight}px`;
+            
+            // Scale drawing context for sharp rendering
+            ctx.scale(scale, scale);
             
               // White Background (Optional)
               ctx.fillStyle = 'white';
@@ -609,7 +617,7 @@ console.log('rows',rows);
           
               // English Text (Top-Left)
               ctx.fillStyle = 'black';
-              ctx.font = 'bold 12px Arial';
+              ctx.font = 'bold 12px Tahoma';
               ctx.textAlign = 'left';
               ctx.fillText('BAJA FOOD INDUSTRIES', 22, 20);
             
@@ -661,7 +669,7 @@ console.log('rows',rows);
               ctx.drawImage(barcodeCanvas, 20, textHeight);
           
               // Barcode Number (Just below barcode)
-              ctx.font = 'bold 12px Arial';
+              ctx.font = 'bold 12px Tahoma';
               ctx.textAlign = 'center';
               ctx.fillText(row.barCode, 90, textHeight+50);
           
@@ -679,11 +687,19 @@ console.log('rows',rows);
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d')!;
            
-            // Exact Label Size (2x1 inches → 200x100 pixels)
-
+            const scale = 3;
+            const displayWidth = 200;
+            const displayHeight = 100;
+            const width = displayWidth * scale; // 600
+            const height = displayHeight * scale; // 300
             
-              canvas.width = 200;
-              canvas.height = 100;
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.width = `${displayWidth}px`;
+            canvas.style.height = `${displayHeight}px`;
+            
+            // Scale drawing context for sharp rendering
+            ctx.scale(scale, scale);
             
               // White Background (Optional)
               ctx.fillStyle = 'white';
@@ -692,7 +708,7 @@ console.log('rows',rows);
           
               // English Text (Top-Left)
               ctx.fillStyle = 'black';
-              ctx.font = '12px Arial';
+              ctx.font = 'bold 12px Tahoma';
               ctx.textAlign = 'left';
               ctx.fillText('BAJA FOOD INDUSTRIES', 22, 20);
             
@@ -720,33 +736,34 @@ console.log('rows',rows);
             let textHeight = 35; // Initial position for the text
 
               // English or Arabic alignment
-              if (isArabic(row.locDesc)) {
+              if (isArabic(row.locationFullPath)) {
                   ctx.textAlign = 'right';
                   ctx.direction = 'rtl';
-                  textHeight = wrapText(ctx,row.locDesc, 150, 35, 180); // Right-aligned for Arabic
+                  textHeight = wrapText(ctx,row.locationFullPath, 150, 35, 180); // Right-aligned for Arabic
               } else {
                   ctx.textAlign = 'left';
                   ctx.direction = 'ltr';
-                  textHeight =  wrapText(ctx,row.locDesc, 15, 35, 180); // Left-aligned for English
+                  textHeight =  wrapText(ctx,row.locationFullPath, 15, 35, 180); // Left-aligned for English
               }
           
               // Generate Barcode on a separate canvas (No padding)
               const barcodeCanvas = document.createElement('canvas');
-              JsBarcode(barcodeCanvas, row.locID, {
+              JsBarcode(barcodeCanvas, row.compCode, {
                   format: 'CODE128',
-                  width: 2,
+                  width: 1,
+
                   height: 40,
                   displayValue: false,
                   margin: 0, // Remove padding around barcode
               });
           
               // Draw Barcode (Starts from exact left)
-              ctx.drawImage(barcodeCanvas, 20, textHeight);
+              ctx.drawImage(barcodeCanvas, 0, textHeight);
           
               // Barcode Number (Just below barcode)
-              ctx.font = '12px Arial';
+              ctx.font = 'bold 12px Tahoma';
               ctx.textAlign = 'center';
-              ctx.fillText(row.locID, 90, textHeight+50);
+              ctx.fillText(row.compCode, 90, textHeight+50);
           
               // Convert to Image and Print
               const finalImageUrl = canvas.toDataURL();
@@ -774,7 +791,10 @@ async printAllImages() {
   if (printWindow) {
     // Add each image to the document
     for (let i = 0; i < this.imagesToPrint.length; i++) {
-      const img = `<img src="${this.imagesToPrint[i]}" style="margin-bottom: 20px;"/>`;
+      const img = `
+        <img src="${this.imagesToPrint[i]}" 
+             style="margin-bottom: 20px; width: 2in; height: 1in; object-fit: contain;" />
+      `;
       printWindow.document.write(img);
     }
 
