@@ -7,5 +7,4 @@ export const environment = {
 
   // apiUrl: 'http://10.0.2.85:7257/api/'
   // apiUrl: 'http://172.15.20.20:5201/api/'
-
 };

@@ -213,7 +213,7 @@ export class AddUpdateRolesComponent implements OnInit {
 
 getRoleRightsByID() {
     this.fetchingData = true;
-debugger
+
 
     this.dataService.getTableDataWithPagination('Roles/GetRoleByID', { get: 1, getByID: 1, roleID: this.userRoleId })
       .pipe(
@@ -252,7 +252,7 @@ debugger
         });
       }
     });
-debugger
+
     Object.values(menuMap).forEach(menu => {
       if (menu.parentId) {
         menuMap[menu.parentId].items.push(menu);

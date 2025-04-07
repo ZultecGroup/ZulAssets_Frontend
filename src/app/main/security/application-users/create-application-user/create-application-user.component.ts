@@ -31,10 +31,6 @@ export class CreateApplicationUserComponent implements OnInit
   @ViewChild('password') public password: TextBoxComponent;
   @ViewChild('confirmPassword') public confirmPassword: TextBoxComponent;
 
-  @ViewChild('loginName') public loginName: TextBoxComponent;
-  @ViewChild('userName') public userName: TextBoxComponent;
-  
-
   public roleList: any[] = [];
   public data: any= [];
   accessList: Array<Item> = [
@@ -148,7 +144,6 @@ export class CreateApplicationUserComponent implements OnInit
 
   initializebrandForm(data?: any)
   {
-    debugger
     this.applicationUserForm = this.fb.group(
       {
         loginName: [ {value: '', disabled: this.isEditMode }, [Validators.required, noWhitespaceValidator()] ],
@@ -178,23 +173,8 @@ export class CreateApplicationUserComponent implements OnInit
   }
   onSubmit()
   {
-    debugger
-    //const inputLoginName = this.loginName.input.nativeElement;
-    //const inputuserName = this.userName.input.nativeElement;
-    const loginName = this.applicationUserForm.get('loginName')?.value;
-    const userName = this.applicationUserForm.get('userName')?.value;
-    const userRole = this.applicationUserForm.get('roleID')?.value;
-    const userAccess = this.applicationUserForm.get('userAccess')?.value;
-    const password = this.applicationUserForm.get('password')?.value;
-    const confirmPassword = this.applicationUserForm.get('confirmPassword')?.value;
-    if (loginName !== "" && userName !=="" && userRole !=="" && userAccess !=="" && password !=="" && confirmPassword !=="") 
+    if (this.applicationUserForm.valid)
     {
-      if (password == confirmPassword) 
-        {
-    // }
-    // if (this.applicationUserForm.valid)
-    // {
-   
       console.log(this.applicationUserForm.value, 'test')
       if (
         this.applicationUserForm.get('password')?.value !=
@@ -237,7 +217,7 @@ export class CreateApplicationUserComponent implements OnInit
           // Object.values(err.errors).forEach((error: any) => this.toast.show(error.toString(), 'error'))
         },
       });
-    }} else
+    } else
     {
       validateAllFormFields(this.applicationUserForm);
     }
