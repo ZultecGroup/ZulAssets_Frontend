@@ -657,16 +657,22 @@ console.log('rows',rows);
           
               // Generate Barcode on a separate canvas (No padding)
               const barcodeCanvas = document.createElement('canvas');
+
               JsBarcode(barcodeCanvas, row.barCode, {
-                  format: 'CODE128',
-                  width: 2,
-                  height: 40,
-                  displayValue: false,
-                  margin: 0, // Remove padding around barcode
+                format: 'CODE128',
+                width: 2,            // Keep bars thick
+                height: 40,          // Keep barcode tall
+                displayValue: false,
+                margin: 0,
               });
-          
+              
+              // Apply scaling to fit it in a smaller space visually
+              barcodeCanvas.style.transform = 'scale(0.8)';
+              barcodeCanvas.style.transformOrigin = 'top left'; // important so it scales from top-left
+              const scaledWidth = barcodeCanvas.width * 0.8;
+              const scaledHeight = barcodeCanvas.height * 0.8;
               // Draw Barcode (Starts from exact left)
-              ctx.drawImage(barcodeCanvas, 20, textHeight);
+              ctx.drawImage(barcodeCanvas, 20, textHeight, scaledWidth, scaledHeight);
           
               // Barcode Number (Just below barcode)
               ctx.font = 'bold 12px Tahoma';
@@ -684,98 +690,107 @@ console.log('rows',rows);
 
           } else if (isLocationBarcodeLabel) {
             zplCode += this.replacePlaceholdersLoc(zplTemplate, row);
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d')!;
+            
+            // const canvas = document.createElement('canvas');
+            // const ctx = canvas.getContext('2d')!;
            
-            const scale = 3;
-            const displayWidth = 200;
-            const displayHeight = 100;
-            const width = displayWidth * scale; // 600
-            const height = displayHeight * scale; // 300
+            // const scale = 3;
+            // const displayWidth = 200;
+            // const displayHeight = 100;
+            // const width = displayWidth * scale; // 600
+            // const height = displayHeight * scale; // 300
             
-            canvas.width = width;
-            canvas.height = height;
-            canvas.style.width = `${displayWidth}px`;
-            canvas.style.height = `${displayHeight}px`;
+            // canvas.width = width;
+            // canvas.height = height;
+            // canvas.style.width = `${displayWidth}px`;
+            // canvas.style.height = `${displayHeight}px`;
             
-            // Scale drawing context for sharp rendering
-            ctx.scale(scale, scale);
+            // // Scale drawing context for sharp rendering
+            // ctx.scale(scale, scale);
             
-              // White Background (Optional)
-              ctx.fillStyle = 'white';
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-              ctx.drawImage(logo, 0, 5, 20, 10);
+            //   // White Background (Optional)
+            //   ctx.fillStyle = 'white';
+            //   ctx.fillRect(0, 0, canvas.width, canvas.height);
+            //   ctx.drawImage(logo, 0, 5, 20, 10);
           
-              // English Text (Top-Left)
-              ctx.fillStyle = 'black';
-              ctx.font = 'bold 12px Tahoma';
-              ctx.textAlign = 'left';
-              ctx.fillText('BAJA FOOD INDUSTRIES', 22, 20);
+            //   // English Text (Top-Left)
+            //   ctx.fillStyle = 'black';
+            //   ctx.font = 'bold 12px Tahoma';
+            //   ctx.textAlign = 'left';
+            //   ctx.fillText('BAJA FOOD INDUSTRIES', 22, 20);
             
-              function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number): number {
-                const words = text.split(' ');
-                let line = '';
-                const lineHeight = 10; // Set a line height for wrapping
-                const wrappedTextHeight = y; // To track the height after wrapping
+            //   function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number): number {
+            //     const words = text.split(' ');
+            //     let line = '';
+            //     const lineHeight = 10; // Set a line height for wrapping
+            //     const wrappedTextHeight = y; // To track the height after wrapping
             
-                for (let i = 0; i < words.length; i++) {
-                    const testLine = line + words[i] + ' ';
-                    const testWidth = ctx.measureText(testLine).width;
+            //     for (let i = 0; i < words.length; i++) {
+            //         const testLine = line + words[i] + ' ';
+            //         const testWidth = ctx.measureText(testLine).width;
             
-                    if (testWidth > maxWidth) {
-                        ctx.fillText(line, x, y);
-                        line = words[i] + ' ';
-                        y += lineHeight;
-                    } else {
-                        line = testLine;
-                    }
-                }
-                ctx.fillText(line, x, y); // Draw the final line
-                return y+4; // Return the final y position after wrapping
-            }
-            let textHeight = 35; // Initial position for the text
+            //         if (testWidth > maxWidth) {
+            //             ctx.fillText(line, x, y);
+            //             line = words[i] + ' ';
+            //             y += lineHeight;
+            //         } else {
+            //             line = testLine;
+            //         }
+            //     }
+            //     ctx.fillText(line, x, y); // Draw the final line
+            //     return y+4; // Return the final y position after wrapping
+            // }
+            // let textHeight = 35; // Initial position for the text
 
-              // English or Arabic alignment
-              if (isArabic(row.locationFullPath)) {
-                  ctx.textAlign = 'right';
-                  ctx.direction = 'rtl';
-                  textHeight = wrapText(ctx,row.locationFullPath, 150, 35, 180); // Right-aligned for Arabic
-              } else {
-                  ctx.textAlign = 'left';
-                  ctx.direction = 'ltr';
-                  textHeight =  wrapText(ctx,row.locationFullPath, 15, 35, 180); // Left-aligned for English
-              }
+            //   // English or Arabic alignment
+            //   if (isArabic(row.locationFullPath)) {
+            //       ctx.textAlign = 'right';
+            //       ctx.direction = 'rtl';
+            //       textHeight = wrapText(ctx,row.locationFullPath, 150, 35, 180); // Right-aligned for Arabic
+            //   } else {
+            //       ctx.textAlign = 'left';
+            //       ctx.direction = 'ltr';
+            //       textHeight =  wrapText(ctx,row.locationFullPath, 15, 35, 180); // Left-aligned for English
+            //   }
           
-              // Generate Barcode on a separate canvas (No padding)
-              const barcodeCanvas = document.createElement('canvas');
-              JsBarcode(barcodeCanvas, row.compCode, {
-                  format: 'CODE128',
-                  width: 1,
+            //   // Generate Barcode on a separate canvas (No padding)
+            //   const barcodeCanvas = document.createElement('canvas');
+            //   JsBarcode(barcodeCanvas, row.compCode, {
+            //       format: 'CODE128',
+            //       width: 1,
 
-                  height: 40,
-                  displayValue: false,
-                  margin: 0, // Remove padding around barcode
-              });
+            //       height: 40,
+            //       displayValue: false,
+            //       margin: 0, // Remove padding around barcode
+            //   });
           
-              // Draw Barcode (Starts from exact left)
-              ctx.drawImage(barcodeCanvas, 0, textHeight);
+            //   // Draw Barcode (Starts from exact left)
+            //   ctx.drawImage(barcodeCanvas, 0, textHeight);
           
-              // Barcode Number (Just below barcode)
-              ctx.font = 'bold 12px Tahoma';
-              ctx.textAlign = 'center';
-              ctx.fillText(row.compCode, 90, textHeight+50);
+            //   // Barcode Number (Just below barcode)
+            //   ctx.font = 'bold 12px Tahoma';
+            //   ctx.textAlign = 'center';
+            //   ctx.fillText(row.compCode, 90, textHeight+50);
           
-              // Convert to Image and Print
-              const finalImageUrl = canvas.toDataURL();
+            //   // Convert to Image and Print
+            //   const finalImageUrl = canvas.toDataURL();
               
-              this.imagesToPrint.push(finalImageUrl);
+            //   this.imagesToPrint.push(finalImageUrl);
           }
         
 
         });
-        
-        this.printAllImages();
-        console.log('Generated ZPL Code:', zplCode);
+        if(isLocationBarcodeLabel)
+        {
+          console.log('Generated ZPL Code:', zplCode);
+
+          this.printZPL(zplCode);
+        }
+        else if(isAssetBarcodeLabel)
+        {
+          this.printAllImages();
+        }
+
     //    this.printZPL(zplCode);
       }
     })

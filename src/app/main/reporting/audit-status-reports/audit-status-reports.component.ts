@@ -525,7 +525,14 @@ formatApiDataToCsv(data: any) {
   // Step 1: Add summary count boxes in a single row
   doc.setFontSize(12);
   if(this.summaryCountData){
-  doc.text(`Transferred: ${this.summaryCountData[0]?.statusCount || 0}  |  Found: ${this.summaryCountData[1]?.statusCount || 0}  |  Missing: ${this.summaryCountData[2]?.statusCount || 0}  |  Total: ${this.summaryCountData[3]?.statusCount || 0}`, 14, 20);
+
+    const boxesData = this.summaryCountData.map((count: any) => {
+      return `${count.statusDesc}: ${count.statusCount}`;
+  }).join(' | ');
+
+  doc.text(boxesData,14,20);
+
+  // doc.text(`Transferred: ${this.summaryCountData[0]?.statusCount || 0}  |  Found: ${this.summaryCountData[1]?.statusCount || 0}  |  Missing: ${this.summaryCountData[2]?.statusCount || 0}  |  Total: ${this.summaryCountData[3]?.statusCount || 0}`, 14, 20);
   }
   let yOffset = 30; // Adjust Y position for table
 
