@@ -657,22 +657,16 @@ console.log('rows',rows);
           
               // Generate Barcode on a separate canvas (No padding)
               const barcodeCanvas = document.createElement('canvas');
-
               JsBarcode(barcodeCanvas, row.barCode, {
-                format: 'CODE128',
-                width: 2,            // Keep bars thick
-                height: 40,          // Keep barcode tall
-                displayValue: false,
-                margin: 0,
+                  format: 'CODE128',
+                  width: 2,
+                  height: 40,
+                  displayValue: false,
+                  margin: 0, // Remove padding around barcode
               });
-              
-              // Apply scaling to fit it in a smaller space visually
-              barcodeCanvas.style.transform = 'scale(0.8)';
-              barcodeCanvas.style.transformOrigin = 'top left'; // important so it scales from top-left
-              const scaledWidth = barcodeCanvas.width * 0.8;
-              const scaledHeight = barcodeCanvas.height * 0.8;
+          
               // Draw Barcode (Starts from exact left)
-              ctx.drawImage(barcodeCanvas, 20, textHeight, scaledWidth, scaledHeight);
+              ctx.drawImage(barcodeCanvas, 20, textHeight);
           
               // Barcode Number (Just below barcode)
               ctx.font = 'bold 12px Tahoma';
