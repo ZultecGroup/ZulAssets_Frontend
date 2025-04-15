@@ -91,16 +91,25 @@ assets: any;
     this.gridData = [];
     this.gridView = [];
     this.auditData = auditData;
+    let payload: any = {
+      get: 1,
+      paginationParam: {
+        pageIndex: this.pagination.currentPage,
+        pageSize: this.pagination.pageSize,
+      }
+    }
     this.dataProcessingGridCols = this.gridDataService.getDataProcessingCols(this.auditData)
     console.log('this.invSchCode',this.invSchCode);
     this.fetchingData = true
-    this.tableDataService.getTableData('DeviceConfiguration/GetProcessingData', { get: 1, auditData:auditData, invSchCode: this.invSchCode })
+    this.tableDataService.getTableDataWithPagination('DeviceConfiguration/GetProcessingData', { get: 1, auditData:auditData, invSchCode: this.invSchCode, ...payload })
       .pipe(finalize(() => this.fetchingData = false))
       .subscribe({
         next: (res: DataProcessingDtoResponse) => {
           if (res) {
             this.gridData = res.data.reverse();
-            this.gridView = this.gridData.reverse()
+            this.gridView = this.gridData.reverse();
+            this.pagination.totalItems = res.totalRowsCount
+
             console.log(this.auditData);
             // this.dataProcessingGridCols = this.gridDataService.getColumnDefs(GridType.DataProcessing);
           }
@@ -195,14 +204,14 @@ assets: any;
   public pageChange(event: number): void
   {
     this.pagination.currentPage = event;
-    // this.getDeviceConfiguration(this.pagination.currentPage, this.pagination.pageSize);
+    this.getDeviceConfiguration(this.auditData);
   }
 
   pageSizeChange(event: number)
   {
     this.resetPaginator()
     this.pagination.pageSize = event;
-    // this.getDeviceConfiguration(this.pagination.currentPage, this.pagination.pageSize)
+    this.getDeviceConfiguration(this.auditData)
   }
 
   private resetPaginator()

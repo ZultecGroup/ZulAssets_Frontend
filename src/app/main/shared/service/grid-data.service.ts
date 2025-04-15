@@ -526,6 +526,7 @@ export class GridDataService {
     return [
       { field: 'astID', headerCheckboxSelection: true, headerName: '', width: 70, checkboxSelection: true, dndSource: true},
       {minWidth: 70, field: 'asset#', flex: 1, headerName: 'Asset #'},
+      {minWidth: 150, field: 'arAssetDescription', flex: 1, headerName: 'Ar. Description',   },
       {minWidth: 150, field: 'assetDescription', flex: 1, headerName: 'Description',   },
       {minWidth: 180, field: 'custodianCode', flex: 1, headerName: 'Custodian Code' },
       {minWidth: 180, field: 'custodianName', flex: 1, headerName: 'Custodian Name' },

@@ -13,9 +13,7 @@ import { GridDataService } from '../../shared/service/grid-data.service';
 import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { GeneralService } from '../../shared/service/general.service';
 import { faFileExcel, faFilePdf } from '@fortawesome/free-solid-svg-icons';
-import { debug } from 'console';
 const JsBarcode = require('jsbarcode');
-
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
@@ -23,10 +21,9 @@ const JsBarcode = require('jsbarcode');
   encapsulation: ViewEncapsulation.None,
 })
 export class AdministrationComponent implements OnInit {
+  imagesToPrint: string[] = []; // Initialize the array to hold image URLs
   locationupdate: boolean = true;
   categoriesupdate: boolean = true;
-  imagesToPrint: string[] = []; // Initialize the array to hold image URLs
-
   gridData: any[] = [];
   gridView: any[] = [];
   fetchingData: boolean = false;
@@ -624,8 +621,8 @@ console.log('rows',rows);
               function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number): number {
                 const words = text.split(' ');
                 let line = '';
-                const lineHeight = 10; // Set a line height for wrapping
-                const wrappedTextHeight = y; // To track the height after wrapping
+                const lineHeight = 10;
+                let linesDrawn = 0;
             
                 for (let i = 0; i < words.length; i++) {
                     const testLine = line + words[i] + ' ';
@@ -635,12 +632,37 @@ console.log('rows',rows);
                         ctx.fillText(line, x, y);
                         line = words[i] + ' ';
                         y += lineHeight;
+                        linesDrawn++;
+            
+                        if (linesDrawn === 1) {
+                            // Start constructing the second (and final) line
+                            let remainingWords = words.slice(i);
+                            let finalLine = '';
+                            let testWithEllipsis = '';
+                            const ellipsis = '';
+                            const ellipsisWidth = ctx.measureText(ellipsis).width;
+            
+                            for (let j = 0; j < remainingWords.length; j++) {
+                                testWithEllipsis = finalLine + remainingWords[j] + ' ';
+                                const testWidth = ctx.measureText(testWithEllipsis).width;
+            
+                                if (testWidth + ellipsisWidth > maxWidth) {
+                                    break;
+                                }
+                                finalLine = testWithEllipsis;
+                            }
+            
+                            ctx.fillText(finalLine.trimEnd() + ellipsis, x, y);
+                            return y + 4;
+                        }
                     } else {
                         line = testLine;
                     }
                 }
-                ctx.fillText(line, x, y); // Draw the final line
-                return y+4; // Return the final y position after wrapping
+            
+                // If we didn't exceed 1 line, draw final line
+                ctx.fillText(line, x, y);
+                return y + 4;
             }
             let textHeight = 35; // Initial position for the text
 
@@ -949,6 +971,8 @@ private printZPL(zplCode: string): void {
 //   printWindow.close();
 // }
 //shahroz
+
+
 assetDoubleClick(event: any){
   console.log('double click',event.data.astID);
   if(event.data.astID){
