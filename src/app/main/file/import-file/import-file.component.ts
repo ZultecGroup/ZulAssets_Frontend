@@ -70,6 +70,8 @@ export class ImportFileComponent implements OnInit {
     'SERVICE DATE',
     'SALVAGE YEAR',
     'Quantity',
+    'Electronic Serial Number',
+    'Company Name'
   ];
 
   onFilterTextBoxChanged() {
@@ -181,6 +183,8 @@ export class ImportFileComponent implements OnInit {
       serviceDate: row['SERVICE DATE'],
       salvageYear: row['SALVAGE YEAR'],
       quantity: row['Quantity'],
+      electronicSerialNumber: row['Electronic Serial Number'],
+      companyName: row['Company Name'],
     }));
   }
 

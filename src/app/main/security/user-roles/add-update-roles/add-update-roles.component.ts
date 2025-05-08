@@ -20,6 +20,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {BehaviorSubject} from 'rxjs'
 import { RolesDto, RolesDtoResponse } from 'src/app/main/shared/dtos/Roles/RolesDto';
+import { CompanyDtoResponse } from 'src/app/main/shared/dtos/Companies/companyDtos';
 
 export class UesrRoleItemNode {
   children: UesrRoleItemNode[];
@@ -91,6 +92,8 @@ export class AddUpdateRolesComponent implements OnInit {
   roleAssignOptions: any;
   menu: any[];
   menus: any[];
+  allCompanies: any[];
+  dataCompany: any[];
 
 
   constructor(
@@ -114,7 +117,7 @@ export class AddUpdateRolesComponent implements OnInit {
     this.userRoleId = params[ 'id' ];
     this.pagination.currentPage = Number(queryParams[ 'currentPage' ]) || 1;
     this.pagination.pageSize = Number(queryParams[ 'pageSize' ]) || 15;
-
+    this.getAllCompanies();
     this.isEditMode = !!this.userRoleId;
     console.log(this.userRoleId);
     this.initializebrandForm();
@@ -138,15 +141,16 @@ export class AddUpdateRolesComponent implements OnInit {
 
     this.dataService.getTableDataWithPagination('Roles/GetAllRoles', { get: 1, paginationParam })
       .pipe(
-        map((roleList: RolesDtoResponse) =>
-          roleList.data.find((role: RolesDto) => role.roleID == this.userRoleId)),
+        map((roleList: any) =>
+          roleList.data.find((role: any) => role.roleID == this.userRoleId)),
         first(),
         finalize(() => this.fetchingData = false))
       .subscribe({
         next: (res) => {
           this.userRoleForm.patchValue({
             roleID: res?.roleID,
-            description: res?.description
+            description: res?.description,
+            companies: res?.companies.map((c:any) => parseInt(c.companies))
           })
         }
       })
@@ -154,7 +158,8 @@ export class AddUpdateRolesComponent implements OnInit {
   initializebrandForm() {
     this.userRoleForm = this.fb.group({
       roleID: [0],
-      description: ['', [Validators.required, noWhitespaceValidator()]]
+      description: ['', [Validators.required, noWhitespaceValidator()]],
+      companies: ['',Validators.required]
     })
   }
   onSubmit() {
@@ -163,9 +168,13 @@ export class AddUpdateRolesComponent implements OnInit {
         this.sendingRequest = true
         let payload: any;
         payload = this.userRoleForm.value
+        let roleCompanies_list: any = this.userRoleForm.value.companies
+    .map((id:any) => ({ companies: id.toString() }));
+
         if(this.isEditMode){
           payload.update = 1;
           payload.roleID = String(this.userRoleId);
+          payload.roleCompanies_list = roleCompanies_list;
           this.saveChanges();
         }
 
@@ -174,7 +183,7 @@ export class AddUpdateRolesComponent implements OnInit {
         payload.loginName = JSON.parse(userDetail)?.userName
         const apiCall = this.isEditMode ?
         this.dataService.getTableData('Roles/UpdateRole', payload) :
-         this.dataService.getTableData('Roles/InsertRole', { add: 1, ...this.userRoleForm.value });
+         this.dataService.getTableData('Roles/InsertRole', { add: 1, ...this.userRoleForm.value, roleCompanies_list });
 
         apiCall.pipe(first(),finalize(() => this.sendingRequest = false))
           .subscribe({
@@ -202,6 +211,33 @@ export class AddUpdateRolesComponent implements OnInit {
 
   }
 
+  getAllCompanies() {
+      this.fetchingData = true;
+      this.tableDataService
+        .getTableData('Company/GetAllCompanies', { get: 1, dropDown: 1 })
+        .pipe(
+          first(),
+          finalize(() => (this.fetchingData = false))
+        )
+        .subscribe({
+          next: (res: CompanyDtoResponse) => {
+            if (res) {
+              this.allCompanies = res.data.reverse();
+              this.dataCompany = this.allCompanies.slice();
+              console.log(this.allCompanies, 'company');
+            }
+          },
+          error: (err) =>
+            this.toast.show(err ?? 'Something went wrong!', 'error'),
+        });
+    }
+
+  handleCompany(value: any) {
+    this.dataCompany = this.allCompanies.filter(
+      (s: any) =>
+        s.companyName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
 
   back()
   {

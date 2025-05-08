@@ -13,6 +13,25 @@
             formControlName="description" />
         </kendo-floatinglabel>
       </div>
+      <div class="col-md-4 mb-3">
+        <kendo-floatinglabel size="large" class="w-100" text="Company">
+          <kendo-multiselect
+          #multiselect
+          size="large"
+          rounded="large"
+          [checkboxes]="true"
+          [data]="dataCompany"
+          textField="companyName"
+          valueField="companyId"
+          formControlName="companies"
+          [valuePrimitive]="true"
+          (filterChange)="handleCompany($event)"></kendo-multiselect>
+          <kendo-formerror
+            *ngIf="!userRoleForm.controls['companies'].valid && userRoleForm.controls['companies'].touched && userRoleForm.controls['companies'].errors?.['required']">Company
+            is required
+          </kendo-formerror>
+        </kendo-floatinglabel>
+      </div>
     </div>
   </form>
 </div>

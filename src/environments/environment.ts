@@ -7,6 +7,7 @@ export const environment = {
   // apiUrl: 'http://shahroz07-001-site1.etempurl.com/api/'
   //  apiUrl: 'http://195.250.24.128:5203/api/'
    
+  // apiUrl: 'http://10.0.2.78:7257/api/'
   apiUrl: 'https://zulassetsapi-gafvbteyd2bbgsgd.uaenorth-01.azurewebsites.net/api/'
   // apiUrl: 'http://http://10.0.2.62:7257/api/'
 };

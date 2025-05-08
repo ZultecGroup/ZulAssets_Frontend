@@ -1,5 +1,5 @@
 import { GeneralService } from './../../shared/service/general.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { TableDataService } from '../../shared/service/table-data.service';
 import { toastService } from '../../shared/toaster/toast.service';
 import {
@@ -23,7 +23,7 @@ import { RolesDto, RolesDtoResponse } from '../../shared/dtos/Roles/RolesDto';
   templateUrl: './user-roles.component.html',
   styleUrls: ['./user-roles.component.scss'],
 })
-export class UserRolesComponent implements OnInit {
+export class UserRolesComponent implements AfterViewInit, OnInit {
   gridData: RolesDto[] = [];
   gridView: RolesDto[] = [];
   fetchingData: boolean = false;
@@ -69,6 +69,10 @@ export class UserRolesComponent implements OnInit {
     )
   }
 
+  ngAfterViewInit() {
+    this.rolesGridCols = this.gridDataService.getColumnDefs(GridType.Roles, this.GeneralService.permissions['User Roles']
+    )
+  }
   ngOnInit(): void
   {
     const queryParams = this.route.snapshot.queryParams as Params;

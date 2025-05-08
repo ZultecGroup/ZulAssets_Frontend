@@ -434,6 +434,11 @@ export class GridDataService {
       { field: 'rowNo', headerName: '', width: 5, checkboxSelection: true },
       { field: 'roleID', width: 200, headerName: 'Role ID' },
       { field: 'description', flex: 1, headerName: 'Role Description' },
+  //     {headerName: 'Companies',
+  // field: 'companies',flex: 1,
+  // valueFormatter: (params) => {
+  //   return params.value.map((c: any) => c.companies).join(', ');
+  // }},
       this.getActionColumn(GridType.Roles, permission)
     ];
   }
@@ -539,6 +544,7 @@ export class GridDataService {
       {minWidth: 190, field: 'companyName', flex: 1, headerName: 'Company' },
       {minWidth: 100, field: 'barCode', flex: 1, headerName: 'BarCode' },
       {minWidth: 110, field: 'serial#', flex: 1, headerName: 'Serial#' },
+      {minWidth: 110, field: 'd365', flex: 1, headerName: 'D365' },
       {minWidth: 200, field: 'fullCategory', flex: 1, headerName: 'Full Category' },
       {minWidth: 200, field: 'locationFullPath', flex: 1, headerName: 'Full Location' },
       {minWidth: 80, field: 'costNumber', flex: 1, headerName: 'Cost#' },
@@ -581,7 +587,7 @@ export class GridDataService {
 
   getAssetListModalCols(headerSelection: boolean = true): ColDef[] {
     return [
-      { field: 'rowNo', headerName: '', width: 5, checkboxSelection: true, headerCheckboxSelection: headerSelection },
+      { field: 'astID', headerName: '', width: 5, checkboxSelection: true, headerCheckboxSelection: headerSelection },
       { field: 'barCode', headerName: 'Barcode'},
       { field: 'astID', headerName: 'Ast ID' },
       { field: 'asset#', headerName: 'Ast Num'},

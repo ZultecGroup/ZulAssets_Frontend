@@ -211,6 +211,7 @@
               [columnDefs]="assetListModalGridCols"
               [rowSelection]="'multiple'"
               [defaultColDef]="defaultColDefs"
+        (gridReady)="onGridReadyModal($event)"
               (rowSelected)="onSelectionChange($event)"
               class="ag-theme-alpine w-100"
               style="height: 60vh"

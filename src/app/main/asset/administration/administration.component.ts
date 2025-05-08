@@ -91,6 +91,11 @@ export class AdministrationComponent implements OnInit {
     // this.getAllAssetsAdministrator(this.pagination.currentPage, this.pagination.pageSize);
     this.GetCustodian();
     this.searchHandler();
+   
+    const tab = { name: 'Details' };
+const node = { id: 123, name: 'Node A' };
+
+this.getData(tab, node);
   }
 
   private searchHandler() {
@@ -103,6 +108,9 @@ export class AdministrationComponent implements OnInit {
   }
 
   getData(tab: any, node: any) {
+  
+     
+      debugger
     this.node = node;
     console.log('node', node);
     if (tab == 'loc') {
@@ -1074,23 +1082,60 @@ console.log('search', searchText);
 }
 
 // Helper function: Convert JSON data to CSV format
+// convertToCSV(data: any[]): string {
+//   if (!data.length) return '';
+
+//   const headers = Object.keys(data[0]); // CSV headers
+//   const csvRows = [headers.join(',')]; // Start with header row
+
+//   data.forEach(row => {
+//     const values = headers.map(header => row[header] ?? ''); // Map data
+//     csvRows.push(values.join(',')); // Join values with commas
+//   });
+
+//   return csvRows.join('\n'); // Combine all rows
+// }
+
+// Helper function: Trigger CSV download
+// downloadCSV(csvContent: string, filename: string) {
+//   const utf8BOM = '\uFEFF'; // UTF-8 Byte Order Mark to ensure proper encoding
+//   const blob = new Blob([utf8BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+//   const link = document.createElement('a');
+//   link.href = URL.createObjectURL(blob);
+//   link.download = filename;
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+// }
 convertToCSV(data: any[]): string {
   if (!data.length) return '';
 
-  const headers = Object.keys(data[0]); // CSV headers
-  const csvRows = [headers.join(',')]; // Start with header row
+  const headers = Object.keys(data[0]);
 
-  data.forEach(row => {
-    const values = headers.map(header => row[header] ?? ''); // Map data
-    csvRows.push(values.join(',')); // Join values with commas
-  });
+  // Escapes each field according to CSV rules
+  const escapeCSVField = (field: any): string => {
+    if (field === null || field === undefined) return '';
+    let str = String(field);
+    if (str.includes('"')) {
+      str = str.replace(/"/g, '""'); // Escape double quotes
+    }
+    if (str.includes(',') || str.includes('\n') || str.includes('"')) {
+      str = `"${str}"`; // Wrap in double quotes
+    }
+    return str;
+  };
 
-  return csvRows.join('\n'); // Combine all rows
+  const csvRows = [
+    headers.join(','),
+    ...data.map(row => headers.map(header => escapeCSVField(row[header])).join(','))
+  ];
+
+  return csvRows.join('\n');
 }
 
 // Helper function: Trigger CSV download
 downloadCSV(csvContent: string, filename: string) {
-  const utf8BOM = '\uFEFF'; // UTF-8 Byte Order Mark to ensure proper encoding
+  const utf8BOM = '\uFEFF'; // UTF-8 Byte Order Mark
   const blob = new Blob([utf8BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
