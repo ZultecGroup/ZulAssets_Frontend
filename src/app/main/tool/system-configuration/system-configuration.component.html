@@ -203,6 +203,8 @@
       formGroupName="assetDescriptionForm"
       *ngIf="currentStep === 2"
     >
+    <div class="row">
+      <div class="col-md-6 mb-3">
       <div class="row">
         <div class="col-md-12">
           <h6 class="fw-bold">Asset Description for Reports</h6>
@@ -237,7 +239,40 @@
           </div>
         </div>
       </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="row">
+          <div class="col-md-12">
+            <h6 class="fw-bold">Asset Printing Language Picker</h6>
+          </div>
+          <div class="col-md-12">
+            <div class="d-flex">
+              <input
+                type="radio"
+                value="false"
+                formControlName="descForLabelPrinting"
+                kendoRadioButton
+              />
+              <kendo-label text="English" class="mx-2"></kendo-label>
+            </div>
+            <div class="d-flex my-3">
+              <input
+                type="radio"
+                value="true"
+                formControlName="descForLabelPrinting"
+                kendoRadioButton
+              />
+              <kendo-label text="Arabic" class="mx-2"></kendo-label>
+            </div>
+          
+          </div>
+        </div>
+      </div>
+
+      </div>  
     </ng-container>
+
+
     <div
       class="k-form-buttons mt-3 k-buttons-end d-flex align-items-center justify-content-between"
     >

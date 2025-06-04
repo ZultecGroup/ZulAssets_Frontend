@@ -596,6 +596,9 @@ export class GridDataService {
       { field: 'custodianName', headerName: 'Ast Custodian' },
       { field: 'locationFullPath', headerName: 'Ast Location'},
       { field: 'fullCategory', headerName: 'Ast Category' },
+      { field: 'shortBarcode', headerName: 'Short Barcode' },
+      { field: 'fullBarcode', headerName: 'Full Barcode' },
+    
     ];
   }
 

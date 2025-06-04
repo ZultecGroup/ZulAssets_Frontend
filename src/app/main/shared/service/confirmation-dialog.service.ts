@@ -82,4 +82,30 @@ export class ConfirmationDialogService {
       });
     });
   }
+
+
+  customDialog2(content:any): Promise<boolean> {
+    const dialogRef: any = this.dialogService.open({
+      title: 'Confirmation',
+      content: content,
+      actions: [
+        { text: 'Download Transfer Form and Save', themeColor: "primary" },
+        { text: 'Save Changes Only' }
+      ],
+      width: 450,
+      height: 200,
+      minWidth: 250,
+    });
+
+    return new Promise<boolean>((resolve, reject) => {
+      dialogRef.result.subscribe((result: any) => {
+        console.log(result)
+        if (result.text === 'Download Transfer Form and Save') {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
 }

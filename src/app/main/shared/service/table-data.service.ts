@@ -30,6 +30,10 @@ export class TableDataService {
     const finalPayload = { ...payload };
     return this.httpService.httpPost(moduleUrl, finalPayload);
   }
+  getTableDataWithPagination2(moduleUrl: string, payload: any) {
+    
+    return this.httpService.httpPost(moduleUrl, payload);
+  }
 
   InsertNewUser(moduleUrl: string, payload: any) {
     const finalPayload =
@@ -42,4 +46,5 @@ export class TableDataService {
   getTableDataGet(moduleUrl: string) {
     return this.httpService.get(moduleUrl);
   }
+  
 }

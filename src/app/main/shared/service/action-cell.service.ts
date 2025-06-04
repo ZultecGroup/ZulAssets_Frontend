@@ -22,5 +22,5 @@ export class ActionCellService {
   {
     this.secondaryClickedSubject.next(data);
   }
-
+ 
 }

@@ -1,0 +1,139 @@
+
+<h2>Quarterly Physical Report</h2>
+<br>
+<div class="row">
+ 
+
+
+    <div class="col-md-4" >
+      <kendo-dropdownlist
+      [data]="dataLocation"
+      textField="locDesc"
+      valueField="locID"
+      [(ngModel)]="LocationID"
+      [valuePrimitive]="true"
+      placeholder="Select Location"
+      [filterable]="true"
+    ></kendo-dropdownlist>
+    </div>
+    <div class="col-md-4" *ngIf="QuarterList?.length">
+      <kendo-dropdownlist
+    [data]="QuarterList"
+    textField="name"
+    valueField="id"
+    [(ngModel)]="SelectedQuarter"
+    [valuePrimitive]="true"
+    placeholder="Select Quarter"
+    [filterable]="true">
+  </kendo-dropdownlist>
+    </div>
+    <div class="col-md-4">
+      <kendo-dropdownlist
+      [data]="YearList"
+      textField="name"
+      valueField="id"
+      [(ngModel)]="SelectedYear"
+      [valuePrimitive]="true"
+
+      placeholder="Select Year"
+      [filterable]="true"
+    >
+    </kendo-dropdownlist>
+    </div>
+    <!-- <div class="col-md-3">
+      <kendo-dropdownlist
+      [data]="StatusList"
+      textField="name"
+      valueField="id"
+      [(ngModel)]="SelectedStatus"
+      placeholder="Select Status"
+      [filterable]="true"
+    >
+    </kendo-dropdownlist>
+    </div> -->
+    </div>
+    
+     <br>
+     <div class="row">
+      <div class="col-md-2">
+        <input type="checkbox" #chkCount [checked]="false" kendoCheckBox />
+        <kendo-label class="k-checkbox-label" [for]="chkCount" text="No. of Assets Count"></kendo-label>
+      </div>
+      <div class="col-md-2">
+        <input type="checkbox" #chkFound [checked]="false" kendoCheckBox />
+        <kendo-label class="k-checkbox-label" [for]="chkFound" text="No. of Assets Found"></kendo-label>
+      </div>
+      <div class="col-md-3">
+        <input type="checkbox" #chkTransferred [checked]="false" kendoCheckBox />
+        <kendo-label class="k-checkbox-label" [for]="chkTransferred" text="No. of Assets Transferred"></kendo-label>
+      </div>
+      <div class="col-md-3">
+        <input type="checkbox" #chkMissing [checked]="false" kendoCheckBox />
+        <kendo-label class="k-checkbox-label" [for]="chkMissing" text="No. of Assets Missing"></kendo-label>
+      </div>
+      <div class="col-md-2">
+        <input type="checkbox" #perChkFound [checked]="false" kendoCheckBox />
+        <kendo-label class="k-checkbox-label" [for]="perChkFound" text="% of Assets Found"></kendo-label>
+      </div>
+    </div>
+    
+     <br>
+     <button class="btn btn-primary" (click)="onSearch()">
+      Search
+    </button>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Title and Search/Add Buttons -->
+      
+    
+        <!-- Export Buttons -->
+        <div class="d-sm-flex d-block align-items-center w-100 my-3">
+          
+          <button type="button" class="btn btn-outline-danger me-2" (click)="exportToPDFClick()">
+            <!-- <fa-icon [icon]="faFilePdf"></fa-icon> -->
+            Export to PDF
+          </button>
+
+          <button type="button" class="btn btn-outline-success"  (click)="exportToExcel()" >
+            <!-- <fa-icon [icon]="faFilePdf"></fa-icon> -->
+            Export to Excel
+          </button>
+        </div>
+    
+        <!-- AG Grid -->
+        <ag-grid-angular
+          class="ag-theme-alpine w-100"
+          style="height: 70vh"
+          [rowData]="gridView"
+          [columnDefs]="assetGridCols"
+          [defaultColDef]="defaultColDefs"
+          [rowSelection]="'single'"
+          [rowMultiSelectWithClick]="true"
+          (gridReady)="onGridReady($event)">
+        </ag-grid-angular>
+    
+        <!-- Pagination -->
+        <!-- <div class="d-flex flex-row-reverse gap-2 align-items-baseline mt-1">
+          <ngb-pagination
+            [collectionSize]="pagination.totalItems"
+            [(page)]="pagination.currentPage"
+            (pageChange)="pageChange($event)"
+            [pageSize]="pagination.pageSize"
+            [maxSize]="10"
+            [rotate]="true"
+            [boundaryLinks]="true">
+          </ngb-pagination>
+    
+          <div class="me-3 d-flex flex-row">
+            <select class="form-select form-select-sm" [ngModel]="pagination.pageSize"
+                    (ngModelChange)="pageSizeChange($event)">
+              <option *ngFor="let value of pagination.pageSizes" [value]="value">
+                {{ value }}
+              </option>
+            </select>
+          </div>
+          <label class="text-muted">Page Size</label>
+        </div> -->
+      </div>
+    </div>
+    

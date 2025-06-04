@@ -75,12 +75,17 @@ export class SystemConfigurationComponent implements OnInit {
       }),
       assetDescriptionForm: new FormGroup({
         descForReport: new FormControl(''),
+        descForLabelPrinting: new FormControl(''),
+
       }),
+      
     });
     this.http.httpPost('SysConfig/GetSysConfigInfo', { get: 1 })
     .pipe(finalize(() => this.fetchingData = false)).subscribe({
       next: (res) => {
         this.id = res[0]?.id
+        console.log("=================")
+        console.log(res[0]?.descForLabelPrinting)
         this.form.patchValue({
           generalForm: {
             depreciationRunType: res[0]?.depRunType,
@@ -98,6 +103,7 @@ export class SystemConfigurationComponent implements OnInit {
           },
           assetDescriptionForm: {
             descForReport: res[0]?.descForRpt,
+            descForLabelPrinting: res[0]?.descForLabelPrinting === true ? 'true' : 'false'
           },
         });
       },
@@ -142,6 +148,8 @@ export class SystemConfigurationComponent implements OnInit {
         id: this.id,
         Update: 1
       }
+
+      console.log(payload)
       this.http.httpPost('SysConfig/UpdateSysConfigInfo',payload)
       .pipe(finalize(() => this.submittingData = false))
       .subscribe({

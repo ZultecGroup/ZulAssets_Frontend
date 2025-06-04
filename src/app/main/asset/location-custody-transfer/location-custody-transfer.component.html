@@ -52,6 +52,8 @@
         type="checkbox"
         #dis
         [checked]="true"
+        (change)="onCheckboxChange('location')"
+
         [(ngModel)]="locationCheckbox"
         kendoCheckBox
       />
@@ -66,6 +68,8 @@
         type="checkbox"
         #dis
         [checked]="true"
+        (change)="onCheckboxChange('custodian')"
+
         [(ngModel)]="custodianCheckbox"
         kendoCheckBox
       />
@@ -80,6 +84,8 @@
         type="checkbox"
         #dis
         [checked]="true"
+        (change)="onCheckboxChange('status')"
+
         [(ngModel)]="assetStatusCheckbox"
         kendoCheckBox
       />

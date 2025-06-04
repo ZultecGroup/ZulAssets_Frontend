@@ -26,4 +26,6 @@ export interface AdministrationDto
     status: string
     disposalComments: string
     labelCount: number
+    fullBarcode: string
+    shortBarcode: string
 }

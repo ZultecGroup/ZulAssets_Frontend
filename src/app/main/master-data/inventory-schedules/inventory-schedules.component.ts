@@ -79,7 +79,7 @@ export class InventorySchedulesComponent implements OnInit {
         this.removeHandler(data.rowData.invSchCode)
       }
     })
-
+    
     this.searchHandler();
   }
 
@@ -126,6 +126,7 @@ export class InventorySchedulesComponent implements OnInit {
       .subscribe({
         next: (res: InventoryScheduleDtoResponse) => {
           if (res) {
+            debugger
             this.gridData = res.data.reverse();
             this.gridView = this.gridData.reverse()
             this.pagination.currentPage = currentPage
@@ -204,10 +205,137 @@ export class InventorySchedulesComponent implements OnInit {
     this.pagination.currentPage = 1
     this.pagination.totalItems = 0
   }
+  validateInv(): void
+  { var invCodeForValidate
+    const rows: any = this.gridApi.getSelectedRows();
+    if (rows.length === 0) {
+      this.toast.show("Please select Inventory Schedule First", 'warning')
 
+   //   return;
+    }
+    else{
+     invCodeForValidate = (rows[0]["invSchCode"])
+   
+     const payloaddddd = {
+      
+      invSchCode: invCodeForValidate,
+     
+     }; 
+       this.apiUrl = "InvSch/ValidateInvSch";
+   
+       this.tableDataService
+       .getTableDataWithPagination(this.apiUrl,payloaddddd)
+       .pipe(
+         first(),
+         finalize(() => (this.fetchingData = false))
+       )
+       .subscribe({
+         next: (res: any) => {
+           if (res) {
+            console.log(res)
+            if(res.status!=200)
+            {
+              this.toast.show(res.message, 'error')
+
+            }
+            else{
+              this.toast.show(res.message, 'success')
+
+            }
+          //  const csvContent = this.convertToCSV(res.data.data);
+   
+     // Step 5: Download the CSV File
+     //this.downloadCSV(csvContent, 'assets_administration.csv');
+   
+     
+           //  this.handleApiResponse(res);  // Process the response and update the grid data
+           }
+         },
+         error: (err) =>
+           this.toast.show(err ?? 'Something went wrong!', 'error'),
+       });
+   
+
+    }
+  }
   exportToCSV(): void
   {
     this.gridDataService.exportToCSV(this.gridApi, GridType.InventorySchedules);
   }
+  apiUrl: any;
+   
+  exportToCSV2(): void
+  {
+    const payloaddddd = {
+    
+  }; 
+    this.apiUrl = "InvSch/GetInProcessInvSchs";
 
-}
+    this.tableDataService
+    .getTableDataWithPagination2(this.apiUrl,payloaddddd)
+    .pipe(
+      first(),
+      finalize(() => (this.fetchingData = false))
+    )
+    .subscribe({
+      next: (res: any) => {
+        if (res) {
+          debugger
+         console.log(res.data.data)
+         const csvContent = this.convertToCSV(res.data.data);
+
+  // Step 5: Download the CSV File
+  this.downloadCSV(csvContent, 'assets_administration.csv');
+
+  
+        //  this.handleApiResponse(res);  // Process the response and update the grid data
+        }
+      },
+      error: (err) =>
+        this.toast.show(err ?? 'Something went wrong!', 'error'),
+    });
+
+  }
+ 
+  
+  
+  // Helper function: Trigger CSV download
+  downloadCSV(csvContent: string, filename: string) {
+    const utf8BOM = '\uFEFF'; // UTF-8 Byte Order Mark
+    const blob = new Blob([utf8BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  convertToCSV(data: any[]): string {
+    if (!data.length) return '';
+  
+    const headers = Object.keys(data[0]);
+  
+    // Escapes each field according to CSV rules
+    const escapeCSVField = (field: any): string => {
+      if (field === null || field === undefined) return '';
+      let str = String(field);
+      if (str.includes('"')) {
+        str = str.replace(/"/g, '""'); // Escape double quotes
+      }
+      if (str.includes(',') || str.includes('\n') || str.includes('"')) {
+        str = `"${str}"`; // Wrap in double quotes
+      }
+      return str;
+    };
+  
+    const csvRows = [
+      headers.join(','),
+      ...data.map(row => headers.map(header => escapeCSVField(row[header])).join(','))
+    ];
+  
+    return csvRows.join('\n');
+  }
+  }
+
+ 
