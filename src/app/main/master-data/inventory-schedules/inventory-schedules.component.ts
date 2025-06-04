@@ -281,11 +281,20 @@ export class InventorySchedulesComponent implements OnInit {
       next: (res: any) => {
         if (res) {
           debugger
-         console.log(res.data.data)
-         const csvContent = this.convertToCSV(res.data.data);
+         debugger
+          if(res.length>0)
+          {
+            console.log(res.data.data)
 
-  // Step 5: Download the CSV File
-  this.downloadCSV(csvContent, 'assets_administration.csv');
+            const csvContent = this.convertToCSV(res.data.data);
+
+            // Step 5: Download the CSV File
+            this.downloadCSV(csvContent, 'assets_administration.csv');
+          }
+          else{
+            this.toast.show('No inventory is in progress', 'warning')
+
+          }
 
   
         //  this.handleApiResponse(res);  // Process the response and update the grid data
